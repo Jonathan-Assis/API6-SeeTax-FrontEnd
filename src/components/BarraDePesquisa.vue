@@ -10,6 +10,6 @@
 
 <style scoped>
 .box {
-    background: #136d2a;
+    background:     #00ED64;
 }
 </style>
