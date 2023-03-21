@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TabelaBanco from './components/Tabela.vue';
+
 </script>
 
 <template>
@@ -13,13 +14,42 @@ import TabelaBanco from './components/Tabela.vue';
 
   <h1>Tabela de Bancos</h1>
 
-    <tabela-banco>
+  <table class="table" style="color: aqua;">
+  <thead>
+    <tr>
+      <th scope="col">Posição</th>
+      <th scope="col">Instituição</th>
+      <th scope="col">Índice</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
+<!--     <tabela-banco>
       <li v-for="(banco, index) in TabelaBanco" :key="index">
         <td>{{ banco.posicao }}</td>
         <td>{{ banco.instituicao }}</td>
         <td>{{ banco.indice }}</td>
       </li>
-    </tabela-banco>
+    </tabela-banco> -->
   </body>
 </template>
 
@@ -47,7 +77,7 @@ import TabelaBanco from './components/Tabela.vue';
     outline: none;
   }
 
-  h1 {
+  /* h1 {
     text-align: center;}
 
   tabela-banco {
@@ -56,6 +86,14 @@ import TabelaBanco from './components/Tabela.vue';
     align-items: center;
     height: 80px;
     background-color: #f1f1f1;
+  } */
+  table {
+    border-color: #ffffff;
+    width: 100%;
+    color: #ffffff;
+    font-family: monospace;
+    font-size: 25px;
+    text-align: left;
   }
   
 </style>
