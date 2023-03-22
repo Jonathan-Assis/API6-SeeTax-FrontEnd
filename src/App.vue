@@ -16,7 +16,7 @@
 </template>
 
 
-<script> 
+<script lang="ts"> 
   import TableStructure from  './components/TableStructure.vue'
   import Sidebar from './components/Sidebar.vue'
   import Ranking from './components/Ranking.vue'

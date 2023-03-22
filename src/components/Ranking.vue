@@ -1,6 +1,13 @@
 <template>
+  <div>
+<font-awesome-icon :icon="['fas', 'trophy']" style="height: 20px; width: 1050px;"/>
+  <h1 class="text-center">Ranking</h1>
+</div>
     <MDBTable class="align-middle mb-0 bg-white">
       <thead class="bg-light">
+        <td>
+          <th style="font-size: 20px;">Comparativo das menores tarifas</th>
+        </td>
         <tr>
           <th>Posição</th>
           <th>Banco</th>
@@ -17,6 +24,13 @@
                     1º 
             </div>
           </td>
+          <div class="d-flex align-items-center">
+            <img src="@/assets/icons/bank.png"  alt=""
+              style="width: 35px; height: 35px" />
+            <div class="ms-3">
+              <p class="fw-bold mb-1">Itaú Unibanco S.A.</p>
+            </div>
+          </div>
         </tr>
         <tr>
           <td>
@@ -24,6 +38,13 @@
                     2º 
             </div>
           </td>
+          <div class="d-flex align-items-center">
+            <img src="@/assets/icons/bank.png"  alt=""
+              style="width: 35px; height: 35px" />
+            <div class="ms-3">
+              <p class="fw-bold mb-1">Banco Itaúcard S.A</p>
+            </div>
+          </div>
         </tr>
         <tr>
           <td>
@@ -31,6 +52,13 @@
                     3º 
             </div>
           </td>
+          <div class="d-flex align-items-center">
+            <img src="@/assets/icons/bank.png"  alt=""
+              style="width: 35px; height: 35px" />
+            <div class="ms-3">
+              <p class="fw-bold mb-1">Lorem Ipsum</p>
+            </div>
+          </div>
         </tr>
         <tr>
           <td>
@@ -38,6 +66,13 @@
                     4º 
             </div>
           </td>
+          <div class="d-flex align-items-center">
+            <img src="@/assets/icons/bank.png"  alt=""
+              style="width: 35px; height: 35px" />
+            <div class="ms-3">
+              <p class="fw-bold mb-1">Lorem Ipsum</p>
+            </div>
+          </div>
         </tr>
         <tr>
           <td>
@@ -45,6 +80,13 @@
                     5º 
             </div>
           </td>
+          <div class="d-flex align-items-center">
+            <img src="@/assets/icons/bank.png"  alt=""
+              style="width: 35px; height: 35px" />
+            <div class="ms-3">
+              <p class="fw-bold mb-1">Lorem Ipsum</p>
+            </div>
+          </div>
         </tr>
 
       </tbody>
@@ -52,7 +94,7 @@
   </template>
   
 
-  <script>
+  <script lang="ts">
     import {
       MDBTable,
       MDBBtn,

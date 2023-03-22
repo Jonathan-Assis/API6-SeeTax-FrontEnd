@@ -17,8 +17,7 @@ import './assets/main.css'
 const app = createApp(App).component("font-awesome-icon", FontAwesomeIcon);
 
 import "bootstrap/dist/js/bootstrap.js"
-
-app.use(createPinia())
+/* app.use(createPinia())
 app.use(router)
-
+ */
 app.mount('#app')

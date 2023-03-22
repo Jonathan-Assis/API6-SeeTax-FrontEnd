@@ -143,7 +143,7 @@
 
 
 
-<script>
+<script lang="ts">
   import {
     MDBTable,
     MDBBtn,
