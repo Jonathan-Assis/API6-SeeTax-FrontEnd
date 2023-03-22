@@ -1,10 +1,11 @@
 <template>
   <div>
-    <font-awesome-icon :icon="['fas', 'trophy']" style="height: 20px; width: 1050px;" />
-    <h1 class="text-center">Ranking</h1>
+    <p>
+    <h1 class="text-right" style="font-size: 20px;"> <font-awesome-icon :icon="['fas', 'trophy']" style="height: 16px; width: 20px;" /> Ranking</h1>
+    </p>
   </div>
   <td>
-  <th style="font-size: 20px; color: black;">Comparativo das menores tarifas</th>
+  <th style="font-size: 16px; color: black;">Comparativo das menores tarifas</th>
   </td>
   <MDBTable class="align-middle mb-5 bg-white">
     <thead class="bg-light">
