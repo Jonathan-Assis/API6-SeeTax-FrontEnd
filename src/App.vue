@@ -6,8 +6,8 @@
   
   <!--Main layout-->
   <main style="margin-top: 5px;">
-    <div class="container-fluid"></div>
 
+    <Ranking/>
      <TableStructure />
 
   </main>
@@ -19,13 +19,15 @@
 <script> 
   import TableStructure from  './components/TableStructure.vue'
   import Sidebar from './components/Sidebar.vue'
+  import Ranking from './components/Ranking.vue'
  
 
   export default {
     name: 'app',
     components: {
       TableStructure,
-      Sidebar
+      Sidebar,
+      Ranking,
     }
   }
 </script>
