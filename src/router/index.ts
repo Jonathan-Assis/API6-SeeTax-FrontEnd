@@ -1,23 +1,35 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router';
+import DashboardViewVue from '../views/DashboardView.vue';
+import TarifasView from '../views/TarifasView.vue';
+import PacotesView from '../views/PacotesView.vue';
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
+const routes: RouteRecordRaw[] = [
     {
       path: '/',
-      name: 'home',
-      component: HomeView
+      name: 'Dashboard',
+      component: DashboardViewVue
     },
     {
-      path: '/about',
+      path: '/filtrar',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      children: [
+        {
+          path: 'tarifas',
+          name: 'Filtro de Tarifas',
+          component: TarifasView
+        },
+        {
+          path: 'pacotes',
+          name: 'Filtro de Pacotes',
+          component: PacotesView
+        },
+      ]
     }
-  ]
+]
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes: routes
 })
 
-export default router
+export { router }
