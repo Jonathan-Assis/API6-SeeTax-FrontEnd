@@ -1,0 +1,29 @@
+@import './colors.css';
+
+body {
+    background-color: var(--st-bg-color);
+}
+
+tbody {
+    background-color: var(--st-bg-card-primary-color);
+}
+
+thead {
+    background-color: var(--st-bg-card-tertiary-color);
+}
+
+.container-router-view {
+    padding:2em;
+}
+
+.st-icon-gray {
+    color: var(--st-icon-color);
+}
+
+.st-text {
+    color: var(--st-text-primary-black-color);
+}
+
+.st-sub-text {
+    color: var(--st-text-primary-black-color);
+}
