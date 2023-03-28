@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue'
+import { defineComponent, computed } from 'vue'
 import { useRoute } from 'vue-router';
 import { collapsed } from './SideBarState';
 import { PhCaretRight } from '@phosphor-icons/vue'
@@ -39,13 +39,19 @@ export default defineComponent({
         <div class="d-flex col justify-content-between">
             <transition name="fade">
                 <span class="title" v-if="!collapsed">
-                    <slot />
+                    <slot name="title"></slot>
                 </span>
             </transition>
-            <PhCaretRight v-if="!notArrow" :notArrow="notArrow" :size="25" class="st-icon-gray" />
+            <PhCaretRight v-if="!notArrow" :notArrow="notArrow" :size="25" class="sidebar-icon-color" />
         </div>
     </router-link>
 </template>
+
+<style>
+.link:not(.active) .sidebar-icon-color{
+  color: var(--st-icon-color-gray);
+}
+</style>
 
 <style scoped>
 .fade-enter-active,
@@ -78,12 +84,12 @@ export default defineComponent({
 }
 
 .link.active {
-    background-color: #00ED64;
+    background-color: var(--st-color-green-0);
     box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
 }
 
-.link.active .title {
-    color: #fff
+.link.active .title, .sidebar-icon-color{
+    color: var(--st-color-white-0)
 }
 
 .link:not(.active):hover {
@@ -93,7 +99,7 @@ export default defineComponent({
 }
 
 .title {
-    color: #ADB5BD;
+    color: var(--st-text-secondary-color);
 }
 
 
