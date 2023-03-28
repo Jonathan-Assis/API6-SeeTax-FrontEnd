@@ -24,39 +24,45 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="sidebar" :style="{ width: sidebarWidth }">
+  <div class="sidebar st-shadow" :style="{ width: sidebarWidth }">
     <div class="container-nav">
       
       <div> 
         <div class="d-flex align-items-center justify-content-between">
-          <h5 :class="{isHide: collapsed}" class="title">Página Inicial</h5>
-          <span class="collapse-icon scape-outside" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
+          <h5 :class="{isHide: collapsed}" class="st-text-secondary">Página Inicial</h5>
+          <span class="collapse-icon scape-outside st-bg-green" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
             <PhArrowLeft :size="23" color="#fff" weight="bold" />
           </span>
         </div>
         <div class="navigation" :class="{isHide: collapsed}">
           <SideBarNav to="/" :notArrow="true">
             <template v-slot:icon>
-              <PhSquaresFour :size="32" class="st-icon-gray" weight="duotone" />
+              <PhSquaresFour :size="32" class="sidebar-icon-color" weight="duotone" />
             </template>
-            Dashboard
+            <template v-slot:title>
+              Dashboard
+            </template>
           </SideBarNav>
         </div>
       </div>
       
-      <h5 :class="{isHide: collapsed}" class="title">Visualizar</h5>
+      <h5 :class="{isHide: collapsed}" class="st-text-secondary">Visualizar</h5>
       <div class="navigation" :class="{isHide: collapsed}">
         <SideBarNav to="/filtrar/tarifas">
           <template v-slot:icon>
-            <PhTicket :size="32" class="st-icon-gray" weight="duotone" />
+            <PhTicket :size="32" class="sidebar-icon-color" weight="duotone" />
           </template>
-          Tarifas
+          <template v-slot:title>
+            Tarifas
+          </template>
         </SideBarNav>
         <SideBarNav to="/filtrar/pacotes">
           <template v-slot:icon> 
-            <PhPackage :size="32" class="st-icon-gray" weight="duotone" />
+            <PhPackage :size="32" class="sidebar-icon-color" weight="duotone" />
           </template>
-          Pacotes
+          <template v-slot:title>
+            Pacotes
+          </template>
         </SideBarNav>
       </div>
       
@@ -74,6 +80,7 @@ export default defineComponent({
 
 <style scoped>
 
+
 .isHide {
   visibility: hidden;
 }
@@ -84,9 +91,6 @@ export default defineComponent({
 h5 {
   padding-left: 1em;
 }
-.title {
-  color: #ADB5BD
-}
 .navigation {
   padding: 0.4em;
 }
@@ -96,7 +100,6 @@ h5 {
 .sidebar {
   color: #ffffff;
   background-color: var(--sidebar-bg-color);
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
 
   float: left;
   position: fixed;
@@ -114,7 +117,6 @@ h5 {
 .collapse-icon {
   width: 42px;
   height: 42px;
-  background-color: #00ed64;
   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
   border-radius: 100px;
 
