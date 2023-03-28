@@ -15,6 +15,10 @@ export default defineComponent({
         routerName: {
             type: String,
             required: true
+        },
+        actualRoute: {
+            type: Boolean,
+            required: false
         }
     }
 })
@@ -22,8 +26,14 @@ export default defineComponent({
 
 <template>
     <MDBBreadcrumbItem class="breadcrumb-item">
-        <router-link :to="to">
+        <router-link :to="to" :class="actualRoute ? 'st-text-primary' : 'st-text-secondary'">
             {{ routerName }}
         </router-link>
     </MDBBreadcrumbItem>
 </template>
+
+<style scoped>
+a:hover {
+    color: var(--st-bg-color-green);
+}
+</style>

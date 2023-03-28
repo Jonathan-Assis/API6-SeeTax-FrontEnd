@@ -1,5 +1,5 @@
 <script lang="ts">
-import HeaderComponent from '../components/header/headerComponent.vue';
+import HeaderComponent from '../components/header/HeaderComponent.vue';
 import HeaderNav from '../components/header/HeaderNav.vue';
 import { defineComponent } from 'vue'
 
@@ -16,6 +16,6 @@ export default defineComponent({
 <template>
     <HeaderComponent>
         <HeaderNav to="/" routerName="Dashboard" />
-        <HeaderNav to="/filtrar/pacotes" routerName="Pacotes" />
+        <HeaderNav to="/filtrar/pacotes" routerName="Pacotes" :actualRoute="true" />
     </HeaderComponent>
 </template>

@@ -22,17 +22,19 @@ export default defineComponent({
 </script>
 
 <template>
-    <header class="st-header">
-        <div class="title-logotipe">
-            <PhCurrencyCircleDollar :size="30" color="#000" weight="duotone" />
-            <h2>SeeTax</h2>
+    <header class="header-container">
+        <div class="st-header">
+            <div class="title-logotipe">
+                <PhCurrencyCircleDollar :size="30" color="#000" weight="duotone" />
+                <h2>SeeTax</h2>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-field" placeholder="Pesquisar" />
+            </div>
         </div>
         <MDBBreadcrumb>
             <slot v-if="!isDashboard" />
         </MDBBreadcrumb>
-        <div class="search-container">
-            <input type="text" class="search-field" placeholder="Pesquisar" />
-        </div>
     </header>
 </template>
 
