@@ -4,6 +4,10 @@ body {
     background-color: var(--st-bg-color-gray);
 }
 
+a {
+    text-decoration: none;
+}
+
 .table-container {
     margin-bottom: 0;
     border-collapse: collapse;
@@ -29,7 +33,7 @@ thead {
 }
 
 .st-bg-green {
-    background-color: var(--st-bg-color-green)
+    background-color: var(--st-bg-color-green);
 }
 
 .st-icon-gray {
@@ -45,6 +49,9 @@ thead {
 }
 .st-text-secondary {
     color: var(--st-text-secondary-color);
+}
+.st-text-tertiary {
+    color: var(--st-text-tertiary-color);
 }
 
 .st-sub-text {

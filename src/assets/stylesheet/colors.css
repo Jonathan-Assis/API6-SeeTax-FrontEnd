@@ -21,8 +21,10 @@
   --st-bg-card-tertiary-color: var(--st-color-white-2); /* tertiary color of background card */
   --st-bg-color-green: var(--st-color-green-0);
   /***  Text  ***/
-  --st-text-primary-color: var(--st-color-black-0); /* texts */
-  --st-text-secondary-color: var(--st-color-gray-1);
+  --st-text-primary-color: var(--st-color-black-0); /* texts general */
+  --st-text-secondary-color: var(--st-color-gray-0);
+  --st-text-tertiary-color: var( --st-color-white-0);
+  /*** Icons ***/
   --st-icon-color-gray: var(--st-color-gray-0);
   --st-icon-color-white: var(--st-color-white-0);
 }
