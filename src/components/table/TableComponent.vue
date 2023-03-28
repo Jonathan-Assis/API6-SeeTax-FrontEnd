@@ -1,54 +1,41 @@
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
-import DescriptionComponent from '../description/DescriptionComponent.vue'
-import {
+<script setup lang="ts">
+  import { defineComponent, ref } from 'vue'
+  import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
+  import DescriptionComponent from '../description/DescriptionComponent.vue'
+  import {
     MDBTable,
     MDBBtn,
     MDBBadge
   } from 'mdb-vue-ui-kit';
+  //import ITableRanking from '../../interfaces/components/ITable';
+  const header = ref([
+    'Posição',
+    'Banco',
+    'Tipo',
+    'Data de Atualização',
+    'Média de Tarifas'
+  ])
 
-export default defineComponent({
-    name: 'TableComponent',
-    components:{
-        TitleOutsideComponent,
-        MDBTable,
-        DescriptionComponent
+  const body = ref([
+    {
+      banco: 'Itaú Unibanco S.A.',
+      tipo: 'Conta Poupança',
+      dataAtualizado: '20/03/2023 12:00',
+      media: '3,000'
     },
-    setup(props) {
-      const header = ref([
-      'Posição',
-      'Banco',
-      'Tipo',
-      'Data de Atualização',
-      'Média de Tarifas'
-      ])
-
-      const body = ref([
-        {
-          banco: 'Itaú Unibanco S.A.',
-          tipo: 'Conta Poupança',
-          dataAtualizado: '20/03/2023 12:00',
-          media: '3,000'
-        },
-        {
-          banco: 'Banco Itaúcard S.A.',
-          tipo: 'Conta Pagamento Pre Pago',
-          dataAtualizado: '20/03/2023 12:00',
-          media: '3,000'
-        },
-        {
-          banco: 'Itaú Unibanco S.A.',
-          tipo: 'Conta Poupança',
-          dataAtualizado: '20/03/2023 12:00',
-          media: '3,000'
-        },
-      ])
-        return {
-          header
-        }
+    {
+      banco: 'Banco Itaúcard S.A.',
+      tipo: 'Conta Pagamento Pre Pago',
+      dataAtualizado: '20/03/2023 12:00',
+      media: '3,000'
     },
-})
+    {
+      banco: 'Itaú Unibanco S.A.',
+      tipo: 'Conta Poupança',
+      dataAtualizado: '20/03/2023 12:00',
+      media: '3,000'
+    },
+  ])
 </script>
 
 <template>
@@ -89,24 +76,26 @@ export default defineComponent({
 </template>
 
 <style scoped>
-table{
-  margin-bottom:0;
+table {
+  margin-bottom: 0;
   border-collapse: collapse;
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
   overflow: hidden;
 }
+
 .table-container {
-/*   border: 2px solid #fff;
- */  border-radius: 4px;
+  /*   border: 2px solid #fff;
+ */
+  border-radius: 4px;
 }
 
 th {
   padding: 15px;
 
 }
-.table-header {
-    background-color: #F5F6FA;
-}
 
+.table-header {
+  background-color: #F5F6FA;
+}
 </style>
