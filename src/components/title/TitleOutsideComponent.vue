@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-    name:'TitleOutsideComponent',
+    name: 'TitleOutsideComponent',
     props: {
         title: {
             type: String,
@@ -10,6 +10,7 @@ export default defineComponent({
         },
         icon: {
             type: String,
+            required: false
         }
     },
 })
@@ -25,7 +26,8 @@ export default defineComponent({
 <style scoped>
 header {
     display: flex;
-    margin: 10px 0;
+    margin-bottom: 10px;
+    align-items: center;
     gap: 12px;
 }
 

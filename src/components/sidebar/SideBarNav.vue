@@ -1,8 +1,9 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useRoute } from 'vue-router';
-import { collapsed } from './SideBarState';
 import { PhCaretRight } from '@phosphor-icons/vue'
+
+import { collapsed } from './SideBarState';
 
 export default defineComponent({
     name: 'SideBarNav',
@@ -84,7 +85,7 @@ export default defineComponent({
 }
 
 .link.active {
-    background-color: var(--st-color-green-0);
+    background-color: var(--st-hover-link-green);
     box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
 }
 
@@ -93,9 +94,8 @@ export default defineComponent({
 }
 
 .link:not(.active):hover {
+    background-color: var(--st-hover-bg-gray);
     border-width: 1px;
-    background-color: #e9e9e9;
-
 }
 
 .title {
