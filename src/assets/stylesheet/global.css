@@ -1,11 +1,8 @@
+@import './reset.css';
 @import './colors.css';
 
 body {
     background-color: var(--st-bg-color-gray);
-}
-
-a {
-    text-decoration: none;
 }
 
 .table-container {
@@ -34,6 +31,18 @@ thead {
 
 .st-bg-green {
     background-color: var(--st-bg-color-green);
+}
+
+.st-space-vertical {
+    margin: 24px 0;
+}
+
+.st-space-horizontal {
+    margin: 0 24px;
+}
+
+.st-space-item {
+    padding: 2rem;
 }
 
 .st-icon-gray {
