@@ -21,6 +21,16 @@ thead {
     background-color: var(--st-bg-card-tertiary-color);
 }
 
+.st-mini-block {
+    border-radius: 4px;
+    font-weight: bold;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .container-router-view {
     padding:2em;
 }
@@ -31,6 +41,9 @@ thead {
 
 .st-bg-green {
     background-color: var(--st-bg-color-green);
+}
+.st-bg-gray {
+    background-color: var(--st-bg-card-tertiary-color);
 }
 
 .st-space-vertical {
