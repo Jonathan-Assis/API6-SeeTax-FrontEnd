@@ -5,14 +5,14 @@ import DescriptionComponent from '../description/DescriptionComponent.vue'
 import {
   MDBTable,
 } from 'mdb-vue-ui-kit';
-import { PhBank, PhTrophy } from '@phosphor-icons/vue';
+import { PhBank, PhPackage } from '@phosphor-icons/vue';
 export default defineComponent({
-  name: "TableRanking",
+  name: "TablePacotes",
   components: {
     TitleOutsideComponent,
     DescriptionComponent,
     MDBTable,
-    PhTrophy,
+    PhPackage,
     PhBank
   },
   setup() {
@@ -63,13 +63,13 @@ export default defineComponent({
 
 <template>
   <div class="st-space-vertical">
-    <TitleOutsideComponent title="Ranking">
+    <TitleOutsideComponent title="Pacotes de serviços">
       <template v-slot:icon>
-        <PhTrophy :size="34" class="st-icon-gray" weight="duotone" />
+        <PhPackage :size="34" class="st-icon-gray" weight="duotone" />
       </template>
     </TitleOutsideComponent>
 
-    <DescriptionComponent description="Comparativo das menores tarifas" />
+    <DescriptionComponent description="Pacotes de serviços oferecidos pelos bancos, valor mínimo e máximo cobradopela utilização dos serviços" />
 
     <MDBTable hover class="align-middle text-center">
       <thead class="table-header">
@@ -80,9 +80,7 @@ export default defineComponent({
 
       <tbody>
         <tr v-for="(item, indexItem) in body" :key="`${indexItem}_${item}`">
-          <td class="d-flex justify-content-center">
-            <div class="st-mini-block st-bg-green">{{ item.posicao }}</div>
-          </td>
+          <td>{{ item.posicao }}</td>
           <td>
             <div class="d-flex align-items-center justify-content-start gap-2">
               <div class="st-mini-block st-bg-gray">

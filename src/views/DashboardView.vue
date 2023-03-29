@@ -4,6 +4,9 @@ import { PhTrophy, PhTicket, PhPackage } from '@phosphor-icons/vue'
 
 import HeaderComponent from '../components/header/HeaderComponent.vue';
 import TableComponent from '../components/table/TableComponent.vue'
+import TableRanking from '../components/table/TableRanking.vue';
+import TableTarifas from '../components/table/TableTarifas.vue';
+import TablePacotes from '../components/table/TablePacotes.vue';
 
 
 export default defineComponent({
@@ -11,7 +14,9 @@ export default defineComponent({
     components: {
         HeaderComponent,
         TableComponent,
-        PhTrophy,
+        TableRanking,
+        TableTarifas,
+        TablePacotes,
         PhTicket,
         PhPackage
     },
@@ -66,27 +71,11 @@ export default defineComponent({
 <template>
     <HeaderComponent :isDashboard="true" />
     <div class="container-list">
-        <TableComponent title="Ranking" description="Comparativo das menores tarifas" :header="header" :body="body">
-            <template v-slot:icon>
-                <PhTrophy :size="34" class="st-icon-gray" weight="duotone" />
-            </template>
-        </TableComponent>
+        <TableRanking />
 
-        <TableComponent title="Tarifas dos serviços"
-            description="Serviços oferecidos pelos bancos, valor mínimo e máximo cobrado de tarifa de utilização"
-            :header="header" :body="body">
-            <template v-slot:icon>
-                <PhTicket :size="34" class="st-icon-gray" weight="duotone" />
-            </template>
-        </TableComponent>
+        <TableTarifas />
 
-        <TableComponent title="Pacotes de serviços"
-            description="Pacotes de serviços oferecidos pelos bancos, valor mínimo e máximo cobradopela utilização dos serviços"
-            :header="header" :body="body">
-            <template v-slot:icon>
-                <PhPackage :size="34" class="st-icon-gray" weight="duotone" />
-            </template>
-        </TableComponent>
+        <TablePacotes />
     </div>
 </template>
 
