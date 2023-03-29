@@ -1,46 +1,52 @@
-<script setup lang="ts">
-  import { defineComponent, ref } from 'vue'
-  import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
-  import DescriptionComponent from '../description/DescriptionComponent.vue'
-  import {
+<script lang="ts">
+import { defineComponent, ref, type PropType } from 'vue'
+import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
+import DescriptionComponent from '../description/DescriptionComponent.vue'
+import {
+  MDBTable,
+  MDBBtn,
+  MDBBadge
+} from 'mdb-vue-ui-kit';
+import { PhTrophy } from '@phosphor-icons/vue';
+export default defineComponent({
+  name: "TableComponent",
+  components: {
+    TitleOutsideComponent,
+    DescriptionComponent,
     MDBTable,
-    MDBBtn,
-    MDBBadge
-  } from 'mdb-vue-ui-kit';
-  //import ITableRanking from '../../interfaces/components/ITable';
-  const header = ref([
-    'Posição',
-    'Banco',
-    'Tipo',
-    'Data de Atualização',
-    'Média de Tarifas'
-  ])
-
-  const body = ref([
-    {
-      banco: 'Itaú Unibanco S.A.',
-      tipo: 'Conta Poupança',
-      dataAtualizado: '20/03/2023 12:00',
-      media: '3,000'
+    PhTrophy
+  },
+  props: {
+    title:{
+      type: String,
+      required: true,
     },
-    {
-      banco: 'Banco Itaúcard S.A.',
-      tipo: 'Conta Pagamento Pre Pago',
-      dataAtualizado: '20/03/2023 12:00',
-      media: '3,000'
+    description:{
+      type: String,
+      required: true,
     },
-    {
-      banco: 'Itaú Unibanco S.A.',
-      tipo: 'Conta Poupança',
-      dataAtualizado: '20/03/2023 12:00',
-      media: '3,000'
+    header: {
+      type: Array,
+      required: false
     },
-  ])
+    body: {
+      type: Array,
+      required: false
+    }
+  }
+})
 </script>
 
 <template>
-  <div class="table-container">
-    <DescriptionComponent title="Comparativo das menores tarifas" />
+  <div class="st-space-vertical">
+    <TitleOutsideComponent :title="title">
+      <template v-slot:icon>
+        <slot name=icon />
+      </template>
+    </TitleOutsideComponent>
+
+    <DescriptionComponent :description="description" />
+
     <MDBTable hover class="align-middle text-center">
       <thead class="table-header">
         <tr>
@@ -49,26 +55,8 @@
       </thead>
 
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry the Bird</td>
-          <td>@twitter</td>
-          <td>@twitter</td>
-          <td>@twitter</td>
+        <tr v-for="(data, indexData) in body" :key="`${indexData}_${data}`">
+          <td v-for="(item, indexItem) in data" :key="`${indexItem}_${item}`">{{ item }}</td>
         </tr>
       </tbody>
     </MDBTable>
@@ -84,18 +72,8 @@ table {
   overflow: hidden;
 }
 
-.table-container {
-  /*   border: 2px solid #fff;
- */
-  border-radius: 4px;
-}
-
 th {
   padding: 15px;
-
 }
 
-.table-header {
-  background-color: #F5F6FA;
-}
 </style>
