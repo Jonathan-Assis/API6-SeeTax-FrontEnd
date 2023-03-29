@@ -2,15 +2,15 @@
 import { defineComponent, ref } from 'vue'
 import { PhTicket } from '@phosphor-icons/vue'
 
-import HeaderNav from '../components/header/HeaderNav.vue';
 import HeaderComponent from '../components/header/HeaderComponent.vue';
+import HeaderNav from '../components/header/HeaderNav.vue';
 import TableComponent from '../components/table/TableComponent.vue';
 
 export default defineComponent({
     name: "TarifasView",
     components: {
-        HeaderNav,
         HeaderComponent,
+        HeaderNav,
         TableComponent,
         PhTicket
     },

@@ -2,9 +2,9 @@
 import { defineComponent, ref } from 'vue'
 import { PhPackage } from '@phosphor-icons/vue'
 
-import TableComponent from '../components/table/TableComponent.vue';
 import HeaderComponent from '../components/header/HeaderComponent.vue';
 import HeaderNav from '../components/header/HeaderNav.vue';
+import TableComponent from '../components/table/TableComponent.vue';
 
 export default defineComponent({
     name: "PacotesView",

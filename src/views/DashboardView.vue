@@ -2,7 +2,7 @@
 import { defineComponent, ref } from 'vue'
 import { PhTrophy, PhTicket, PhPackage } from '@phosphor-icons/vue'
 
-import HeaderComponent from '../components/header/eaderComponent.vue';
+import HeaderComponent from '../components/header/HeaderComponent.vue';
 import TableComponent from '../components/table/TableComponent.vue'
 
 
