@@ -1,11 +1,14 @@
 <script lang="ts">
-import { defineComponent, ref, type PropType } from 'vue'
+import { onMounted,defineComponent, ref, type PropType } from 'vue'
 import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
 import DescriptionComponent from '../description/DescriptionComponent.vue'
 import {
   MDBTable,
 } from 'mdb-vue-ui-kit';
 import { PhBank, PhTrophy } from '@phosphor-icons/vue';
+import ServerConnection from '../../service';
+
+
 export default defineComponent({
   name: "TableRanking",
   components: {
@@ -16,47 +19,31 @@ export default defineComponent({
     PhBank
   },
   setup() {
+    const tempo = new Date(Date.now());
+    const body = ref();
+    async function atualizar() {
+    try {
+    body.value = (await ServerConnection.getRanking()).data;
+    }
+    catch(ex){ /* empty */ };
+    }
     const header = ref([
       "Posição",
       "Banco",
       "Tipo",
       "Data de Atualização",
       "Média de Tarifas"
-    ]);
-    const body = ref([
-      {
-        posicao: 1,
-        banco: "Itaú Unibanco S.A.",
-        tipo: "Conta Poupança",
-        dataAtualizado: "20/03/2023 11:00",
-        media: "1,000"
-      },
-      {
-        posicao: 2,
-        banco: "Banco Itaúcard S.A.",
-        tipo: "Conta Pagamento Pre Pago",
-        dataAtualizado: "20/03/2023 12:00",
-        media: "2,000"
-      },
-      {
-        posicao: 3,
-        banco: "Itaú Unibanco S.A.",
-        tipo: "Conta Poupança",
-        dataAtualizado: "20/03/2023 14:00",
-        media: "4,000"
-      },
-      {
-        posicao: 4,
-        banco: "Unibanco S.A.",
-        tipo: "Conta",
-        dataAtualizado: "20/03/2023 15:00",
-        media: "5,000"
-      },
-    ]);
+    ]);    
+    onMounted(() => {
+    atualizar();
+    console.log(body)
+    })
     return {
       header,
-      body
+      body,
+      tempo
     }
+    
   }
 })
 </script>
@@ -79,22 +66,22 @@ export default defineComponent({
       </thead>
 
       <tbody>
-        <tr v-for="(item, indexItem) in body" :key="`${indexItem}_${item}`">
+        <tr v-for="item in body?.data" :key="item.id">
           <td class="d-flex justify-content-center">
-            <div class="st-mini-block st-bg-green">{{ item.posicao }}</div>
+            <div class="st-mini-block st-bg-green">{{ item.id }}º</div>
           </td>
           <td>
             <div class="d-flex align-items-center justify-content-start gap-2">
               <div class="st-mini-block st-bg-gray">
                 <PhBank :size="30" weight="duotone" />
               </div>
-              {{ item.banco }}
+              {{ item.name }}
             </div>
 
           </td>
-          <td>{{ item.tipo }}</td>
-          <td>{{ item.dataAtualizado }}</td>
-          <td>{{ item.media }}</td>
+          <td>{{ item.type}}</td>
+          <td> {{ tempo.toLocaleString()}}</td>
+          <td> R$ {{ item.average }}</td>
         </tr>
       </tbody>
     </MDBTable>
