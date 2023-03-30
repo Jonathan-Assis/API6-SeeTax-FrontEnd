@@ -25,8 +25,7 @@ export default defineComponent({
     <header class="header-container">
         <div class="st-header">
             <div class="title-logotipe">
-                <PhCurrencyCircleDollar :size="30" color="#000" weight="duotone" />
-                <h2>SeeTax</h2>
+                <img src="../../assets/logotype/SeeTax.png" class="st-logotype-seetax" >
             </div>
             <div class="search-container">
                 <input type="text" class="search-field" placeholder="Pesquisar" />
@@ -39,15 +38,19 @@ export default defineComponent({
 </template>
 
 <style scoped>
+
+.st-logotype-seetax {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    object-fit: contain;
+}
 .title-logotipe {
     display: flex;
     flex-direction:row;
     align-items: center;
     gap: 20px;
 }
-/* .search-container {
-    box-shadow: 0 0.0625em 0.125em rgba(10,10,10,.05);
-} */
 
 .search-field {
     background-color: #fff;
