@@ -1,11 +1,14 @@
 <script lang="ts">
 import { defineComponent, ref, type PropType } from 'vue'
-import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
-import DescriptionComponent from '../description/DescriptionComponent.vue'
+
 import {
   MDBTable,
 } from 'mdb-vue-ui-kit';
 import { PhBank, PhPackage } from '@phosphor-icons/vue';
+
+import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
+import DescriptionComponent from '../description/DescriptionComponent.vue'
+	
 export default defineComponent({
   name: "TablePacotes",
   components: {
