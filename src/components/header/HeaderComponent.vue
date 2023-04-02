@@ -1,23 +1,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { PhCurrencyCircleDollar } from '@phosphor-icons/vue'
-import { MDBBreadcrumb, MDBBreadcrumbItem } from 'mdb-vue-ui-kit';
+import { MDBBreadcrumb } from 'mdb-vue-ui-kit';
 
 export default defineComponent({
     name:'HeaderComponent',
     components: {
         PhCurrencyCircleDollar,
         MDBBreadcrumb,
-        MDBBreadcrumbItem
-    },
-    props: {
-        isDashboard: {
-            type: Boolean,
-            required: false
-        }
-    },
-    setup() {
-    },
+    }
 })
 </script>
 
@@ -32,7 +23,7 @@ export default defineComponent({
             </div>
         </div>
         <MDBBreadcrumb>
-            <slot v-if="!isDashboard" />
+            <slot />
         </MDBBreadcrumb>
     </header>
 </template>
@@ -65,5 +56,6 @@ export default defineComponent({
     flex-direction:row;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 0.5rem;
 }
 </style>
