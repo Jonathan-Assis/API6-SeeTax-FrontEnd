@@ -6,10 +6,7 @@ import capitalizeWord from '../utils/capitalizeWords';
 
 import HeaderComponent from '../components/header/HeaderComponent.vue';
 import TableCommonComponent from '../components/table/TableCommonComponent.vue';
-import TableActionsComponent from '../components/table/TableActionsComponent.vue';
-import TableRanking from '../components/table/TableRanking.vue';
-import TableTarifas from '../components/table/TableTarifas.vue';
-import TablePacotes from '../components/table/TablePacotes.vue';
+import TableGroupingComponent from '../components/table/TableGroupingComponent.vue';
 import HeaderNav from '../components/header/HeaderNav.vue';
 
 export default defineComponent({
@@ -17,49 +14,90 @@ export default defineComponent({
     components: {
     HeaderComponent,
     TableCommonComponent,
-    TableActionsComponent,
-    TableRanking,
-    TableTarifas,
-    TablePacotes,
+    TableGroupingComponent,
     PhTicket,
     PhPackage,
     HeaderNav,
     PhTrophy
 },
     setup() {
-        const timeNow = new Date(Date.now());
+        const rankingHeader = ref([
+            { title: 'Posição',key: 'id'},
+            { title: 'Banco', key: 'name' },
+            { title: 'Tipo', key: 'type' },
+            { title: 'Média de Tarifas (R$)', key: 'average', align:'center' },
+        ])
+
+        const tarifasHeader = ref([
+            { title: 'Banco', key: 'companie', align: ' d-none'},
+            { title: 'Tipo', key: 'accountType', align: ' d-none' },
+            { title: 'Serviço', key: 'name' },
+            { title: 'Máximo (R$)', key: 'max', align:'center' },
+            { title: 'Mínimo (R$)', key: 'min', align:'center' },
+        ])
+
         const rankingBody = ref();
+        const tarifasData = ref()
+        const tarifasBody = ref([])
 
-        async function atualizar() {
+        async function getData() {
             try {
-                let rankings = await ServerConnection.getRanking()
+                await ServerConnection.getRanking()
                     .then((resp) => resp.data)
-
-                rankingBody.value = await rankings.data;
-
-                rankingBody.value.forEach((column: any,index:number) => {
-                    rankingBody.value[index].type = capitalizeWord(column.type)
+                    .then(data => {
+                        rankingBody.value = data.data;
+                        
+                        rankingBody.value.forEach((column: any,index:number) => {
+                            rankingBody.value[index].type = capitalizeWord(column.type)
+                        })
+                    })
+                await ServerConnection.getTax()
+                .then((resp) => resp.data)
+                .then(data => {
+                    tarifasData.value = data
+                    dataFilter();
                 })
 
             } catch(error) {
                 console.log(error);
             }
         }
-        const headerData = ref([
-            { title: 'Posição',data: 'id'},
-            { title: 'Banco', data: 'name' },
-            { title: 'Tipo', data: 'type' },
-            //{ title: 'Data de atualização', data: 'data' },
-            { title: 'Média de Tarifas', data: 'average' },
-        ])
+        const dataFilter = async () => {
+            tarifasData.value.forEach((value:any, index:number) => {
+                value.accountType = capitalizeWord(value.accountType)
+
+                value.priorityServices.forEach((item: any,index:any)=>{
+                    item.name = capitalizeWord(item.name)
+                    value.priorityServices[index] = {
+                        companie: value.companie,
+                        accountType: value.accountType,
+                        ...item
+                    }
+                })
+
+                value.otherServices.forEach((item: any, index:any) =>{
+                    item.name = capitalizeWord(item.name)
+                    value.otherServices[index] = {
+                        companie: value.companie,
+                        accountType: value.accountType,
+                        ...item
+                    }
+                })
+                let datas = [...value.priorityServices, ...value.otherServices]
+                datas.forEach((e) => {
+                    return tarifasBody.value.push(e)
+                })
+            })
+        }
+
         onMounted(() => {
-            atualizar();
-            
+            getData();
         })
         return {
-            headerData,
+            rankingHeader,
             rankingBody,
-            timeNow
+            tarifasHeader,
+            tarifasBody,
         }
     }
     
@@ -75,26 +113,22 @@ export default defineComponent({
     
     <div class="container-list">
 
-       <!--  <TableRanking /> -->
        <TableCommonComponent
             title="Ranking"
             description="Comparativo das menores tarifas"
-            :headerData="headerData"
+            :headerData="rankingHeader"
             :bodyData="rankingBody"
         >
         </TableCommonComponent>
 
-<!--         <TableActionsComponent title="Tarifas dos serviços" description="Serviços oferecidos pelos bancos, valor mínimo e máximo cobrado de tarifa de utilização">
-            <template v-slot:t>
-                <PhTrophy :size="34" class="st-icon-gray" weight="duotone" />
-            </template>
-        </TableActionsComponent>
-
-        <TableActionsComponent title="Pacotes de serviços" description="Pacotes de serviços oferecidos pelos bancos, valor mínimo e máximo cobradopela utilização dos serviços">
-            <template v-slot:t>
-                <PhTrophy :size="34" class="st-icon-gray" weight="duotone" />
-            </template>
-        </TableActionsComponent> -->
+        <TableGroupingComponent
+            title="Tarifas dos serviços"
+            description="Serviços oferecidos pelos bancos, valor mínimo e máximo cobrado de tarifa de utilização"
+            :headerData="tarifasHeader"
+            :bodyData="tarifasBody"
+            :groupDataBy="['companie','accountType']"
+        >
+        </TableGroupingComponent>
         
     </div>
 </template>
