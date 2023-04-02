@@ -85,3 +85,23 @@ export default defineComponent({
    </VDataTable>
  </div>
 </template>
+
+<style>
+   /*@import '../../assets/stylesheet/global.css';*/
+/*  thead tr th {
+    background-color: var(--st-color-gray-0) !important;
+}  */
+</style>
+
+<style scoped>
+/* table {
+  margin-bottom: 0;
+  border-collapse: collapse;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  overflow: hidden;
+} */
+/* thead, th {
+    background-color: var(--st-color-gray-0);
+} */
+</style>
