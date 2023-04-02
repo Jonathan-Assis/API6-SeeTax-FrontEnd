@@ -13,12 +13,17 @@
   border-radius: 0.3rem;
 }
 
+.st-table-search {
+  max-width: 280px;
+  padding: 0 1rem 1rem 0;
+}
+
 tbody {
-  background-color: var(--st-bg-card-primary-color);
+  background-color: var(--st-bg-card-primary-color) !important;
 }
 
 thead {
-  background-color: var(--st-bg-card-tertiary-color);
+  background-color: var(--st-bg-card-tertiary-color) !important;
 }
 
 th,
@@ -26,14 +31,6 @@ td {
   padding: 15px !important;
 }
 
-.dataTables_filter,
-.dataTables_paginate {
-  margin-right: 1rem !important;
+.v-data-table-footer__items-per-page{
+  display: none;
 }
-
-.dataTables_info {
-  position: relative;
-  text-align: right;
-  padding-right: 1rem;
-}
-
