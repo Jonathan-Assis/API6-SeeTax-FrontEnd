@@ -1,26 +1,26 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
-import DataTable from 'datatables.net-vue3';
-import DataTableLib from 'datatables.net-bs5';
-import 'datatables.net-responsive-bs5'
+import { defineComponent, ref } from 'vue'
+import { VDataTable } from 'vuetify/labs/VDataTable';
+import { VPagination, VTextField } from 'vuetify/components';
 
 import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
 import DescriptionComponent from '../description/DescriptionComponent.vue'
 
-DataTable.use(DataTableLib);
 export default defineComponent({
   name: "TableCommonComponent",
   components: {
     TitleOutsideComponent,
     DescriptionComponent,
-    DataTable,
+    VDataTable,
+    VPagination,
+    VTextField
   },
   props:{
-    description: {
+    title: {
       type: String,
       required: true
     },
-    title: {
+    description: {
       type: String,
       required: true
     },
@@ -33,6 +33,13 @@ export default defineComponent({
       required: true
     },
   },
+  setup(){
+    const search = ref('')
+
+    return {
+      search
+    }
+  }
 })
 </script>
 
@@ -52,26 +59,24 @@ export default defineComponent({
       />
 
       <div class="table-responsive st-table-container st-bg-white-primary">
-        <DataTable
-          class="table table-row-border cell-border table-hover "
-          :data="bodyData"
-          :columns="headerData"
-          :options="{
-            responsive: true,
-            autoWidth: false,
-            paging: false,
-            ordering: false,
-            info: false,
-            dom: 'Bfrtip',
-            language: {
-              search: 'Buscar',
-              zeroRecords: 'Não há registros a serem exibidos',
-              info: 'Mostrando _START_ de _END_ do total de _TOTAL_ registros.',
-              infoFiltered: '(Filtrados de _MAX_ registros.)',
-            }
-          }"
+        <VTextField
+          v-model="search"
+          label="Pesquisar"
+          class="st-table-search"
+          variant="solo"
+          density="compact"
+          append-inner-icon="mdi-magnify"
+          outlined
+          single-line
+          hide-details
         >
-        </DataTable>
+        </VTextField>
+        <VDataTable
+          :headers="headerData"
+          :items="bodyData"
+          :search="search"
+        >
+        </VDataTable>
       </div>
     </div>
 
