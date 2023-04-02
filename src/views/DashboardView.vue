@@ -1,82 +1,134 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { PhTrophy, PhTicket, PhPackage } from '@phosphor-icons/vue'
+import { defineComponent, ref, onMounted } from 'vue';
+import { PhTrophy, PhTicket, PhPackage } from '@phosphor-icons/vue';
+import ServerConnection from '../services';
+import capitalizeWord from '../utils/capitalizeWords';
 
 import HeaderComponent from '../components/header/HeaderComponent.vue';
-import TableComponent from '../components/table/TableComponent.vue'
-import TableRanking from '../components/table/TableRanking.vue';
-import TableTarifas from '../components/table/TableTarifas.vue';
-import TablePacotes from '../components/table/TablePacotes.vue';
-
+import TableCommonComponent from '../components/table/TableCommonComponent.vue';
+import TableGroupingComponent from '../components/table/TableGroupingComponent.vue';
+import HeaderNav from '../components/header/HeaderNav.vue';
 
 export default defineComponent({
     name: 'DashboardView',
     components: {
-        HeaderComponent,
-        TableComponent,
-        TableRanking,
-        TableTarifas,
-        TablePacotes,
-        PhTicket,
-        PhPackage
-    },
+    HeaderComponent,
+    TableCommonComponent,
+    TableGroupingComponent,
+    PhTicket,
+    PhPackage,
+    HeaderNav,
+    PhTrophy
+},
     setup() {
-        const header = ref([
-            "Posição",
-            "Banco",
-            "Tipo",
-            "Data de Atualização",
-            "Média de Tarifas"
-        ]);
-        const body = ref([
-            {
-                posicao: 1,
-                banco: "Itaú Unibanco S.A.",
-                tipo: "Conta Poupança",
-                dataAtualizado: "20/03/2023 11:00",
-                media: "1,000"
-            },
-            {
-                posicao: 2,
-                banco: "Banco Itaúcard S.A.",
-                tipo: "Conta Pagamento Pre Pago",
-                dataAtualizado: "20/03/2023 12:00",
-                media: "2,000"
-            },
-            {
-                posicao: 3,
-                banco: "Itaú Unibanco S.A.",
-                tipo: "Conta Poupança",
-                dataAtualizado: "20/03/2023 14:00",
-                media: "4,000"
-            },
-            {
-                posicao: 4,
-                banco: "Unibanco S.A.",
-                tipo: "Conta",
-                dataAtualizado: "20/03/2023 15:00",
-                media: "5,000"
-            },
-        ]);
+        const rankingHeader = ref([
+            { title: 'Posição',key: 'id'},
+            { title: 'Banco', key: 'name' },
+            { title: 'Tipo', key: 'type' },
+            { title: 'Média de Tarifas (R$)', key: 'average', align:'center' },
+        ])
+
+        const tarifasHeader = ref([
+            { title: 'Banco', key: 'companie', align: ' d-none'},
+            { title: 'Tipo', key: 'accountType', align: ' d-none' },
+            { title: 'Serviço', key: 'name' },
+            { title: 'Máximo (R$)', key: 'max', align:'center' },
+            { title: 'Mínimo (R$)', key: 'min', align:'center' },
+        ])
+
+        const rankingBody = ref();
+        const tarifasData = ref()
+        const tarifasBody = ref([])
+
+        async function getData() {
+            try {
+                await ServerConnection.getRanking()
+                    .then((resp) => resp.data)
+                    .then(data => {
+                        rankingBody.value = data.data;
+                        
+                        rankingBody.value.forEach((column: any,index:number) => {
+                            rankingBody.value[index].type = capitalizeWord(column.type)
+                        })
+                    })
+                await ServerConnection.getTax()
+                .then((resp) => resp.data)
+                .then(data => {
+                    tarifasData.value = data
+                    dataFilter();
+                })
+
+            } catch(error) {
+                console.log(error);
+            }
+        }
+        const dataFilter = async () => {
+            tarifasData.value.forEach((value:any, index:number) => {
+                value.accountType = capitalizeWord(value.accountType)
+
+                value.priorityServices.forEach((item: any,index:any)=>{
+                    item.name = capitalizeWord(item.name)
+                    value.priorityServices[index] = {
+                        companie: value.companie,
+                        accountType: value.accountType,
+                        ...item
+                    }
+                })
+
+                value.otherServices.forEach((item: any, index:any) =>{
+                    item.name = capitalizeWord(item.name)
+                    value.otherServices[index] = {
+                        companie: value.companie,
+                        accountType: value.accountType,
+                        ...item
+                    }
+                })
+                let datas = [...value.priorityServices, ...value.otherServices]
+                datas.forEach((e) => {
+                    return tarifasBody.value.push(e)
+                })
+            })
+        }
+
+        onMounted(() => {
+            getData();
+        })
         return {
-            header,
-            body
+            rankingHeader,
+            rankingBody,
+            tarifasHeader,
+            tarifasBody,
         }
     }
+    
 })
 
 
 </script>
 
 <template>
-    <HeaderComponent :isDashboard="true" />
+    <HeaderComponent>
+      <HeaderNav to="/" routerName="Dashboard" :actualRoute="true" />
+    </HeaderComponent>
+    
     <div class="container-list">
-        <TableRanking />
 
-        <TableTarifas />
+       <TableCommonComponent
+            title="Ranking"
+            description="Comparativo das menores tarifas"
+            :headerData="rankingHeader"
+            :bodyData="rankingBody"
+        >
+        </TableCommonComponent>
 
-        <TablePacotes />
+        <TableGroupingComponent
+            title="Tarifas dos serviços"
+            description="Serviços oferecidos pelos bancos, valor mínimo e máximo cobrado de tarifa de utilização"
+            :headerData="tarifasHeader"
+            :bodyData="tarifasBody"
+            :groupDataBy="['companie','accountType']"
+        >
+        </TableGroupingComponent>
+        
     </div>
 </template>
-
-<style scoped></style>

@@ -1,60 +1,85 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { PhTicket } from '@phosphor-icons/vue'
+import { defineComponent, ref, onMounted } from 'vue';
+import { PhTicket } from '@phosphor-icons/vue';
+import ServerConnection from '../services';
+import capitalizeWord from '../utils/capitalizeWords';
+
 
 import HeaderComponent from '../components/header/HeaderComponent.vue';
 import HeaderNav from '../components/header/HeaderNav.vue';
-import TableComponent from '../components/table/TableComponent.vue';
+import TableCommonComponent from '../components/table/TableCommonComponent.vue';
+import TableGroupingComponent from '../components/table/TableGroupingComponent.vue';
+import { VDataTable } from 'vuetify/labs/VDataTable'
 
 export default defineComponent({
     name: "TarifasView",
     components: {
         HeaderComponent,
         HeaderNav,
-        TableComponent,
-        PhTicket
+        TableCommonComponent,
+        TableGroupingComponent,
+        PhTicket,
+        VDataTable
     },
     setup() {
-        const header = ref([
-            "Posição",
-            "Banco",
-            "Tipo",
-            "Data de Atualização",
-            "Média de Tarifas"
-        ]);
-        const body = ref([
-            {
-                posicao: 1,
-                banco: "Itaú Unibanco S.A.",
-                tipo: "Conta Poupança",
-                dataAtualizado: "20/03/2023 11:00",
-                media: "1,000"
-            },
-            {
-                posicao: 2,
-                banco: "Banco Itaúcard S.A.",
-                tipo: "Conta Pagamento Pre Pago",
-                dataAtualizado: "20/03/2023 12:00",
-                media: "2,000"
-            },
-            {
-                posicao: 3,
-                banco: "Itaú Unibanco S.A.",
-                tipo: "Conta Poupança",
-                dataAtualizado: "20/03/2023 14:00",
-                media: "4,000"
-            },
-            {
-                posicao: 4,
-                banco: "Unibanco S.A.",
-                tipo: "Conta",
-                dataAtualizado: "20/03/2023 15:00",
-                media: "5,000"
-            },
-        ]);
+        const tarifasData = ref()
+        const tarifasBody = ref([])
+
+        async function getData() {
+            try {
+                await ServerConnection.getTax()
+                    .then((resp) => resp.data)
+                    .then(data => {
+                        tarifasData.value = data
+                        dataFilter();
+                    })
+            } catch(error) {
+                console.log(error);
+            }
+        }
+        const dataFilter = async () => {
+            tarifasData.value.forEach((value:any, index:number) => {
+                value.accountType = capitalizeWord(value.accountType)
+
+                value.priorityServices.forEach((item: any,index:any)=>{
+                    item.name = capitalizeWord(item.name)
+                    value.priorityServices[index] = {
+                        companie: value.companie,
+                        accountType: value.accountType,
+                        ...item
+                    }
+                })
+
+                value.otherServices.forEach((item: any, index:any) =>{
+                    item.name = capitalizeWord(item.name)
+                    value.otherServices[index] = {
+                        companie: value.companie,
+                        accountType: value.accountType,
+                        ...item
+                    }
+                })
+                let datas = [...value.priorityServices, ...value.otherServices]
+                datas.forEach((e) => {
+                    return tarifasBody.value.push(e)
+                })
+            })
+        } 
+
+        const tarifasHeader = ref([
+            { title: 'Banco', key: 'companie', align: ' d-none'},
+            { title: 'Tipo', key: 'accountType', align: ' d-none' },
+            { title: 'Serviço', key: 'name' },
+            { title: 'Máximo', key: 'max' },
+            { title: 'Mínimo', key: 'min' },
+        ])
+
+        onMounted(() => {
+            getData();
+        })
+
         return {
-            header,
-            body
+            tarifasHeader,
+            tarifasBody,
         }
     }
 })
@@ -66,11 +91,14 @@ export default defineComponent({
         <HeaderNav to="/" routerName="Dashboard" />
         <HeaderNav to="/filtrar/tarifas" routerName="Tarifas" :actualRoute="true" />
     </HeaderComponent>
-    <TableComponent title="Tarifas dos serviços"
+
+    <TableGroupingComponent
+        title="Tarifas dos serviços"
         description="Serviços oferecidos pelos bancos, valor mínimo e máximo cobrado de tarifa de utilização"
-        :header="header" :body="body">
-        <template v-slot:icon>
-            <PhTicket :size="34" class="st-icon-gray" weight="duotone" />
-        </template>
-    </TableComponent>
+        :headerData="tarifasHeader"
+        :bodyData="tarifasBody"
+        :groupDataBy="['companie','accountType']"
+    >
+    </TableGroupingComponent>
+
 </template>
