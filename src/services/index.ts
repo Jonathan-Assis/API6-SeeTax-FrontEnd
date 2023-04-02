@@ -10,7 +10,7 @@ export default class ServerConnection {
         return await method.get('/ranking');
     }
 
-    static async getTaxa() {
+    static async getTax() {
         return await method.get('/tax');
     }
 }
