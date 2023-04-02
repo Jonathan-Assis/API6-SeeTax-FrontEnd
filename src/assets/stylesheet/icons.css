@@ -5,3 +5,15 @@
 .st-icon-white {
   color: var(--st-icon-color-white);
 }
+
+.st-icon-red {
+  color: var(--st-icon-color-red);
+}
+
+.st-icon-green {
+  color: var(--st-icon-color-green);
+}
+
+.st-icon-yellow {
+  color: var(--st-icon-color-yellow);
+}
