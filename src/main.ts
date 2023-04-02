@@ -26,5 +26,6 @@ const vuetify = createVuetify({
 app.use(vuetify)
 app.mount('#app')
 
-import './assets/stylesheet/global.css'
 import "bootstrap/dist/js/bootstrap.js"
+import './assets/stylesheet/global.css'
+
