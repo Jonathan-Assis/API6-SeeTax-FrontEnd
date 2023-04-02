@@ -1,0 +1,12 @@
+.st-text-primary {
+  color: var(--st-text-primary-color);
+}
+.st-text-secondary {
+  color: var(--st-text-secondary-color);
+}
+.st-text-tertiary {
+  color: var(--st-text-tertiary-color);
+}
+.st-sub-text {
+  color: var(--st-text-primary-black-color);
+}

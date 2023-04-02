@@ -1,0 +1,24 @@
+/*** Backgrounds ***/
+body {
+  background-color: var(--st-bg-color-gray);
+}
+
+.st-bg-white-primary {
+  background-color: var(--st-bg-card-primary-color);
+}
+
+.st-bg-white-secondary {
+  background-color: var(--st-bg-card-secondary-color);
+}
+
+.st-bg-white-tertiary {
+  background-color: var(--st-bg-card-tertiary-color);
+}
+
+.st-bg-green {
+  background-color: var(--st-bg-color-green);
+}
+
+.st-bg-gray {
+  background-color: var(--st-bg-card-tertiary-color);
+}

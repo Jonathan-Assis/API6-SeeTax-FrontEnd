@@ -1,49 +1,14 @@
+@import 'datatables.net-bs5';
 @import './reset.css';
+@import './backgrounds.css';
+@import './texts.css';
+@import './icons.css';
+@import './tables.css';
 @import './colors.css';
 
-body {
-    background-color: var(--st-bg-color-gray);
-}
-
-.table-container {
-    margin-bottom: 0;
-    border-collapse: collapse;
-    border-bottom-left-radius: 7px;
-    border-bottom-right-radius: 7px;
-    overflow: hidden;
-}
-
-tbody {
-    background-color: var(--st-bg-card-primary-color);
-}
-
-thead {
-    background-color: var(--st-bg-card-tertiary-color);
-}
-
-.st-mini-block {
-    border-radius: 4px;
-    font-weight: bold;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
+/*** Spaces ***/
 .container-router-view {
     padding: 1em 2em;
-}
-
-.st-shadow {
-    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
-}
-
-.st-bg-green {
-    background-color: var(--st-bg-color-green);
-}
-.st-bg-gray {
-    background-color: var(--st-bg-card-tertiary-color);
 }
 
 .st-space-vertical {
@@ -58,24 +23,19 @@ thead {
     padding: 2rem;
 }
 
-.st-icon-gray {
-    color: var(--st-icon-color-gray);
+/*** Utils ***/
+.st-shadow {
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
 }
 
-.st-icon-white {
-    color: var(--st-icon-color-white);   
+.st-mini-block {
+    border-radius: 4px;
+    font-weight: bold;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.st-text-primary {
-    color: var(--st-text-primary-color);
-}
-.st-text-secondary {
-    color: var(--st-text-secondary-color);
-}
-.st-text-tertiary {
-    color: var(--st-text-tertiary-color);
-}
 
-.st-sub-text {
-    color: var(--st-text-primary-black-color);
-}
