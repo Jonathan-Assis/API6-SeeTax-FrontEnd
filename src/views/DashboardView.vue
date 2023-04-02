@@ -1,46 +1,100 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { PhTrophy, PhTicket, PhPackage } from '@phosphor-icons/vue'
-import {VDataTable} from 'vuetify/labs/VDataTable';
+import { defineComponent, ref, onMounted } from 'vue';
+import { PhTrophy, PhTicket, PhPackage } from '@phosphor-icons/vue';
+import ServerConnection from '../services';
+import capitalizeWord from '../utils/capitalizeWords';
 
 import HeaderComponent from '../components/header/HeaderComponent.vue';
-import TableComponent from '../components/table/TableComponent.vue'
+import TableCommonComponent from '../components/table/TableCommonComponent.vue';
+import TableActionsComponent from '../components/table/TableActionsComponent.vue';
 import TableRanking from '../components/table/TableRanking.vue';
 import TableTarifas from '../components/table/TableTarifas.vue';
 import TablePacotes from '../components/table/TablePacotes.vue';
+import HeaderNav from '../components/header/HeaderNav.vue';
 
 export default defineComponent({
     name: 'DashboardView',
-    components: { 
-        HeaderComponent,
-        TableComponent,
-        TableRanking,
-        TableTarifas,
-        TablePacotes,
-        PhTicket,
-        PhPackage,
-    },
+    components: {
+    HeaderComponent,
+    TableCommonComponent,
+    TableActionsComponent,
+    TableRanking,
+    TableTarifas,
+    TablePacotes,
+    PhTicket,
+    PhPackage,
+    HeaderNav,
+    PhTrophy
+},
+    setup() {
+        const timeNow = new Date(Date.now());
+        const rankingBody = ref();
+
+        async function atualizar() {
+            try {
+                let rankings = await ServerConnection.getRanking()
+                    .then((resp) => resp.data)
+
+                rankingBody.value = await rankings.data;
+
+                rankingBody.value.forEach((column: any,index:number) => {
+                    rankingBody.value[index].type = capitalizeWord(column.type)
+                })
+
+            } catch(error) {
+                console.log(error);
+            }
+        }
+        const headerData = ref([
+            { title: 'Posição',data: 'id'},
+            { title: 'Banco', data: 'name' },
+            { title: 'Tipo', data: 'type' },
+            //{ title: 'Data de atualização', data: 'data' },
+            { title: 'Média de Tarifas', data: 'average' },
+        ])
+        onMounted(() => {
+            atualizar();
+            
+        })
+        return {
+            headerData,
+            rankingBody,
+            timeNow
+        }
+    }
+    
 })
 
 
 </script>
 
 <template>
-    <HeaderComponent :isDashboard="true" />
+    <HeaderComponent>
+      <HeaderNav to="/" routerName="Dashboard" :actualRoute="true" />
+    </HeaderComponent>
     
     <div class="container-list">
-        <div class="row">
-            <div class="col-lg-8 offset-lg-2">
-                <div class="table-responsive">
-                </div>
-            </div>
-        </div>
 
-        <TableRanking />
+       <!--  <TableRanking /> -->
+       <TableCommonComponent
+            title="Ranking"
+            description="Comparativo das menores tarifas"
+            :headerData="headerData"
+            :bodyData="rankingBody"
+        >
+        </TableCommonComponent>
 
-        <TableTarifas />
+<!--         <TableActionsComponent title="Tarifas dos serviços" description="Serviços oferecidos pelos bancos, valor mínimo e máximo cobrado de tarifa de utilização">
+            <template v-slot:t>
+                <PhTrophy :size="34" class="st-icon-gray" weight="duotone" />
+            </template>
+        </TableActionsComponent>
 
-        <TablePacotes />
+        <TableActionsComponent title="Pacotes de serviços" description="Pacotes de serviços oferecidos pelos bancos, valor mínimo e máximo cobradopela utilização dos serviços">
+            <template v-slot:t>
+                <PhTrophy :size="34" class="st-icon-gray" weight="duotone" />
+            </template>
+        </TableActionsComponent> -->
+        
     </div>
 </template>
-
