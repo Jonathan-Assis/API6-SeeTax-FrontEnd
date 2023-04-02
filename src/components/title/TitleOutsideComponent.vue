@@ -18,7 +18,7 @@ export default defineComponent({
 
 <template>
     <header>
-        <slot name='icon'></slot>
+        <slot />
         <h5>{{ title }}</h5>
     </header>
 </template>

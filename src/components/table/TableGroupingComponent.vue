@@ -60,9 +60,7 @@ export default defineComponent({
 <template>
   <div class="st-space-vertical">
     <TitleOutsideComponent :title="title">
-      <template v-slot:icon>
-        <slot />
-      </template>
+        <slot name='icon' />
     </TitleOutsideComponent>
 
     <div class="st-shadow">
