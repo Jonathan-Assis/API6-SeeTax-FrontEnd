@@ -29,10 +29,6 @@ export default defineComponent({
   </main>
 </template>
 
-<style>
-
-</style>
-
 <style scoped>
 .container-view {
   padding: 0 30px 0 70px
