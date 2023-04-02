@@ -4,14 +4,14 @@ import { PhPackage } from '@phosphor-icons/vue'
 
 import HeaderComponent from '../components/header/HeaderComponent.vue';
 import HeaderNav from '../components/header/HeaderNav.vue';
-import TableComponent from '../components/table/TableComponent.vue';
+import TableCommonComponent from '../components/table/TableCommonComponent.vue';
 
 export default defineComponent({
     name: "PacotesView",
     components: {
         HeaderComponent,
         HeaderNav,
-        TableComponent,
+        TableCommonComponent,
         PhPackage
     },
     setup() {
@@ -66,11 +66,11 @@ export default defineComponent({
         <HeaderNav to="/" routerName="Dashboard" />
         <HeaderNav to="/filtrar/pacotes" routerName="Pacotes" :actualRoute="true" />
     </HeaderComponent>
-    <TableComponent title="Pacotes de serviços"
+    <TableCommonComponent title="Pacotes de serviços"
         description="Pacotes de serviços oferecidos pelos bancos, valor mínimo e máximo cobradopela utilização dos serviços"
         :header="header" :body="body">
         <template v-slot:icon>
             <PhPackage :size="34" class="st-icon-gray" weight="duotone" />
         </template>
-    </TableComponent>
+    </TableCommonComponent>
 </template>
