@@ -12,14 +12,14 @@ import HeaderNav from '../components/header/HeaderNav.vue';
 export default defineComponent({
     name: 'DashboardView',
     components: {
-    HeaderComponent,
-    TableCommonComponent,
-    TableGroupingComponent,
-    PhTicket,
-    PhPackage,
-    HeaderNav,
-    PhTrophy
-},
+        HeaderComponent,
+        HeaderNav,
+        TableCommonComponent,
+        TableGroupingComponent,
+        PhTrophy,
+        PhTicket,
+        PhPackage,
+    },
     setup() {
         const rankingHeader = ref([
             { title: 'Posição',key: 'id'},
@@ -119,6 +119,9 @@ export default defineComponent({
             :headerData="rankingHeader"
             :bodyData="rankingBody"
         >
+            <template v-slot:icon>
+                <PhTrophy :size="34" class="st-icon-yellow" weight="duotone" />
+            </template>
         </TableCommonComponent>
 
         <TableGroupingComponent
@@ -128,6 +131,9 @@ export default defineComponent({
             :bodyData="tarifasBody"
             :groupDataBy="['companie','accountType']"
         >
+            <template v-slot:icon>
+                <PhTicket :size="34" class="st-icon-red" weight="duotone" />
+            </template>
         </TableGroupingComponent>
         
     </div>

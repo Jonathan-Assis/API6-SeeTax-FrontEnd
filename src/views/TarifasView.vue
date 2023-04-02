@@ -99,6 +99,9 @@ export default defineComponent({
         :bodyData="tarifasBody"
         :groupDataBy="['companie','accountType']"
     >
+        <template v-slot:icon>
+            <PhTicket :size="34" class="st-icon-red" weight="duotone" />
+        </template>
     </TableGroupingComponent>
 
 </template>
