@@ -69,8 +69,8 @@ export default defineComponent({
             { title: 'Banco', key: 'companie', align: ' d-none'},
             { title: 'Tipo', key: 'accountType', align: ' d-none' },
             { title: 'Serviço', key: 'name' },
-            { title: 'Máximo', key: 'max' },
-            { title: 'Mínimo', key: 'min' },
+            { title: 'Máximo (R$)', key: 'max', align:'center' },
+            { title: 'Mínimo (R$)', key: 'min', align:'center' },
         ])
 
         onMounted(() => {
