@@ -2,12 +2,22 @@
 import { defineComponent } from 'vue'
 import { PhCurrencyCircleDollar } from '@phosphor-icons/vue'
 import { MDBBreadcrumb } from 'mdb-vue-ui-kit';
+import { VTextField } from 'vuetify/components';
+import { ref } from 'vue';
 
 export default defineComponent({
     name:'HeaderComponent',
     components: {
         PhCurrencyCircleDollar,
         MDBBreadcrumb,
+        VTextField
+    },
+    setup(){
+        const search = ref('')
+
+        return {
+            search
+        }
     }
 })
 </script>
@@ -19,7 +29,17 @@ export default defineComponent({
                 <img src="../../assets/logotype/SeeTax.png" class="st-logotype-seetax" >
             </div>
             <div class="search-container">
-                <input type="text" class="search-field" placeholder="Pesquisar" />
+                <VTextField
+                    v-model="search"
+                    label="Pesquisar"
+                    variant="solo"
+                    density="compact"
+                    append-inner-icon="mdi-magnify"
+                    outlined
+                    single-line
+                    hide-details
+                >
+                </VTextField>
             </div>
         </div>
         <MDBBreadcrumb>
@@ -43,19 +63,16 @@ export default defineComponent({
     gap: 20px;
 }
 
-.search-field {
-    background-color: #fff;
-    border-color: #ccc;
-    border-width: 0.5px;
-    border-radius: 0.2em;
-    color: #343434;
-}
-
 .st-header {
     display: flex;
     flex-direction:row;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.5rem;
+}
+
+.search-container{
+    width: 100%;
+    max-width: 180px;
 }
 </style>
