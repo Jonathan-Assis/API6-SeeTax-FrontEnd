@@ -1,25 +1,10 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { PhCurrencyCircleDollar } from '@phosphor-icons/vue'
+<script setup lang="ts">
 import { MDBBreadcrumb } from 'mdb-vue-ui-kit';
 import { VTextField } from 'vuetify/components';
 import { ref } from 'vue';
 
-export default defineComponent({
-    name:'HeaderComponent',
-    components: {
-        PhCurrencyCircleDollar,
-        MDBBreadcrumb,
-        VTextField
-    },
-    setup(){
-        const search = ref('')
+const search = ref('')
 
-        return {
-            search
-        }
-    }
-})
 </script>
 
 <template>

@@ -1,20 +1,16 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 
-export default defineComponent({
-  name: 'DescriptionComponent',
-  props: {
-    description: {
-      type: String,
-      required: true
-    }
-  },
-  setup() {}
+defineProps({
+  description: {
+    type: String,
+    required: true
+  }
 })
+
 </script>
 
 <template>
-  <div class="description st-space-item">
+  <div class="description st-bg-white-primary st-space-item">
     {{ description }}
   </div>
 </template>
@@ -22,7 +18,6 @@ export default defineComponent({
 <style scoped>
 .description {
   height: 4rem;
-  background-color: #fff;
   display: flex;
   align-items: center;
   border-top-left-radius: 7px;

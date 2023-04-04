@@ -1,46 +1,32 @@
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { VDataTable } from 'vuetify/labs/VDataTable';
-import { VPagination, VTextField } from 'vuetify/components';
+import { VTextField } from 'vuetify/components';
 
 import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
 import DescriptionComponent from '../description/DescriptionComponent.vue'
 
-export default defineComponent({
-  name: "TableCommonComponent",
-  components: {
-    TitleOutsideComponent,
-    DescriptionComponent,
-    VDataTable,
-    VPagination,
-    VTextField
+defineProps({
+  title: {
+    type: String,
+    required: true
   },
-  props:{
-    title: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    headerData: {
-      type: Array || undefined,
-      required: true
-    },
-    bodyData: {
-      type: Array,
-      required: true
-    },
+  description: {
+    type: String,
+    required: true
   },
-  setup(){
-    const search = ref('')
-
-    return {
-      search
-    }
-  }
+  headerData: {
+    type: Array || undefined,
+    required: true
+  },
+  bodyData: {
+    type: Array,
+    required: true
+  },
 })
+
+const search = ref('')
+
 </script>
 
 <template>

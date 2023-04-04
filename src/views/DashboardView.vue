@@ -1,5 +1,5 @@
-<script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import { PhTrophy, PhTicket, PhPackage } from '@phosphor-icons/vue';
 import ServerConnection from '../services';
 import capitalizeWord from '../utils/capitalizeWords';
@@ -9,99 +9,79 @@ import TableCommonComponent from '../components/table/TableCommonComponent.vue';
 import TableGroupingComponent from '../components/table/TableGroupingComponent.vue';
 import HeaderNav from '../components/header/HeaderNav.vue';
 
-export default defineComponent({
-    name: 'DashboardView',
-    components: {
-        HeaderComponent,
-        HeaderNav,
-        TableCommonComponent,
-        TableGroupingComponent,
-        PhTrophy,
-        PhTicket,
-        PhPackage,
-    },
-    setup() {
-        const rankingHeader = ref([
-            { title: 'Posição',key: 'id'},
-            { title: 'Banco', key: 'name' },
-            { title: 'Tipo', key: 'type' },
-            { title: 'Média de Tarifas (R$)', key: 'average', align:'center' },
-        ])
+const rankingHeader = ref([
+    { title: 'Posição',key: 'id'},
+    { title: 'Banco', key: 'name' },
+    { title: 'Tipo', key: 'type' },
+    { title: 'Média de Tarifas (R$)', key: 'average', align:'center' },
+])
 
-        const tarifasHeader = ref([
-            { title: 'Banco', key: 'companie', align: ' d-none'},
-            { title: 'Tipo', key: 'accountType', align: ' d-none' },
-            { title: 'Serviço', key: 'name' },
-            { title: 'Máximo (R$)', key: 'max', align:'center' },
-            { title: 'Mínimo (R$)', key: 'min', align:'center' },
-        ])
+const tarifasHeader = ref([
+    { title: 'Banco', key: 'companie', align: ' d-none'},
+    { title: 'Tipo', key: 'accountType', align: ' d-none' },
+    { title: 'Serviço', key: 'name' },
+    { title: 'Máximo (R$)', key: 'max', align:'center' },
+    { title: 'Mínimo (R$)', key: 'min', align:'center' },
+])
 
-        const rankingBody = ref();
-        const tarifasData = ref()
-        const tarifasBody = ref([])
+const rankingBody = ref();
+const tarifasData = ref()
+const tarifasBody = ref([])
 
-        async function getData() {
-            try {
-                await ServerConnection.getRanking()
-                    .then((resp) => resp.data)
-                    .then(data => {
-                        rankingBody.value = data.data;
-                        
-                        rankingBody.value.forEach((column: any,index:number) => {
-                            rankingBody.value[index].type = capitalizeWord(column.type)
-                        })
-                    })
-                await ServerConnection.getTax()
-                .then((resp) => resp.data)
-                .then(data => {
-                    tarifasData.value = data
-                    dataFilter();
-                })
-
-            } catch(error) {
-                console.log(error);
-            }
-        }
-        const dataFilter = async () => {
-            tarifasData.value.forEach((value:any, index:number) => {
-                value.accountType = capitalizeWord(value.accountType)
-
-                value.priorityServices.forEach((item: any,index:any)=>{
-                    item.name = capitalizeWord(item.name)
-                    value.priorityServices[index] = {
-                        companie: value.companie,
-                        accountType: value.accountType,
-                        ...item
-                    }
-                })
-
-                value.otherServices.forEach((item: any, index:any) =>{
-                    item.name = capitalizeWord(item.name)
-                    value.otherServices[index] = {
-                        companie: value.companie,
-                        accountType: value.accountType,
-                        ...item
-                    }
-                })
-                let datas = [...value.priorityServices, ...value.otherServices]
-                datas.forEach((e) => {
-                    return tarifasBody.value.push(e)
+async function getData() {
+    try {
+        await ServerConnection.getRanking()
+            .then((resp) => resp.data)
+            .then(data => {
+                rankingBody.value = data.data;
+                
+                rankingBody.value.forEach((column: any,index:number) => {
+                    rankingBody.value[index].type = capitalizeWord(column.type)
                 })
             })
-        }
-
-        onMounted(() => {
-            getData();
+        await ServerConnection.getTax()
+        .then((resp) => resp.data)
+        .then(data => {
+            tarifasData.value = data
+            dataFilter();
         })
-        return {
-            rankingHeader,
-            rankingBody,
-            tarifasHeader,
-            tarifasBody,
-        }
+
+    } catch(error) {
+        console.log(error);
     }
-    
+}
+const dataFilter = async () => {
+    tarifasData.value.forEach((value:any, index:number) => {
+        value.accountType = capitalizeWord(value.accountType)
+
+        value.priorityServices.forEach((item: any,index:any)=>{
+            item.name = capitalizeWord(item.name)
+            value.priorityServices[index] = {
+                companie: value.companie,
+                accountType: value.accountType,
+                ...item
+            }
+        })
+
+        value.otherServices.forEach((item: any, index:any) =>{
+            item.name = capitalizeWord(item.name)
+            value.otherServices[index] = {
+                companie: value.companie,
+                accountType: value.accountType,
+                ...item
+            }
+        })
+        let datas = [...value.priorityServices, ...value.otherServices]
+        datas.forEach((e) => {
+            return tarifasBody.value.push(e)
+        })
+    })
+}
+
+onMounted(() => {
+    getData();
 })
+
 
 
 </script>

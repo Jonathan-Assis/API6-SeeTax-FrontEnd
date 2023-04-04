@@ -1,27 +1,21 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import { MDBBreadcrumbItem } from 'mdb-vue-ui-kit';
 
-export default defineComponent({
-    name:'HeaderNav',
-    components: {
-        MDBBreadcrumbItem
+defineProps({
+    to: {
+        type: String,
+        required: true
     },
-    props: {
-        to: {
-            type: String,
-            required: true
-        },
-        routerName: {
-            type: String,
-            required: true
-        },
-        actualRoute: {
-            type: Boolean,
-            required: false
-        }
+    routerName: {
+        type: String,
+        required: true
+    },
+    actualRoute: {
+        type: Boolean,
+        required: false
     }
 })
+
 </script>
 
 <template>

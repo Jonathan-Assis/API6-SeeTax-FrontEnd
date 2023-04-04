@@ -1,60 +1,43 @@
-<script lang="ts">
-import { defineComponent, ref, type PropType } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { VDataTable } from 'vuetify/labs/VDataTable';
-import { VPagination, VTextField } from 'vuetify/components';
+import { VTextField } from 'vuetify/components';
 
 import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
 import DescriptionComponent from '../description/DescriptionComponent.vue'
 
-export default defineComponent({
-  name: "TableGroupingComponent",
-  components: {
-    TitleOutsideComponent,
-    DescriptionComponent,
-    VDataTable,
-    VPagination,
-    VTextField
+const props = defineProps({
+  title: {
+    type: String,
+    required: true
   },
-  props:{
-    title: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    headerData:{
-      type: Array,
-      required: true
-    },
-    bodyData: {
-      type: Array,
-      required: true
-    },
-    groupDataBy: {
-      type: Array,
-      required: false
-    }
+  description: {
+    type: String,
+    required: true
   },
-  setup(props) {
-    const search = ref('')
-    const groupBy = ref([])
-
-    if (props.groupDataBy?.length){
-      props.groupDataBy!.forEach((column:any, index:number) => {
-          const key = { key: column} 
-          groupBy.value.push(key)
-      })
-    }
-
-    return {
-      groupBy,
-      search
-    }
+  headerData:{
+    type: Array,
+    required: true
+  },
+  bodyData: {
+    type: Array,
+    required: true
+  },
+  groupDataBy: {
+    type: Array,
+    required: false
   }
-
 })
+const search = ref('')
+const groupBy = ref([])
+
+if (props.groupDataBy?.length){
+  props.groupDataBy!.forEach((column:any, index:number) => {
+      const key = { key: column} 
+      groupBy.value.push(key)
+  })
+}
+
 </script>
 
 <template>

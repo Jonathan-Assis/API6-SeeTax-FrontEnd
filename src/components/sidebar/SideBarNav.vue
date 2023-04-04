@@ -1,37 +1,24 @@
-<script lang="ts">
-import { defineComponent, computed } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
 import { useRoute } from 'vue-router';
 import { PhCaretRight } from '@phosphor-icons/vue'
 
 import { collapsed } from './SideBarState';
 
-export default defineComponent({
-    name: 'SideBarNav',
-    components: {
-        PhCaretRight
+const props = defineProps({
+    to: {
+        type: String,
+        required: true
     },
-    props: {
-        to: {
-            type: String,
-            required: true
-        },
-        notArrow: {
-            type: Boolean,
-            required: false
-        }
-    },
-    setup(props) {
-        const route = useRoute();
-        const isActive = computed(() => route.path === props.to)
-        //const arrow = ref(true)
-        return {
-            route,
-            isActive,
-            collapsed,
-     //       arrow
-        }
-    },
+    notArrow: {
+        type: Boolean,
+        required: false
+    }
 })
+
+const route = useRoute();
+const isActive = computed(() => route.path === props.to)
+
 </script>
 
 <template>

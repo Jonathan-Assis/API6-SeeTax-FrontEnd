@@ -1,19 +1,12 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 
-export default defineComponent({
-    name: 'TitleOutsideComponent',
-    props: {
-        title: {
-            type: String,
-            required: true
-        },
-        icon: {
-            type: String,
-            required: false
-        }
-    },
+defineProps({
+    title: {
+        type: String,
+        required: true
+    }
 })
+
 </script>
 
 <template>

@@ -1,30 +1,12 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import { collapsed, toggleSidebar, sidebarWidth } from './SideBarState'
 import SideBarNav from './SideBarNav.vue'
 import { PhArrowLeft, PhSquaresFour, PhPackage, PhTicket } from '@phosphor-icons/vue'
 
-export default defineComponent({
-  name: 'SideBarComponent',
-  components: {
-    SideBarNav,
-    PhArrowLeft,
-    PhSquaresFour,
-    PhPackage,
-    PhTicket
-  },
-  setup() {
-    return {
-      collapsed,
-      toggleSidebar,
-      sidebarWidth
-    }
-  }
-})
 </script>
 
 <template>
-  <div class="sidebar st-shadow" :style="{ width: sidebarWidth }">
+  <div class="sidebar st-bg-white-primary st-shadow" :style="{ width: sidebarWidth }">
     <div class="container-nav">
       
       <div> 
@@ -36,31 +18,33 @@ export default defineComponent({
         </div>
         <div class="navigation" :class="{isHide: collapsed}">
           <SideBarNav to="/" :notArrow="true">
-            <template v-slot:icon>
+            <template #icon>
               <PhSquaresFour :size="32" class="sidebar-icon-color" weight="duotone" />
             </template>
-            <template v-slot:title>
+            <template #title>
               Dashboard
             </template>
           </SideBarNav>
         </div>
       </div>
       
-      <h5 :class="{isHide: collapsed}" class="st-text-secondary">Visualizar</h5>
+      <h5 class="st-text-secondary" :class="{isHide: collapsed}">
+        Visualizar
+      </h5>
       <div class="navigation" :class="{isHide: collapsed}">
         <SideBarNav to="/filtrar/tarifas">
-          <template v-slot:icon>
+          <template #icon>
             <PhTicket :size="32" class="sidebar-icon-color" weight="duotone" />
           </template>
-          <template v-slot:title>
+          <template #title>
             Tarifas
           </template>
         </SideBarNav>
         <SideBarNav to="/filtrar/pacotes">
-          <template v-slot:icon> 
+          <template #icon> 
             <PhPackage :size="32" class="sidebar-icon-color" weight="duotone" />
           </template>
-          <template v-slot:title>
+          <template #title>
             Pacotes
           </template>
         </SideBarNav>
@@ -69,14 +53,6 @@ export default defineComponent({
     </div>
   </div>
 </template>
-
-<style>
-:root {
-  --sidebar-bg-color: #FFFFFF;
-  --sidebar-item-hover: #38a169;
-  --sidebar-item-active: #276749;
-}
-</style>
 
 <style scoped>
 
@@ -99,7 +75,6 @@ h5 {
 }
 .sidebar {
   color: #ffffff;
-  background-color: var(--sidebar-bg-color);
 
   float: left;
   position: fixed;
