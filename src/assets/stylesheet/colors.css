@@ -15,6 +15,7 @@
   --st-color-red-0: #E53935;
 
   --st-color-yellow-0: #FFCA28;
+  --st-color-yellow-1: #FFB300;
 }
 
 :root {
@@ -35,7 +36,7 @@
   --st-icon-color-white: var(--st-color-white-0);
   --st-icon-color-red: var(--st-color-red-0);
   --st-icon-color-green: var(--st-color-green-0);
-  --st-icon-color-yellow: var(--st-color-yellow-0);
+  --st-icon-color-yellow: var(--st-color-yellow-1);
 
   /*** Hover ***/
   --st-hover-bg-gray: var(--st-color-gray-2);
