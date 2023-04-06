@@ -26,5 +26,6 @@ header {
 
 h5 {
     color: var(--st-text-primary-black-color);
+    font-weight: 600;
 }
 </style>

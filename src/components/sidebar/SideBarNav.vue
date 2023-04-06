@@ -82,7 +82,7 @@ const isActive = computed(() => route.path === props.to)
 
 .link:not(.active):hover {
     background-color: var(--st-hover-bg-gray);
-    border-width: 1px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
 }
 
 .title {

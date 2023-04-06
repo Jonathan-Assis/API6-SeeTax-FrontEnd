@@ -94,6 +94,7 @@ h5 {
   height: 42px;
   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
   border-radius: 100px;
+  cursor: pointer;
 
   z-index: 10;
   position: absolute; 
