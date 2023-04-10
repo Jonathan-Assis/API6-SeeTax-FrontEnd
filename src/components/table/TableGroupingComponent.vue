@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { VDataTable } from 'vuetify/labs/VDataTable';
-import { VTextField } from 'vuetify/components';
 
 import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
 import DescriptionComponent from '../description/DescriptionComponent.vue'
@@ -50,7 +49,7 @@ if (props.groupDataBy?.length){
       <DescriptionComponent :description="description" />
 
       <div class="table-responsive st-table-container st-bg-white-primary">
-        <VTextField
+        <v-text-field
           v-model="search"
           label="Pesquisar"
           class="st-table-search"
@@ -61,7 +60,7 @@ if (props.groupDataBy?.length){
           single-line
           hide-details
         >
-        </VTextField>
+        </v-text-field>
         <VDataTable
           :headers="headerData"
           :items="bodyData"

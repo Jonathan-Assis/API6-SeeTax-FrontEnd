@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { MDBBreadcrumb } from 'mdb-vue-ui-kit';
-import { VTextField } from 'vuetify/components';
 import { ref } from 'vue';
 
 const search = ref('')
@@ -14,7 +13,7 @@ const search = ref('')
                 <img src="../../assets/logotype/SeeTax.png" class="st-logotype-seetax" >
             </div>
             <div class="search-container">
-                <VTextField
+                <v-text-field
                     v-model="search"
                     label="Pesquisar"
                     variant="solo"
@@ -24,7 +23,7 @@ const search = ref('')
                     single-line
                     hide-details
                 >
-                </VTextField>
+                </v-text-field>
             </div>
         </div>
         <MDBBreadcrumb>
