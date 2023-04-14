@@ -8,6 +8,7 @@ import HeaderComponent from '../components/header/HeaderComponent.vue';
 import HeaderNav from '../components/header/HeaderNav.vue';
 import TableCommonComponent from '../components/table/TableCommonComponent.vue';
 import TableGroupingComponent from '../components/table/TableGroupingComponent.vue';
+import ChartBarComponent from '@/components/chart/ChartBarComponent.vue';
 
 const header = ref([
   "Posição",
@@ -228,6 +229,7 @@ pageCount: desserts.value.length / itemsPerPage.value,
         <HeaderNav to="/" routerName="Dashboard" />
         <HeaderNav to="/filtrar/pacotes" routerName="Pacotes" :actualRoute="true" />
     </HeaderComponent>
+    <ChartBarComponent />
 
 <!--     <TableGroupingComponent
         title="Pacotes de serviços"
