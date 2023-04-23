@@ -12,19 +12,6 @@ const search = ref('')
             <div class="title-logotipe">
                 <img src="../../assets/logotype/SeeTax.png" class="st-logotype-seetax" >
             </div>
-            <div class="search-container">
-                <v-text-field
-                    v-model="search"
-                    label="Pesquisar"
-                    variant="solo"
-                    density="compact"
-                    append-inner-icon="mdi-magnify"
-                    outlined
-                    single-line
-                    hide-details
-                >
-                </v-text-field>
-            </div>
         </div>
         <MDBBreadcrumb>
             <slot />
