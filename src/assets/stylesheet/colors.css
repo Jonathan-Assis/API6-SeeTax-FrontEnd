@@ -16,12 +16,16 @@
 
   --st-color-yellow-0: #FFCA28;
   --st-color-yellow-1: #FFB300;
+
+  --st-color-blue-0: #3A57E8
 }
 
 :root {
   /***  Background  ***/
   --st-bg-color-gray: var(--st-color-white-3); /* background of the page */
   --st-bg-color-green: var(--st-color-green-0);
+  --st-bg-color-yellow: var(--st-color-yellow-1);
+  --st-bg-color-blue: var(--st-color-blue-0);
   --st-bg-card-primary-color: var(--st-color-white-0); /* primary color of background card */
   --st-bg-card-secondary-color: var(--st-color-white-1); /* secondary color of background card */
   --st-bg-card-tertiary-color: var(--st-color-white-2); /* tertiary color of background card */
