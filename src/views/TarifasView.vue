@@ -9,6 +9,7 @@ import HeaderComponent from '../components/header/HeaderComponent.vue';
 import HeaderNav from '../components/header/HeaderNav.vue';
 import TableCommonComponent from '../components/table/TableCommonComponent.vue';
 import TableGroupingComponent from '../components/table/TableGroupingComponent.vue';
+import ChartBarComponent from '@/components/chart/ChartBarComponent.vue';
 
 const tarifasData = ref()
 const tarifasBody = ref([])
@@ -84,5 +85,8 @@ onMounted(() => {
             <PhTicket :size="34" class="st-icon-red" weight="duotone" />
         </template>
     </TableGroupingComponent>
+
+    <ChartBarComponent />
+
 
 </template>

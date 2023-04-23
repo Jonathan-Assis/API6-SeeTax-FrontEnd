@@ -206,7 +206,7 @@ justify-content: flex-end;
 
 .header-title-actions {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
 }
 
