@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { collapsed, toggleSidebar, sidebarWidth } from './SideBarState'
 import SideBarNav from './SideBarNav.vue'
-import { PhArrowLeft, PhSquaresFour, PhPackage, PhTicket } from '@phosphor-icons/vue'
+import { PhArrowLeft, PhSquaresFour, PhTicket } from '@phosphor-icons/vue'
 
 </script>
 
@@ -38,14 +38,6 @@ import { PhArrowLeft, PhSquaresFour, PhPackage, PhTicket } from '@phosphor-icons
           </template>
           <template #title>
             Tarifas
-          </template>
-        </SideBarNav>
-        <SideBarNav to="/filtrar/pacotes">
-          <template #icon> 
-            <PhPackage :size="32" class="sidebar-icon-color" weight="duotone" />
-          </template>
-          <template #title>
-            Pacotes
           </template>
         </SideBarNav>
       </div>

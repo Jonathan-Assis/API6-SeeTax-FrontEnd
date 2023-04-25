@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router';
 import DashboardViewVue from '../views/DashboardView.vue';
 import TarifasView from '../views/TarifasView.vue';
-import PacotesView from '../views/PacotesView.vue';
 
 const routes: RouteRecordRaw[] = [
     {
@@ -17,12 +16,7 @@ const routes: RouteRecordRaw[] = [
           path: 'tarifas',
           name: 'Filtro de Tarifas',
           component: TarifasView
-        },
-        {
-          path: 'pacotes',
-          name: 'Filtro de Pacotes',
-          component: PacotesView
-        },
+        }
       ]
     }
 ]
