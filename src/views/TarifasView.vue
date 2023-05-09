@@ -70,7 +70,7 @@ onMounted(() => {
 
 <template>
     <HeaderComponent>
-        <HeaderNav to="/" routerName="Dashboard" />
+        <HeaderNav to="/dashboard" routerName="Dashboard" />
         <HeaderNav to="/filtrar/tarifas" routerName="Tarifas" :actualRoute="true" />
     </HeaderComponent>
 
