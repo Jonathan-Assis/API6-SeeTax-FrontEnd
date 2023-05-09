@@ -10,3 +10,6 @@
 .st-sub-text {
   color: var(--st-text-primary-black-color);
 }
+.st-text-green {
+  color: var(--st-color-green-0);
+}

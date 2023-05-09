@@ -14,6 +14,10 @@
   color: var(--st-icon-color-green);
 }
 
+.st-icon-dark-green {
+  color: var( --st-color-green-1);
+}
+
 .st-icon-yellow {
   color: var(--st-icon-color-yellow);
 }
