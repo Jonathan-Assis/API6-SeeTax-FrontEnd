@@ -12,15 +12,16 @@ defineProps({
 <template>
     <header>
         <slot />
-        <h4>{{ title }}</h4>
+        <h5>{{ title }}</h5>
     </header>
 </template>
 
 <style scoped>
 header {
     display: flex;
-    margin-bottom: 8px;;
-    gap: 11px;
+    margin-bottom: 10px;
+    align-items: center;
+    gap: 12px;
 }
 
 h5 {
