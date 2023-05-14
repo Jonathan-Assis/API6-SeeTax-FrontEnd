@@ -13,13 +13,13 @@ import { PhArrowLeft, PhSquaresFour, PhPackage, PhTicket } from '@phosphor-icons
         <div class="d-flex align-items-center justify-content-between">
           <h5 :class="{isHide: collapsed}" class="st-text-secondary">Página Inicial</h5>
           <span class="collapse-icon scape-outside st-bg-green" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
-            <PhArrowLeft :size="25" color="#fff" weight="bold" />
+            <PhArrowLeft :size="23" color="#fff" weight="bold" />
           </span>
         </div>
         <div class="navigation" :class="{isHide: collapsed}">
           <SideBarNav to="/" :notArrow="true">
             <template #icon>
-              <PhSquaresFour :size="30" class="sidebar-icon-color" weight="duotone" />
+              <PhSquaresFour :size="32" class="sidebar-icon-color" weight="duotone" />
             </template>
             <template #title>
               Dashboard
@@ -34,7 +34,7 @@ import { PhArrowLeft, PhSquaresFour, PhPackage, PhTicket } from '@phosphor-icons
       <div class="navigation" :class="{isHide: collapsed}">
         <SideBarNav to="/filtrar/tarifas">
           <template #icon>
-            <PhTicket :size="30" class="sidebar-icon-color" weight="duotone" />
+            <PhTicket :size="32" class="sidebar-icon-color" weight="duotone" />
           </template>
           <template #title>
             Tarifas
@@ -42,7 +42,7 @@ import { PhArrowLeft, PhSquaresFour, PhPackage, PhTicket } from '@phosphor-icons
         </SideBarNav>
         <SideBarNav to="/filtrar/pacotes">
           <template #icon> 
-            <PhPackage :size="30" class="sidebar-icon-color" weight="duotone" />
+            <PhPackage :size="32" class="sidebar-icon-color" weight="duotone" />
           </template>
           <template #title>
             Pacotes
