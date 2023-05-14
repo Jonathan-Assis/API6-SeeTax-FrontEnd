@@ -110,7 +110,7 @@ const desserts = ref( [
 },
 {
   name: 'Lollipop',
-  calories: 392,
+  calories: 362,
   fat: 0.2,
   carbs: 98,
   protein: 0,
@@ -118,7 +118,7 @@ const desserts = ref( [
 },
 {
   name: 'Honeycomb',
-  calories: 408,
+  calories: 404,
   fat: 3.2,
   carbs: 87,
   protein: 6.5,
@@ -149,38 +149,6 @@ const desserts = ref( [
   iron: 1,
 },
 {
-  name: 'Eclair',
-  calories: 262,
-  fat: 16.0,
-  carbs: 23,
-  protein: 6.0,
-  iron: 7,
-},
-{
-  name: 'Cupcake',
-  calories: 305,
-  fat: 3.7,
-  carbs: 67,
-  protein: 4.3,
-  iron: 8,
-},
-{
-  name: 'Gingerbread',
-  calories: 356,
-  fat: 16.0,
-  carbs: 49,
-  protein: 3.9,
-  iron: 16,
-},
-{
-  name: 'Jelly bean',
-  calories: 375,
-  fat: 0.0,
-  carbs: 94,
-  protein: 0.0,
-  iron: 0,
-},
-{
   name: 'Lollipop',
   calories: 392,
   fat: 0.2,
@@ -193,7 +161,7 @@ const desserts = ref( [
   calories: 408,
   fat: 3.2,
   carbs: 87,
-  protein: 6.5,
+  protein: 7.5,
   iron: 45,
 },
 {
@@ -201,7 +169,7 @@ const desserts = ref( [
   calories: 452,
   fat: 25.0,
   carbs: 51,
-  protein: 4.9,
+  protein: 5.9,
   iron: 22,
 },
 {
@@ -209,7 +177,7 @@ const desserts = ref( [
   calories: 518,
   fat: 26.0,
   carbs: 65,
-  protein: 7,
+  protein: 5,
   iron: 6,
 },
 ])

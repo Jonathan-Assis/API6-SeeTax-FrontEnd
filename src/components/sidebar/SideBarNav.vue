@@ -26,9 +26,8 @@ const isActive = computed(() => route.path === props.to)
         <slot name="icon"></slot>
         <div class="d-flex col justify-content-between">
             <transition name="fade">
-                <span class="title" v-if="!collapsed">
-                    <slot name="title"></slot>
-                </span>
+                <slot name = "title"> </slot>
+                    
             </transition>
             <PhCaretRight v-if="!notArrow" :notArrow="notArrow" :size="25" class="sidebar-icon-color" />
         </div>
