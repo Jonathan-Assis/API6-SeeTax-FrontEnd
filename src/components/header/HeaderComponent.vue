@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { MDBBreadcrumb } from 'mdb-vue-ui-kit';
-import { ref } from 'vue';
-
-const search = ref('')
 
 </script>
 
@@ -10,7 +7,9 @@ const search = ref('')
     <header class="header-container">
         <div class="st-header">
             <div class="title-logotipe">
-                <img src="../../assets/logotype/SeeTax.png" class="st-logotype-seetax" >
+                <router-link to="/" routerName="Página Inicial">
+                    <img src="../../assets/logotype/SeeTax.png" class="st-logotype-seetax" >
+                </router-link>
             </div>
         </div>
         <MDBBreadcrumb>

@@ -88,10 +88,10 @@ onMounted(() => {
 
 <template>
     <HeaderComponent>
-      <HeaderNav to="/" routerName="Dashboard" :actualRoute="true" />
+      <HeaderNav to="/dashboard" routerName="Dashboard" :actualRoute="true" />
     </HeaderComponent>
     
-    <div class="container-list">
+    <div class="container-grid">
 
        <TableCommonComponent
             title="Ranking"

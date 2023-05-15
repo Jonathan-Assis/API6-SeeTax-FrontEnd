@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { collapsed, toggleSidebar, sidebarWidth } from './SideBarState'
 import SideBarNav from './SideBarNav.vue'
-import { PhArrowLeft, PhSquaresFour, PhPackage, PhTicket } from '@phosphor-icons/vue'
+import { PhArrowLeft, PhBuildings, PhPerson, PhSquaresFour} from '@phosphor-icons/vue'
 
 </script>
 
@@ -11,13 +11,18 @@ import { PhArrowLeft, PhSquaresFour, PhPackage, PhTicket } from '@phosphor-icons
       
       <div> 
         <div class="d-flex align-items-center justify-content-between">
-          <h5 :class="{isHide: collapsed}" class="st-text-secondary">Página Inicial</h5>
+          <router-link to="/" routerName="Página Inicial">
+            <div class="pagina-inicial" :class="{isHide: collapsed}" @click="collapsed = !collapsed">
+              <h5 :class="{isHide: collapsed}" class="pagina-inicial st-text-secondary">Página Inicial</h5>
+            </div>
+            </router-link>
+
           <span class="collapse-icon scape-outside st-bg-green" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
             <PhArrowLeft :size="23" color="#fff" weight="bold" />
           </span>
         </div>
         <div class="navigation" :class="{isHide: collapsed}">
-          <SideBarNav to="/" :notArrow="true">
+          <SideBarNav to="/dashboard" :notArrow="true">
             <template #icon>
               <PhSquaresFour :size="32" class="sidebar-icon-color" weight="duotone" />
             </template>
@@ -29,23 +34,23 @@ import { PhArrowLeft, PhSquaresFour, PhPackage, PhTicket } from '@phosphor-icons
       </div>
       
       <h5 class="st-text-secondary" :class="{isHide: collapsed}">
-        Visualizar
+        Filtrar Tarifas por:
       </h5>
       <div class="navigation" :class="{isHide: collapsed}">
-        <SideBarNav to="/filtrar/tarifas">
+        <SideBarNav to="/filtrar/tarifas_pessoa_fisica">
           <template #icon>
-            <PhTicket :size="32" class="sidebar-icon-color" weight="duotone" />
+            <PhPerson :size="32" class="sidebar-icon-color" weight="duotone" />
           </template>
           <template #title>
-            Tarifas
+            Pessoa Física
           </template>
         </SideBarNav>
-        <SideBarNav to="/filtrar/pacotes">
-          <template #icon> 
-            <PhPackage :size="32" class="sidebar-icon-color" weight="duotone" />
+        <SideBarNav to="/filtrar/tarifas_pessoa_juridica">
+          <template #icon>
+            <PhBuildings :size="32" class="sidebar-icon-color" weight="duotone" />
           </template>
           <template #title>
-            Pacotes
+            Pessoa Jurídica
           </template>
         </SideBarNav>
       </div>
@@ -56,6 +61,13 @@ import { PhArrowLeft, PhSquaresFour, PhPackage, PhTicket } from '@phosphor-icons
 
 <style scoped>
 
+.pagina-inicial:hover {
+  color: var(--st-color-green-0)
+}
+
+.sidebar-icon-color{
+  color: var(--st-icon-color-gray);
+}
 
 .isHide {
   visibility: hidden;
