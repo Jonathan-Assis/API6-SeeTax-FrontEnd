@@ -1,7 +1,8 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router';
 import DashboardView from '../views/DashboardView.vue';
 import PaginaInicialView from '../views/PaginaInicialView.vue'
-import TarifasView from '../views/TarifasView.vue';
+import TarifasPessoaFisicaView from '../views/TarifasPessoaFisicaView.vue';
+import TarifasPessoaJuridicaView from '../views/TarifasPessoaJuridicaView.vue';
 
 const routes: RouteRecordRaw[] = [
       {
@@ -21,12 +22,12 @@ const routes: RouteRecordRaw[] = [
         {
           path: 'tarifas_pessoa_fisica',
           name: 'Filtro de Tarifas Pessoas Físicas',
-          component: TarifasView
+          component: TarifasPessoaFisicaView
         },
         {
           path: 'tarifas_pessoa_juridica',
           name: 'Filtro de Tarifas para Pessoas Jurídicas',
-          component: TarifasView
+          component: TarifasPessoaJuridicaView
         },
       ]
     }
