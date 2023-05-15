@@ -66,7 +66,7 @@ async function getMinMedMax(person: string, group: string, onMounted?: boolean) 
                 datasets: [
                     {
                         label: 'Mínimo',
-                        indexAxis: 'y',
+                        /* indexAxis: 'x', */
                         backgroundColor: '#00ed64',
                         borderColor: '#00ed64',
                         data: valorMinimo,
@@ -74,7 +74,7 @@ async function getMinMedMax(person: string, group: string, onMounted?: boolean) 
                     },
                     {
                         label: 'Média',
-                        indexAxis: 'y',
+                        /* indexAxis: 'x', */
                         backgroundColor: '#FFB300',
                         borderColor: '#FFB300',
                         data: valorMedia,
@@ -82,7 +82,7 @@ async function getMinMedMax(person: string, group: string, onMounted?: boolean) 
                     },
                     {
                         label: 'Máximo',
-                        indexAxis: 'y',
+                        /* indexAxis: 'x', */
                         backgroundColor: '#3A57E8',
                         borderColor: '#3A57E8',
                         data: valorMaximo,
@@ -93,16 +93,38 @@ async function getMinMedMax(person: string, group: string, onMounted?: boolean) 
 
             chartOptions.value = {
                 options: {
-                    scaleShowValues: true,
-                   maintainAspectRatio: false,
-                    scales: {
-                        alignToPixels: true,
-                        ticks: {
-                            autoSkip: false
-                        }
-                    }
+                   /*  scaleShowValues: true,
+                   maintainAspectRatio: false, */
+                  // responsive:true,
+                   scales: {
+                    axies:{
+                      y:{
+                        type: 'logarithmic',
+                      }
+                    },
+                    yAxes: [{
 
-                },
+                      type: 'logarithmic',
+                    }],
+                    myScale: {
+        type: 'logarithmic',
+      },
+                        x: {
+                          display: true,
+                        },
+                        y: {
+                          display: true,
+                          type: 'logarithmic',
+                        },
+                      
+                        /* alignToPixels: true,
+                        ticks: {
+                          autoSkip: false
+                        } */
+                      
+                     
+                    }
+                    },
                 plugins: {
                     legend: {
                         labels: {
@@ -110,7 +132,7 @@ async function getMinMedMax(person: string, group: string, onMounted?: boolean) 
                         }
                     },
                 },
-                tooltip: {
+                /* tooltip: {
                     callbacks: {
                         footer: (context) => {
                             if (context[0].dataset.label == 'Mínimo') {
@@ -130,7 +152,7 @@ async function getMinMedMax(person: string, group: string, onMounted?: boolean) 
                         }
                     }
 
-                } 
+                }  */
             }
 
         })
