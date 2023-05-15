@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { collapsed, toggleSidebar, sidebarWidth } from './SideBarState'
 import SideBarNav from './SideBarNav.vue'
-import { PhArrowLeft, PhSquaresFour, PhTicket } from '@phosphor-icons/vue'
+import { PhArrowLeft, PhBuildings, PhPerson, PhSquaresFour} from '@phosphor-icons/vue'
 
 </script>
 
@@ -34,15 +34,23 @@ import { PhArrowLeft, PhSquaresFour, PhTicket } from '@phosphor-icons/vue'
       </div>
       
       <h5 class="st-text-secondary" :class="{isHide: collapsed}">
-        Visualizar
+        Filtrar Tarifas por:
       </h5>
       <div class="navigation" :class="{isHide: collapsed}">
-        <SideBarNav to="/filtrar/tarifas">
+        <SideBarNav to="/filtrar/tarifas_pessoa_fisica">
           <template #icon>
-            <PhTicket :size="32" class="sidebar-icon-color" weight="duotone" />
+            <PhPerson :size="32" class="sidebar-icon-color" weight="duotone" />
           </template>
           <template #title>
-            Tarifas
+            Pessoa Física
+          </template>
+        </SideBarNav>
+        <SideBarNav to="/filtrar/tarifas_pessoa_juridica">
+          <template #icon>
+            <PhBuildings :size="32" class="sidebar-icon-color" weight="duotone" />
+          </template>
+          <template #title>
+            Pessoa Jurídica
           </template>
         </SideBarNav>
       </div>
