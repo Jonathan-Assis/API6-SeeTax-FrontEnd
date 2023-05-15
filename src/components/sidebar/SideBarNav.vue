@@ -24,7 +24,7 @@ const isActive = computed(() => route.path === props.to)
 <template>
     <router-link :to="to" class="link" @click="collapsed = !collapsed" :class="{ active: isActive }" >
         <slot name="icon"></slot>
-        <div class="d-flex col justify-content-between">
+        <div class="d-flex col justify-content-between align-center lh-1">
             <transition name="fade">
                 <span class="title" v-if="!collapsed">
                     <slot name="title"></slot>
