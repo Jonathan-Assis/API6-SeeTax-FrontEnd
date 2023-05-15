@@ -6,42 +6,32 @@ export const useTarifasStore = defineStore('tarifasStore', {
         grupos: [],
         instituicoes: [],
         servicos: [],
+        servicosMinMedMax: [],
+        servicosMax: [],
         tarifas: [],
-        tasks: [],
         isLoading: false
     }),
     getters: {
-        /* favs() {
-            return this.tasks.filter(t => t.isFav)
-        },
-        favCount() {
-            return this.tasks.reduce((p, c) => {
-                return c.isFav ? p + 1 : p
-            }, 0)
-        },
-        totalCount: (state) => {
-            return state.tasks.length
-        } */
     },
     actions: {
         async getGrupoConsolidado() {
             try {
                 this.isLoading = true
                 const { data } = await ServerConnection.getGrupos()
+
                 this.grupos = data.value
-                console.log('data',this.grupos)
             } catch (error) {
                 console.log(error)
             } finally {
                 this.isLoading = false
             }
         },
-        async getInstituicoes() {
+        async getCNPJ() {
             try {
                 this.isLoading = true
-                const { data } = await ServerConnection.getInstituicoes()
-                
-                this.instituicoes = data
+                const { data } = await ServerConnection.getCNPJ()
+
+                this.instituicoes = data.value
             } catch (error) {
                 console.log(error)
             } finally {
@@ -52,62 +42,41 @@ export const useTarifasStore = defineStore('tarifasStore', {
             try {
                 this.isLoading = true
                 const { data } = await ServerConnection.getServicos()
-
-                this.servicos = data
+                
+                this.servicos = data.value
+                console.log('data',this.servicos)
             } catch (error) {
                 console.log(error)
             } finally {
                 this.isLoading = false
             }
         },
-        /* async getTasks() {
-            
-            this.isLoading = true
-            const resp = await fetch('http://localhost:3000/tasks')
-            const data = await resp.json()
-
-            this.tasks = data
-            this.isLoading = false
-        },
-        async addTask(task) {
-            this.tasks.push(task);
-
+        async getMinMedMaxServicos() {
             try {
-                await fetch('http://localhost:3000/tasks', {
-                    method: 'POST',
-                    body: JSON.stringify(task),
-                    headers: { 'Content-Type': 'application/json' }
-                })
+                this.isLoading = true
+                const { data } = await ServerConnection.getMinMedMaxServicos()
+                
+                this.servicosMinMedMax = data.value
+                console.log('data',this.servicosMinMedMax)
             } catch (error) {
                 console.log(error)
+            } finally {
+                this.isLoading = false
             }
         },
-        async deleteTask(id) {
-            this.tasks = this.tasks.filter(t => {
-                return t.id !== id
-            })
-            
+        async getMaxServicos() {
             try {
-                await fetch('http://localhost:3000/tasks/' + id, {
-                    method: 'DELETE'
-                })
+                this.isLoading = true
+                const { data } = await ServerConnection.getMaxServicos()
+                
+                this.servicosMax = data.value
+                console.log('data',this.servicosMax)
             } catch (error) {
                 console.log(error)
+            } finally {
+                this.isLoading = false
             }
         },
-        async toggleFav(id) {
-            const task = this.tasks.find(t => t.id === id)
-            task.isFav = !task.isFav
-            
-            try {
-                await fetch('http://localhost:3000/tasks/' + id, {
-                    method: 'PATCH',
-                    body: JSON.stringify({ isFav: task.isFav}),
-                    headers: { 'Content-Type': 'application/json' }
-                })
-            } catch (error) {
-                console.log(error)
-            }
-        } */
+       
     }
 })
