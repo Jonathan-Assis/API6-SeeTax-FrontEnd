@@ -10,6 +10,8 @@ import HeaderNav from '../components/header/HeaderNav.vue';
 import TableCommonComponent from '../components/table/TableCommonComponent.vue';
 import TableGroupingComponent from '../components/table/TableGroupingComponent.vue';
 import ChartBarComponent from '@/components/chart/ChartBarComponent.vue';
+import { useTarifasStore } from '@/stores';
+import { storeToRefs } from 'pinia';
 
 const tarifasData = ref()
 const tarifasBody = ref([])
@@ -66,12 +68,18 @@ onMounted(() => {
     getData();
 })
 
+const tarifasStore = useTarifasStore()
+const { grupos, instituicoes, servicos, tarifas, isLoading } = storeToRefs(tarifasStore)
+tarifasStore.getGrupoConsolidado()
+
+//console.log(grupos)
+
 </script>
 
 <template>
     <HeaderComponent>
         <HeaderNav to="/dashboard" routerName="Dashboard" />
-        <HeaderNav to="/filtrar/tarifas" routerName="Tarifas" :actualRoute="true" />
+        <HeaderNav to="/filtrar/tarifas_pessoa_fisica" routerName="Pessoa Física" :actualRoute="true" />
     </HeaderComponent>
 
     <TableGroupingComponent
