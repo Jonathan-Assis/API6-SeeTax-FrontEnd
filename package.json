@@ -24,6 +24,7 @@
     "chart.js": "^4.2.1",
     "datatables.net-scroller-bs5": "^2.1.1",
     "datatables.net-vue3": "^2.1.0",
+    "dayjs": "^1.11.7",
     "mdb-vue-ui-kit": "^3.2.0",
     "pinia": "^2.0.32",
     "vue": "^3.2.47",
