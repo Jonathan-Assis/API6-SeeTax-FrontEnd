@@ -1,25 +1,15 @@
 import axios, {type AxiosResponse} from 'axios';
 import type { IGruposConsolidado, IInstituicoes, IServicos } from '@/interfaces/services';
+import type { Pessoa } from '@/interfaces/constants';
 const url = 'https://api6-seetax-backend.onrender.com';
 let method = axios.create({
     baseURL: url,
     timeout: 30000
 });
 
-const url_ListaValoresDeServicoBancario = 'https://olinda.bcb.gov.br/olinda/servico/Informes_ListaValoresDeServicoBancario/versao/v1/odata'
-let methodValoresDeServicoBancario = axios.create({
-    baseURL: url_ListaValoresDeServicoBancario,
-    timeout: 30000
-})
-const url_ListaTarifaPorValores = 'https://olinda.bcb.gov.br/olinda/servico/Informes_ListaTarifaPorValores/versao/v1/odata'
-let methodListaTarifaPorValores = axios.create({
-    baseURL: url_ListaTarifaPorValores,
-    timeout: 30000
-})
-
-const url_ListaTarifasPorInstituicaoFinanceira = 'https://olinda.bcb.gov.br/olinda/servico/Informes_ListaTarifasPorInstituicaoFinanceira/versao/v1/odata'
-let methodListaTarifasPorInstituicaoFinanceira = axios.create({
-    baseURL: url_ListaTarifasPorInstituicaoFinanceira,
+const url_Olinda = 'https://olinda.bcb.gov.br/olinda/servico'
+let methodOlinda = axios.create({
+    baseURL: url_Olinda,
     timeout: 30000
 })
 
@@ -44,7 +34,7 @@ export default class ServerConnection {
      * {Codigo: '02', Nome: 'Bancos públicos + Caixa Econômica Federal'}
      */
     static async getGrupos() {
-        return await methodValoresDeServicoBancario.get('/GruposConsolidados?$top=100&$format=json');
+        return await methodOlinda.get('/Informes_ListaTarifasPorInstituicaoFinanceira/versao/v1/odata/GruposConsolidados?$top=100&$format=json');
     }
     
     /**
@@ -61,7 +51,7 @@ export default class ServerConnection {
      */
 
     static async getServicos() {
-        return await methodListaTarifaPorValores.get('/ServicosBancarios?$top=200&$format=json');
+        return await methodOlinda.get('/Informes_ListaTarifaPorValores/versao/v1/odata/ServicosBancarios?$top=200&$format=json');
     }
 
     /**
@@ -86,8 +76,8 @@ export default class ServerConnection {
             "ValorMedio": 11.24
         }
      */
-    static async getMinMedMaxServicos(tipo: string = 'F', grupoConsolidado: string = '02') {
-        return await methodValoresDeServicoBancario.get(`/ListaValoresServicoBancario(PessoaFisicaOuJuridica=@PessoaFisicaOuJuridica,CodigoGrupoConsolidado=@CodigoGrupoConsolidado)?@PessoaFisicaOuJuridica='${tipo}'&@CodigoGrupoConsolidado='${grupoConsolidado}'&$top=100&$format=json`)
+    static async getMinMedMaxServicos(tipo: Pessoa, grupoConsolidado: string) {
+        return await methodOlinda.get(`/Informes_ListaValoresDeServicoBancario/versao/v1/odata/ListaValoresServicoBancario(PessoaFisicaOuJuridica=@PessoaFisicaOuJuridica,CodigoGrupoConsolidado=@CodigoGrupoConsolidado)?@PessoaFisicaOuJuridica='${tipo}'&@CodigoGrupoConsolidado='${grupoConsolidado}'&$top=100&$format=json`)
     }
 
     /**
@@ -102,12 +92,12 @@ export default class ServerConnection {
             "Nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS MÉDICOS E DEMAIS PROFISSIONAIS DA ÁREA DE SAÚDE DE NÍVEL SUPERIOR DE JUIZ DE FORA LTDA. - UNICRED CAMINHO NOVO"
         },
      */
-    static async getCNPJ(){
-        return await methodListaTarifasPorInstituicaoFinanceira.get(`/ListaInstituicoesDeGrupoConsolidado(CodigoGrupoConsolidado=@CodigoGrupoConsolidado)?@CodigoGrupoConsolidado='11'&$top=2000&$format=json`)
+    static async getCNPJ(grupo: string){
+        return await methodOlinda.get(`/Informes_ListaTarifasPorInstituicaoFinanceira/versao/v1/odata/ListaInstituicoesDeGrupoConsolidado(CodigoGrupoConsolidado=@CodigoGrupoConsolidado)?@CodigoGrupoConsolidado='${grupo}'&$top=2000&$format=json`)
     }
 
     /**
-     * Retorna os valores minimo, médio e máximo dos serviços
+     * Retorna os valores max por instituição
      * @params Pessoa Física ou Jurídica 'F' ou 'J' (Vem das constantes),
      * CNPJ(Vem do **getCNPJ()**) exemplo '92702067'
      * 
@@ -130,7 +120,29 @@ export default class ServerConnection {
             "Periodicidade": "Por evento"
         },
      */
-    static async getMaxServicos(tipo: string = 'F', cnpj: string = '92702067') {
-        return await methodListaTarifasPorInstituicaoFinanceira.get(`/ListaTarifasPorInstituicaoFinanceira(PessoaFisicaOuJuridica=@PessoaFisicaOuJuridica,CNPJ=@CNPJ)?@PessoaFisicaOuJuridica='${tipo}'&@CNPJ='${cnpj}'&$top=100&$format=json`)
+    static async getMaxServicosPorInstituicao(tipo: Pessoa, cnpj: string) {
+        return await methodOlinda.get(`/Informes_ListaTarifasPorInstituicaoFinanceira/versao/v1/odata/ListaTarifasPorInstituicaoFinanceira(PessoaFisicaOuJuridica=@PessoaFisicaOuJuridica,CNPJ=@CNPJ)?@PessoaFisicaOuJuridica='${tipo}'&@CNPJ='${cnpj}'&$top=100&$format=json`)
     }
+
+    /**
+     * Retorna os valores máximos de serviço por grupo e serviço
+     * @params Grupo consolidado (vem do **getGrupos()**) exemplo '02,
+     * e os serviços (Vem do **getServicos()**) exemplo '1101'
+     * 
+     * @example   {
+            "Cnpj": 0,
+            "RazaoSocial": "BANCO DO BRASIL S.A.",
+            "ValorMaximo": 30,
+            "Periodicidade": "Por evento"
+        },
+        {
+            "Cnpj": 208,
+            "RazaoSocial": "BRB - BANCO DE BRASILIA S.A.",
+            "ValorMaximo": 29,
+            "Periodicidade": "Por evento"
+        },
+     */
+        static async getMaxServicosPorGrupoServico(grupo: string, servico: string) {
+            return await methodOlinda.get(`/Informes_ListaTarifaPorValores/versao/v1/odata/ListaTarifasPorValores(CodigoGrupoConsolidado=@CodigoGrupoConsolidado,CodigoServico=@CodigoServico)?@CodigoGrupoConsolidado='${grupo}'&@CodigoServico='${servico}'&$top=100&$format=json`)
+        }
 }

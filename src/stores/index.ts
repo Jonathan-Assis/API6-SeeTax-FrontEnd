@@ -1,5 +1,7 @@
+import type { Pessoa } from "@/interfaces/constants";
 import ServerConnection from "@/services";
 import { defineStore } from "pinia";
+import dayjs from 'dayjs';
 
 export const useTarifasStore = defineStore('tarifasStore', {
     state: () => ({
@@ -7,7 +9,8 @@ export const useTarifasStore = defineStore('tarifasStore', {
         instituicoes: [],
         servicos: [],
         servicosMinMedMax: [],
-        servicosMax: [],
+        servicosMaxInstituicao: [],
+        servicosMaxGrupoServico: [],
         tarifas: [],
         isLoading: false
     }),
@@ -26,10 +29,10 @@ export const useTarifasStore = defineStore('tarifasStore', {
                 this.isLoading = false
             }
         },
-        async getCNPJ() {
+        async getCNPJ(grupo: string) {
             try {
                 this.isLoading = true
-                const { data } = await ServerConnection.getCNPJ()
+                const { data } = await ServerConnection.getCNPJ(grupo)
 
                 this.instituicoes = data.value
             } catch (error) {
@@ -44,33 +47,46 @@ export const useTarifasStore = defineStore('tarifasStore', {
                 const { data } = await ServerConnection.getServicos()
                 
                 this.servicos = data.value
-                console.log('data',this.servicos)
             } catch (error) {
                 console.log(error)
             } finally {
                 this.isLoading = false
             }
         },
-        async getMinMedMaxServicos() {
+        async getMinMedMaxServicos(tipo: Pessoa, grupoConsolidado: string) {
             try {
                 this.isLoading = true
-                const { data } = await ServerConnection.getMinMedMaxServicos()
+                const { data } = await ServerConnection.getMinMedMaxServicos(tipo, grupoConsolidado)
                 
                 this.servicosMinMedMax = data.value
-                console.log('data',this.servicosMinMedMax)
             } catch (error) {
                 console.log(error)
             } finally {
                 this.isLoading = false
             }
         },
-        async getMaxServicos() {
+        async getMaxServicosPorInstituicao(tipo: Pessoa , cnpj: string) {
             try {
                 this.isLoading = true
-                const { data } = await ServerConnection.getMaxServicos()
+                const { data } = await ServerConnection.getMaxServicosPorInstituicao(tipo, cnpj)
                 
-                this.servicosMax = data.value
-                console.log('data',this.servicosMax)
+                data.value.map((value:any) => {
+                    value.DataVigencia = dayjs(value.DataVigencia).format('DD/MM/YYYY')
+                })
+
+                this.servicosMaxInstituicao = data.value
+            } catch (error) {
+                console.log(error)
+            } finally {
+                this.isLoading = false
+            }
+        },
+        async getMaxServicosPorGrupoServico(grupo: string, servico: string) {
+            try {
+                this.isLoading = true
+                const { data } = await ServerConnection.getMaxServicosPorGrupoServico(grupo, servico)
+                
+                this.servicosMaxGrupoServico = data.value
             } catch (error) {
                 console.log(error)
             } finally {
