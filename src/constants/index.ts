@@ -1,9 +1,9 @@
-import ServerConnection from '../services';
+import type { typeOfPerson } from '@/interfaces/constants';
 
-export const tipoPessoa = [
+export const tipoPessoa: typeOfPerson[] = [
     {
         key: 'F',
-        type: 'Pessoa Física'
+        type: 'Pessoa Física',
     },
     {
         key: 'J',

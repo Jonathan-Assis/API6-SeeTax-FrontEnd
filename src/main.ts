@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css"
 import '@mdi/font/css/materialdesignicons.css'
+import '@/utils/dayjs';
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
