@@ -7,8 +7,7 @@ import CardDetailsComponent from '@/components/card/CardDetailsComponent.vue';
 
 <template>
     <HeaderComponent />
-
-    <div class="container-view">
+    <div class="container-view-center">
         <div class="info-seetax">
             <article>
                 <h1 class="seetax-title">
@@ -34,39 +33,30 @@ import CardDetailsComponent from '@/components/card/CardDetailsComponent.vue';
         </div>
 
         <div class="info-cards">
-            <CardDetailsComponent>
+            <CardDetailsComponent 
+                title="Indicadores"
+                description="Exibição de indicadores de menores, a média e o máximo antigido pelas consultas de tarifas e serviços."
+            >
                 <template #icon>
                     <PhTrendUp :size="32" class="st-icon-dark-green" weight="duotone" />
                 </template>
-                <template #title>
-                    Indicadores
-                </template>
-                <template #description>
-                    Exibição de indicadores de menores, a média e o máximo antigido pelas consultas de tarifas e serviços.
-                </template>
             </CardDetailsComponent>
 
-            <CardDetailsComponent>
+            <CardDetailsComponent
+                title="Gráficos"
+                description=" Visualizações de tarifas por grupos consolidados, por serviço oferecido e por intituição bancária."
+            >
                 <template #icon>
                     <PhChartBar :size="32" class="st-icon-dark-green" weight="duotone" />
                 </template>
-                <template #title>
-                    Gráficos
-                </template>
-                <template #description>
-                    Visualizações de tarifas por grupos consolidados, por serviço oferecido e por intituição bancária.
-                </template>
             </CardDetailsComponent>
 
-            <CardDetailsComponent>
+            <CardDetailsComponent
+                title="Tabelas"
+                description="Visualizações de tarifas por grupos consolidados, por serviço oferecido e por intituição bancária."
+            >
                 <template #icon>
                     <PhTable :size="32" class="st-icon-dark-green" weight="duotone" />
-                </template>
-                <template #title>
-                    Tabelas
-                </template>
-                <template #description>
-                    Visualizações de tarifas por grupos consolidados, por serviço oferecido e por intituição bancária.
                 </template>
             </CardDetailsComponent>
         </div>
@@ -84,7 +74,7 @@ import CardDetailsComponent from '@/components/card/CardDetailsComponent.vue';
 </template>
 
 <style scoped>
-.container-view {
+.container-view-center {
     display: flex;
     flex-direction: column;
     justify-content: center;
