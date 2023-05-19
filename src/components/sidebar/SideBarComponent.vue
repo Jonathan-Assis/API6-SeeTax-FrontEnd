@@ -22,7 +22,7 @@ import { PhArrowLeft, PhBuildings, PhPerson, PhSquaresFour} from '@phosphor-icon
           </span>
         </div>
         <div class="navigation" :class="{isHide: collapsed}">
-          <SideBarNav to="/dashboard" :notArrow="true">
+          <SideBarNav to="/dashboard">
             <template #icon>
               <PhSquaresFour :size="32" class="sidebar-icon-color" weight="duotone" />
             </template>
