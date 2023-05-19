@@ -1,3 +1,15 @@
+<script setup lang="ts">
+defineProps({
+    title: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    }
+})
+</script>
 <template>
     <section class="st-bg-white-primary card-container-details st-rounded st-shadow">
         <div class="card-details">
@@ -5,8 +17,8 @@
                 <slot name="icon"></slot>
             </div>
             <article class="card-description st-text-secondary">
-                <h4><slot name="title"></slot></h4>
-                <p><slot name="description"></slot></p>
+                <h4>{{ title }}</h4>
+                <p>{{ description }}</p>
             </article>
         </div>
     </section>
