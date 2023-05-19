@@ -79,7 +79,7 @@ tarifasStore.getGrupoConsolidado()
 <template>
     <HeaderComponent>
         <HeaderNav to="/dashboard" routerName="Dashboard" />
-        <HeaderNav to="/filtrar/tarifas_pessoa_fisica" routerName="Pessoa Física" :actualRoute="true" />
+        <HeaderNav to="/filtrar/tarifas_pessoa_juridica" routerName="Pessoa Jurídica" :actualRoute="true" />
     </HeaderComponent>
 
     <TableGroupingComponent
