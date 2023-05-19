@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VDataTable } from 'vuetify/labs/VDataTable';
+import { VDataTable } from 'vuetify/labs/VDataTable'
 
 import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
 import DescriptionComponent from '../description/DescriptionComponent.vue'
@@ -21,25 +21,20 @@ defineProps({
   bodyData: {
     type: Array,
     required: true
-  },
+  }
 })
 
 const search = ref('')
-
 </script>
 
 <template>
- <div class="st-space-vertical">
-    <TitleOutsideComponent
-      :title="title"
-    >
+  <div class="st-space-vertical">
+    <TitleOutsideComponent :title="title">
       <slot name="icon" />
     </TitleOutsideComponent>
 
     <div class="st-shadow">
-      <DescriptionComponent 
-        :description="description"
-      />
+      <DescriptionComponent :description="description" />
 
       <div class="table-responsive st-table-container st-bg-white-primary">
         <v-text-field
@@ -54,14 +49,8 @@ const search = ref('')
           hide-details
         >
         </v-text-field>
-        <VDataTable
-          :headers="headerData"
-          :items="bodyData"
-          :search="search"
-        >
-        </VDataTable>
+        <VDataTable :headers="headerData" :items="bodyData" :search="search"> </VDataTable>
       </div>
     </div>
-
   </div>
 </template>

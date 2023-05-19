@@ -1,6 +1,6 @@
-import "bootstrap/dist/css/bootstrap.min.css"
+import 'bootstrap/dist/css/bootstrap.min.css'
 import '@mdi/font/css/materialdesignicons.css'
-import '@/utils/dayjs';
+import '@/utils/dayjs'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -19,7 +19,7 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-  
+
 const vuetify = createVuetify({
   components,
   directives,
@@ -32,6 +32,5 @@ const vuetify = createVuetify({
 app.use(vuetify)
 app.mount('#app')
 
-import "bootstrap/dist/js/bootstrap.js"
-import "./assets/stylesheet/global.css"
-
+import 'bootstrap/dist/js/bootstrap.js'
+import './assets/stylesheet/global.css'

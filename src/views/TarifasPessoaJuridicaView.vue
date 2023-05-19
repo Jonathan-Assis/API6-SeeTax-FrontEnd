@@ -1,71 +1,71 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue'
 import { VDataTable } from 'vuetify/labs/VDataTable'
-import { PhTicket } from '@phosphor-icons/vue';
-import ServerConnection from '../services';
-import capitalizeWord from '../utils/capitalizeWords';
+import { PhTicket } from '@phosphor-icons/vue'
+import ServerConnection from '../services'
+import capitalizeWord from '../utils/capitalizeWords'
 
-import HeaderComponent from '../components/header/HeaderComponent.vue';
-import HeaderNav from '../components/header/HeaderNav.vue';
-import TableCommonComponent from '../components/table/TableCommonComponent.vue';
-import TableGroupingComponent from '../components/table/TableGroupingComponent.vue';
-import ChartBarComponent from '@/components/chart/ChartBarComponent.vue';
-import { useTarifasStore } from '@/stores';
-import { storeToRefs } from 'pinia';
+import HeaderComponent from '../components/header/HeaderComponent.vue'
+import HeaderNav from '../components/header/HeaderNav.vue'
+import TableCommonComponent from '../components/table/TableCommonComponent.vue'
+import TableGroupingComponent from '../components/table/TableGroupingComponent.vue'
+import ChartBarComponent from '@/components/chart/ChartBarComponent.vue'
+import { useTarifasStore } from '@/stores'
+import { storeToRefs } from 'pinia'
 
 const tarifasData = ref()
 const tarifasBody = ref([])
 
 async function getData() {
-    try {
-        await ServerConnection.getTax()
-            .then((resp) => resp.data)
-            .then(data => {
-                tarifasData.value = data
-                dataFilter();
-            })
-    } catch(error) {
-        console.log(error);
-    }
+  try {
+    await ServerConnection.getTax()
+      .then((resp) => resp.data)
+      .then((data) => {
+        tarifasData.value = data
+        dataFilter()
+      })
+  } catch (error) {
+    console.log(error)
+  }
 }
 const dataFilter = async () => {
-    tarifasData.value.forEach((value:any, index:number) => {
-        value.accountType = capitalizeWord(value.accountType)
+  tarifasData.value.forEach((value: any, index: number) => {
+    value.accountType = capitalizeWord(value.accountType)
 
-        value.priorityServices.forEach((item: any,index:any)=>{
-            item.name = capitalizeWord(item.name)
-            value.priorityServices[index] = {
-                companie: value.companie,
-                accountType: value.accountType,
-                ...item
-            }
-        })
-
-        value.otherServices.forEach((item: any, index:any) =>{
-            item.name = capitalizeWord(item.name)
-            value.otherServices[index] = {
-                companie: value.companie,
-                accountType: value.accountType,
-                ...item
-            }
-        })
-        let datas = [...value.priorityServices, ...value.otherServices]
-        datas.forEach((e) => {
-            return tarifasBody.value.push(e)
-        })
+    value.priorityServices.forEach((item: any, index: any) => {
+      item.name = capitalizeWord(item.name)
+      value.priorityServices[index] = {
+        companie: value.companie,
+        accountType: value.accountType,
+        ...item
+      }
     })
-} 
+
+    value.otherServices.forEach((item: any, index: any) => {
+      item.name = capitalizeWord(item.name)
+      value.otherServices[index] = {
+        companie: value.companie,
+        accountType: value.accountType,
+        ...item
+      }
+    })
+    let datas = [...value.priorityServices, ...value.otherServices]
+    datas.forEach((e) => {
+      return tarifasBody.value.push(e)
+    })
+  })
+}
 
 const tarifasHeader = ref([
-    { title: 'Banco', key: 'companie', align: ' d-none'},
-    { title: 'Tipo', key: 'accountType', align: ' d-none' },
-    { title: 'Serviço', key: 'name' },
-    { title: 'Máximo (R$)', key: 'max', align:'center' },
-    { title: 'Mínimo (R$)', key: 'min', align:'center' },
+  { title: 'Banco', key: 'companie', align: ' d-none' },
+  { title: 'Tipo', key: 'accountType', align: ' d-none' },
+  { title: 'Serviço', key: 'name' },
+  { title: 'Máximo (R$)', key: 'max', align: 'center' },
+  { title: 'Mínimo (R$)', key: 'min', align: 'center' }
 ])
 
 onMounted(() => {
-    getData();
+  getData()
 })
 
 const tarifasStore = useTarifasStore()
@@ -73,28 +73,29 @@ const { grupos, instituicoes, servicos, tarifas, isLoading } = storeToRefs(tarif
 tarifasStore.getGrupoConsolidado()
 
 //console.log(grupos)
-
 </script>
 
 <template>
-    <HeaderComponent>
-        <HeaderNav to="/dashboard" routerName="Dashboard" />
-        <HeaderNav to="/filtrar/tarifas_pessoa_juridica" routerName="Pessoa Jurídica" :actualRoute="true" />
-    </HeaderComponent>
+  <HeaderComponent>
+    <HeaderNav to="/dashboard" routerName="Dashboard" />
+    <HeaderNav
+      to="/filtrar/tarifas_pessoa_juridica"
+      routerName="Pessoa Jurídica"
+      :actualRoute="true"
+    />
+  </HeaderComponent>
 
-    <TableGroupingComponent
-        title="Tarifas dos serviços"
-        description="Serviços oferecidos pelos bancos, valor mínimo e máximo cobrado de tarifa de utilização"
-        :headerData="tarifasHeader"
-        :bodyData="tarifasBody"
-        :groupDataBy="['companie','accountType']"
-    >
-        <template v-slot:icon>
-            <PhTicket :size="34" class="st-icon-red" weight="duotone" />
-        </template>
-    </TableGroupingComponent>
+  <TableGroupingComponent
+    title="Tarifas dos serviços"
+    description="Serviços oferecidos pelos bancos, valor mínimo e máximo cobrado de tarifa de utilização"
+    :headerData="tarifasHeader"
+    :bodyData="tarifasBody"
+    :groupDataBy="['companie', 'accountType']"
+  >
+    <template v-slot:icon>
+      <PhTicket :size="34" class="st-icon-red" weight="duotone" />
+    </template>
+  </TableGroupingComponent>
 
-    <ChartBarComponent />
-
-
+  <ChartBarComponent />
 </template>

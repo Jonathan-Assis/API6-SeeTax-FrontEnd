@@ -1,9 +1,9 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from 'vue'
 import { PhHeart } from '@phosphor-icons/vue'
 
-import SideBarComponent from './components/sidebar/SideBarComponent.vue';
-import { sidebarWidth } from './components/sidebar/SideBarState';
+import SideBarComponent from './components/sidebar/SideBarComponent.vue'
+import { sidebarWidth } from './components/sidebar/SideBarState'
 
 export default defineComponent({
   name: 'App',
@@ -11,8 +11,7 @@ export default defineComponent({
     SideBarComponent,
     PhHeart
   },
-  setup () {
-
+  setup() {
     return {
       sidebarWidth
     }
