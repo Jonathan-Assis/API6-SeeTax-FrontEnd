@@ -21,12 +21,12 @@ const routes: RouteRecordRaw[] = [
       children: [
         {
           path: 'tarifas_pessoa_fisica',
-          name: 'Filtro de Tarifas Pessoas Físicas',
+          name: 'Pessoa Física',
           component: TarifasPessoaFisicaView
         },
         {
           path: 'tarifas_pessoa_juridica',
-          name: 'Filtro de Tarifas para Pessoas Jurídicas',
+          name: 'Pessoa Jurídica',
           component: TarifasPessoaJuridicaView
         },
       ]

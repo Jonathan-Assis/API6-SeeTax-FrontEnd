@@ -43,7 +43,6 @@ async function searchData() {
 }
 
 const valorMaximo = servicosMinMedMax.value.map(a => a.ValorMaximo)
-console.log(Math.max(...valorMaximo))
 </script>
 <template>
     <div class="header-title-actions">
