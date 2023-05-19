@@ -9,10 +9,6 @@ const props = defineProps({
     to: {
         type: String,
         required: true
-    },
-    notArrow: {
-        type: Boolean,
-        required: false
     }
 })
 
@@ -30,7 +26,7 @@ const isActive = computed(() => route.path === props.to)
                     <slot name="title"></slot>
                 </span>
             </transition>
-            <PhCaretRight v-if="!notArrow" :notArrow="notArrow" :size="25" class="sidebar-icon-color" />
+            <PhCaretRight :size="25" class="sidebar-icon-color" />
         </div>
     </router-link>
 </template>
