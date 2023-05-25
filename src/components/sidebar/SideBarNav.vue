@@ -30,13 +30,10 @@ const isActive = computed(() => route.path === props.to)
   </router-link>
 </template>
 
-<style>
+<style scoped>
 .link:not(.active) .sidebar-icon-color {
   color: var(--st-icon-color-gray);
 }
-</style>
-
-<style scoped>
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.1s;
@@ -71,10 +68,6 @@ const isActive = computed(() => route.path === props.to)
   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
 }
 
-.link.active .title,
-.sidebar-icon-color {
-  color: var(--st-color-white-0);
-}
 
 .link:not(.active):hover {
   background-color: var(--st-hover-bg-gray);

@@ -59,14 +59,17 @@ import { PhArrowLeft, PhBuildings, PhPerson, PhSquaresFour } from '@phosphor-ico
 </template>
 
 <style scoped>
-.pagina-inicial:hover {
-  color: var(--st-color-green-0);
-}
-
-.sidebar-icon-color {
+.link:not(.active) .sidebar-icon-color {
   color: var(--st-icon-color-gray);
 }
 
+.link.active .title,
+.sidebar-icon-color {
+  color: var(--st-color-white-0);
+}
+.pagina-inicial:hover {
+  color: var(--st-color-green-0);
+}
 .isHide {
   visibility: hidden;
 }
