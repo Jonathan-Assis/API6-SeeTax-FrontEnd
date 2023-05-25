@@ -32,9 +32,13 @@ import { PhArrowLeft, PhBuildings, PhPerson, PhSquaresFour } from '@phosphor-ico
         <div class="navigation" :class="{ isHide: collapsed }">
           <SideBarNav to="/dashboard">
             <template #icon>
-              <PhSquaresFour :size="32" class="sidebar-icon-color" weight="duotone" />
+              <PhSquaresFour :size="32" class="sidebar-active-color" weight="duotone" />
             </template>
-            <template #title> Dashboard </template>
+            <template #title>
+            <p class="sidebar-active-color">
+              Dashboard
+            </p>
+          </template>
           </SideBarNav>
         </div>
       </div>
@@ -43,15 +47,23 @@ import { PhArrowLeft, PhBuildings, PhPerson, PhSquaresFour } from '@phosphor-ico
       <div class="navigation" :class="{ isHide: collapsed }">
         <SideBarNav to="/filtrar/tarifas_pessoa_fisica">
           <template #icon>
-            <PhPerson :size="32" class="sidebar-icon-color" weight="duotone" />
+            <PhPerson :size="32" class="sidebar-active-color" weight="duotone" />
           </template>
-          <template #title> Pessoa Física </template>
+          <template #title>
+            <p class="sidebar-active-color">
+              Pessoa Física
+            </p>
+          </template>
         </SideBarNav>
         <SideBarNav to="/filtrar/tarifas_pessoa_juridica">
           <template #icon>
-            <PhBuildings :size="32" class="sidebar-icon-color" weight="duotone" />
+            <PhBuildings :size="32" class="sidebar-active-color" weight="duotone" />
           </template>
-          <template #title> Pessoa Jurídica </template>
+          <template #title>
+            <p class="sidebar-active-color">
+              Pessoa Jurídica
+            </p>
+          </template>
         </SideBarNav>
       </div>
     </div>
@@ -59,12 +71,12 @@ import { PhArrowLeft, PhBuildings, PhPerson, PhSquaresFour } from '@phosphor-ico
 </template>
 
 <style scoped>
-.link:not(.active) .sidebar-icon-color {
+.link:not(.active) .sidebar-active-color {
   color: var(--st-icon-color-gray);
 }
 
 .link.active .title,
-.sidebar-icon-color {
+.sidebar-active-color {
   color: var(--st-color-white-0);
 }
 .pagina-inicial:hover {

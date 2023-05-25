@@ -25,15 +25,20 @@ const isActive = computed(() => route.path === props.to)
           <slot name="title"></slot>
         </span>
       </transition>
-      <PhCaretRight :size="25" class="sidebar-icon-color" />
+      <PhCaretRight :size="25" class="sidebar-active-color" />
     </div>
   </router-link>
 </template>
 
 <style scoped>
-.link:not(.active) .sidebar-icon-color {
+.link:not(.active) .sidebar-active-color {
   color: var(--st-icon-color-gray);
 }
+
+.sidebar-active-color {
+  color: var(--st-color-white-0);
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.1s;
