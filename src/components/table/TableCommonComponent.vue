@@ -4,6 +4,7 @@ import { VDataTable } from 'vuetify/labs/VDataTable'
 
 import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
 import DescriptionComponent from '../description/DescriptionComponent.vue'
+import { PhBank } from '@phosphor-icons/vue'
 
 defineProps({
   title: {
@@ -34,10 +35,9 @@ const search = ref('')
     </TitleOutsideComponent>
 
     <div class="st-shadow">
-      <DescriptionComponent :description="description" />
-
-      <div class="table-responsive st-table-container st-bg-white-primary">
-        <v-text-field
+      <DescriptionComponent :description="description">
+        <template #right>
+          <v-text-field
           v-model="search"
           label="Pesquisar"
           class="st-table-search"
@@ -47,9 +47,31 @@ const search = ref('')
           outlined
           single-line
           hide-details
-        >
-        </v-text-field>
-        <VDataTable :headers="headerData" :items="bodyData" :search="search"> </VDataTable>
+        />
+        </template>
+      </DescriptionComponent>
+
+      <div class="table-responsive st-table-container st-bg-white-primary">
+        
+        <VDataTable :headers="headerData" :items="bodyData" :search="search">
+          <template v-slot:item.id="{ item }">
+            <v-chip 
+              label
+              class="st-mini-block-green" 
+            >
+              {{ item.columns.id }}
+            </v-chip>
+          </template>
+          <template v-slot:item.Nome="{ item }">
+            <v-chip 
+              label
+              class="st-mini-block-gray" 
+            >
+            <PhBank :size="32" weight="duotone" />
+          </v-chip>
+          {{ item.columns.Nome }}
+          </template>
+        </VDataTable>
       </div>
     </div>
   </div>
