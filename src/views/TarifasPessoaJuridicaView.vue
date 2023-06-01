@@ -84,18 +84,19 @@ tarifasStore.getGrupoConsolidado()
       :actualRoute="true"
     />
   </HeaderComponent>
+  <div class="st-container-view-center">
+    <TableGroupingComponent
+      title="Tarifas dos serviços"
+      description="Serviços oferecidos pelos bancos, valor mínimo e máximo cobrado de tarifa de utilização"
+      :headerData="tarifasHeader"
+      :bodyData="tarifasBody"
+      :groupDataBy="['companie', 'accountType']"
+    >
+      <template v-slot:icon>
+        <PhTicket :size="34" class="st-icon-red" weight="duotone" />
+      </template>
+    </TableGroupingComponent>
 
-  <TableGroupingComponent
-    title="Tarifas dos serviços"
-    description="Serviços oferecidos pelos bancos, valor mínimo e máximo cobrado de tarifa de utilização"
-    :headerData="tarifasHeader"
-    :bodyData="tarifasBody"
-    :groupDataBy="['companie', 'accountType']"
-  >
-    <template v-slot:icon>
-      <PhTicket :size="34" class="st-icon-red" weight="duotone" />
-    </template>
-  </TableGroupingComponent>
-
-  <ChartBarComponent />
+    <ChartBarComponent />
+  </div>
 </template>

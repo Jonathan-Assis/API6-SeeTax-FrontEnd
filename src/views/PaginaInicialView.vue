@@ -6,7 +6,7 @@ import CardDetailsComponent from '@/components/card/CardDetailsComponent.vue'
 
 <template>
   <HeaderComponent />
-  <div class="container-view-center">
+  <div class="st-container-view-center">
     <div class="info-seetax">
       <article>
         <h1 class="seetax-title">See<em class="st-text-green">Tax</em></h1>
@@ -70,13 +70,6 @@ import CardDetailsComponent from '@/components/card/CardDetailsComponent.vue'
 </template>
 
 <style scoped>
-.container-view-center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2rem;
-}
-
 .info-seetax {
   display: flex;
   align-items: center;

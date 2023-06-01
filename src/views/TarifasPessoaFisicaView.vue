@@ -82,57 +82,59 @@ async function searchMaxInstituicoes() {
     <HeaderNav to="/dashboard" routerName="Dashboard" />
     <HeaderNav to="/filtrar/tarifas_pessoa_fisica" routerName="Pessoa Física" :actualRoute="true" />
   </HeaderComponent>
-  <div class="header-title-actions">
-    <div class="options">
-      <div class="st-select">
+  <div class="st-container-view-center">
+    <div class="header-title-actions">
+      <div class="options">
         <div class="st-select">
-          Grupo Consolidado:
-          <v-select
-            v-if="grupos.length"
-            class="st-select-field"
-            label="Selecionar grupo"
-            v-model="selectedGrupo"
-            :items="grupos.map((e) => e.Nome)"
-            single-line
-            variant="solo"
-            density="compact"
-          ></v-select>
+          <div class="st-select">
+            Grupo Consolidado:
+            <v-select
+              v-if="grupos.length"
+              class="st-select-field"
+              label="Selecionar grupo"
+              v-model="selectedGrupo"
+              :items="grupos.map((e) => e.Nome)"
+              single-line
+              variant="solo"
+              density="compact"
+            ></v-select>
+          </div>
+          <div class="st-select">
+            Instituição referente ao grupo:
+            <v-select
+              v-if="instituicoes.length"
+              class="st-select-field"
+              label="Selecionar grupo"
+              v-model="selectedInstituicao"
+              :items="instituicoes.map((e) => e.Nome)"
+              single-line
+              variant="solo"
+              density="compact"
+            ></v-select>
+          </div>
+          <v-btn @click="searchMaxInstituicoes()" class="st-btn st-rounded">
+            Buscar
+            <PhMagnifyingGlass :size="25" />
+          </v-btn>
         </div>
-        <div class="st-select">
-          Instituição referente ao grupo:
-          <v-select
-            v-if="instituicoes.length"
-            class="st-select-field"
-            label="Selecionar grupo"
-            v-model="selectedInstituicao"
-            :items="instituicoes.map((e) => e.Nome)"
-            single-line
-            variant="solo"
-            density="compact"
-          ></v-select>
-        </div>
-        <v-btn @click="searchMaxInstituicoes()" class="st-btn st-rounded">
-          Buscar
-          <PhMagnifyingGlass :size="25" />
-        </v-btn>
       </div>
     </div>
+
+    <TableCommonComponent
+      title="Tarifas por instituição"
+      description="Serviços oferecidos pelos bancos, valor mínimo e máximo cobrado de tarifa de utilização"
+      :headerData="tarifasHeader"
+      :bodyData="servicosMaxInstituicao"
+    >
+      <template v-slot:icon>
+        <PhTicket :size="34" class="st-icon-red" weight="duotone" />
+      </template>
+    </TableCommonComponent>
+
+    <ChartBarComponent />
+
+    <IndicatorComponent />
   </div>
-
-  <TableCommonComponent
-    title="Tarifas por instituição"
-    description="Serviços oferecidos pelos bancos, valor mínimo e máximo cobrado de tarifa de utilização"
-    :headerData="tarifasHeader"
-    :bodyData="servicosMaxInstituicao"
-  >
-    <template v-slot:icon>
-      <PhTicket :size="34" class="st-icon-red" weight="duotone" />
-    </template>
-  </TableCommonComponent>
-
-  <ChartBarComponent />
-
-  <IndicatorComponent />
 </template>
 
 <style scoped>
@@ -158,7 +160,7 @@ async function searchMaxInstituicoes() {
 
 .header-title-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
 }
 
