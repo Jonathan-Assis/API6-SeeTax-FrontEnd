@@ -103,7 +103,7 @@ h5 {
 
   float: left;
   position: fixed;
-  z-index: 1;
+  z-index: 1001;
   top: 0;
   left: 0;
   bottom: 0;
@@ -121,7 +121,6 @@ h5 {
   border-radius: 100px;
   cursor: pointer;
 
-  z-index: 10;
   position: absolute;
   display: flex;
   justify-content: center;

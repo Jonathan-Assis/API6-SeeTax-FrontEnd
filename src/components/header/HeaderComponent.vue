@@ -11,13 +11,23 @@ import { MDBBreadcrumb } from 'mdb-vue-ui-kit'
         </router-link>
       </div>
     </div>
-    <MDBBreadcrumb>
+    <MDBBreadcrumb :style="{'margin-bottom': 0}">
       <slot />
     </MDBBreadcrumb>
   </header>
 </template>
 
 <style scoped>
+.header-container {
+  position:fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  overflow: hidden;
+  padding: 0.5em 2em;
+  background-color: #fff;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
 .st-logotype-seetax {
   width: 100%;
   max-width: 180px;
