@@ -15,14 +15,21 @@
 
 .st-table-search {
   max-width: 280px;
-  padding: 0 1rem 1rem 0;
+  margin: 1rem 2rem;
+  //padding: 0 1rem 1rem 0;
+}
+.st-table-description {
+  width: inherit;
+  margin: 1rem 2rem;
+  max-width: 80%;
+  //padding: 0 1rem 1rem 0;
 }
 
 tbody {
   background-color: var(--st-bg-card-primary-color) !important;
 }
 
-thead {
+thead > tr > th {
   background-color: var(--st-bg-card-tertiary-color) !important;
 }
 
