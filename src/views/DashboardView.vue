@@ -1,84 +1,18 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { PhTrophy, PhTicket, PhPackage } from '@phosphor-icons/vue'
-import ServerConnection from '../services'
-import capitalizeWord from '../utils/capitalizeWords'
 
 import HeaderComponent from '../components/header/HeaderComponent.vue'
-import TableCommonComponent from '../components/table/TableCommonComponent.vue'
-import TableGroupingComponent from '../components/table/TableGroupingComponent.vue'
-import HeaderNav from '../components/header/HeaderNav.vue'
+import RankingComponent from '@/components/ranking/RankingComponent.vue'
+import TarifasComponent from '@/components/tarifas/TarifasComponent.vue'
+import { useTarifasStore } from '@/stores'
+import HeaderNav from '@/components/header/HeaderNav.vue'
 
-const rankingHeader = ref([
-  { title: 'Posição', key: 'id' },
-  { title: 'Banco', key: 'name' },
-  { title: 'Tipo', key: 'type' },
-  { title: 'Média de Tarifas (R$)', key: 'average', align: 'center' }
-])
+const tipoPessoa = ref('F')
+const cnpj = ref('92702067')
 
-const tarifasHeader = ref([
-  { title: 'Banco', key: 'companie', align: ' d-none' },
-  { title: 'Tipo', key: 'accountType', align: ' d-none' },
-  { title: 'Serviço', key: 'name' },
-  { title: 'Máximo (R$)', key: 'max', align: 'center' },
-  { title: 'Mínimo (R$)', key: 'min', align: 'center' }
-])
-
-const rankingBody = ref()
-const tarifasData = ref()
-const tarifasBody = ref([])
-
-async function getData() {
-  try {
-    await ServerConnection.getRanking()
-      .then((resp) => resp.data)
-      .then((data) => {
-        rankingBody.value = data.data
-
-        rankingBody.value.forEach((column: any, index: number) => {
-          rankingBody.value[index].type = capitalizeWord(column.type)
-        })
-      })
-    await ServerConnection.getTax()
-      .then((resp) => resp.data)
-      .then((data) => {
-        tarifasData.value = data
-        dataFilter()
-      })
-  } catch (error) {
-    console.log(error)
-  }
-}
-const dataFilter = async () => {
-  tarifasData.value.forEach((value: any, index: number) => {
-    value.accountType = capitalizeWord(value.accountType)
-
-    value.priorityServices.forEach((item: any, index: any) => {
-      item.name = capitalizeWord(item.name)
-      value.priorityServices[index] = {
-        companie: value.companie,
-        accountType: value.accountType,
-        ...item
-      }
-    })
-
-    value.otherServices.forEach((item: any, index: any) => {
-      item.name = capitalizeWord(item.name)
-      value.otherServices[index] = {
-        companie: value.companie,
-        accountType: value.accountType,
-        ...item
-      }
-    })
-    let datas = [...value.priorityServices, ...value.otherServices]
-    datas.forEach((e) => {
-      return tarifasBody.value.push(e)
-    })
-  })
-}
-
+const tarifasStore = useTarifasStore()
 onMounted(() => {
-  getData()
+  tarifasStore.getMinMedMaxServicos()
 })
 </script>
 
@@ -87,28 +21,13 @@ onMounted(() => {
     <HeaderNav to="/dashboard" routerName="Dashboard" :actualRoute="true" />
   </HeaderComponent>
 
-  <div class="container-grid">
-    <TableCommonComponent
-      title="Ranking"
-      description="Comparativo das menores tarifas"
-      :headerData="rankingHeader"
-      :bodyData="rankingBody"
-    >
-      <template v-slot:icon>
-        <PhTrophy :size="34" class="st-icon-yellow" weight="duotone" />
-      </template>
-    </TableCommonComponent>
+  <div class="st-container-view-center">
+    <RankingComponent hideFooter />
+    
+    <TarifasComponent
+      :tipoPessoa="tipoPessoa"
+      :cnpj="cnpj"
+    />
 
-    <TableGroupingComponent
-      title="Tarifas dos serviços"
-      description="Serviços oferecidos pelos bancos, valor mínimo e máximo cobrado de tarifa de utilização"
-      :headerData="tarifasHeader"
-      :bodyData="tarifasBody"
-      :groupDataBy="['companie', 'accountType']"
-    >
-      <template v-slot:icon>
-        <PhTicket :size="34" class="st-icon-red" weight="duotone" />
-      </template>
-    </TableGroupingComponent>
   </div>
 </template>
