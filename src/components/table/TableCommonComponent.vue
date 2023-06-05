@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 
 import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
 import DescriptionComponent from '../description/DescriptionComponent.vue'
-import { PhBank } from '@phosphor-icons/vue'
+import { PhBank, PhNewspaperClipping } from '@phosphor-icons/vue'
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     required: true
@@ -22,10 +22,27 @@ defineProps({
   bodyData: {
     type: Array,
     required: true
+  },
+  hideFooter: {
+    type: Boolean,
+    default: false
   }
 })
 
 const search = ref('')
+const dataTableRef = ref()
+
+onMounted(()=> {
+  if (props.hideFooter) {
+    if(dataTableRef.value){
+      const dataTableFooter = dataTableRef.value.$el.querySelector('.v-data-table-footer')
+      if (dataTableFooter) {
+        dataTableFooter.style.display = 'none' 
+      }
+    }
+  }
+})
+
 </script>
 
 <template>
@@ -36,6 +53,9 @@ const search = ref('')
 
     <div class="st-shadow">
       <DescriptionComponent :description="description">
+        <template #select>
+          <slot name="select" />
+        </template>
         <template #right>
           <v-text-field
           v-model="search"
@@ -52,26 +72,40 @@ const search = ref('')
       </DescriptionComponent>
 
       <div class="table-responsive st-table-container st-bg-white-primary">
-        
-        <VDataTable :headers="headerData" :items="bodyData" :search="search">
-          <template v-slot:item.id="{ item }">
+        <v-data-table 
+          :headers="headerData"
+          :items="bodyData"
+          :search="search"
+          no-data-text="Nenhum dado encontrado."
+          ref="dataTableRef"
+        >
+          <template v-slot:item.position="{ item }">
             <v-chip 
               label
               class="st-mini-block-green" 
             >
-              {{ item.columns.id }}
+              {{ item.columns.position }}º
             </v-chip>
           </template>
-          <template v-slot:item.Nome="{ item }">
+          <template v-slot:item.inst_nome="{ item }">
             <v-chip 
               label
               class="st-mini-block-gray" 
             >
             <PhBank :size="32" weight="duotone" />
           </v-chip>
-          {{ item.columns.Nome }}
+          {{ item.columns.inst_nome }}
           </template>
-        </VDataTable>
+          <template v-slot:item.Servico="{ item }">
+            <v-chip 
+              label
+              class="st-mini-block-gray" 
+            >
+            <PhNewspaperClipping :size="32" weight="duotone" />
+          </v-chip>
+          {{ item.columns.Servico }}
+          </template>
+        </v-data-table>
       </div>
     </div>
   </div>

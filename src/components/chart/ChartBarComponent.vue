@@ -20,6 +20,21 @@ import { ref } from 'vue'
 import { PhMagnifyingGlass } from '@phosphor-icons/vue'
 import { useTarifasStore } from '@/stores'
 import { storeToRefs } from 'pinia'
+import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
+import DescriptionComponent from '../description/DescriptionComponent.vue'
+import { watch } from 'vue'
+
+defineProps({
+  title: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+})
+
 
 const pessoa = ref([])
 const pessoaNome = ref([])
@@ -33,18 +48,6 @@ const chartData = ref({
 })
 const chartOptions = ref({})
 
-/* async function getSelects() {
-  const resp = await fetch(`https://olinda.bcb.gov.br/olinda/servico/Informes_ListaValoresDeServicoBancario/versao/v1/odata/GruposConsolidados?$top=100&$format=json`)
-  await resp.json()
-    .then((data) => {
-      grupo.value = data.value
-      data.value.forEach(value => grupoNome.value.push(value.Nome))
-    })
-  tipoPessoa.forEach((v) => {
-    pessoaNome.value.push(v.type)
-    pessoa.value.push(v)
-  })
-} */
 
 async function getMaxServicosGrupoServico(group: string = '02', servico: string = '1101') {
   handleMaxServicosPorGrupoServico(group, servico).then(() => {
@@ -107,38 +110,15 @@ async function getMaxServicosGrupoServico(group: string = '02', servico: string 
           }
         }
       }
-      /* tooltip: {
-          callbacks: {
-              footer: (context) => {
-                      const periodo = periodicidadeValorMaximo.find((value) => {
-                          return value.label === context[0].label
-                      })
-
-                      return `Periodicidade: ${periodo.periodicidade}`
-              }
-          }
-
-      }   */
     }
   })
 }
 
 async function searchData() {
-  let servico = '1101'
-  let group = '02'
-  if (selectedServico.value) {
-    const servicoCode = tarifasStore.servicos.find((a) => {
-      return a.Nome == selectedServico.value
-    })
-    servico = servicoCode.Codigo
-  }
-  if (selectedGrupo.value) {
-    const grupoCode = tarifasStore.grupos.find((a) => {
-      return a.Nome == selectedGrupo.value
-    })
-    group = grupoCode.Codigo
-  }
-  getMaxServicosGrupoServico(group, servico)
+  const servicoCode = tarifasStore.servicos.find((a) => {
+    return a.Nome == selectedServico.value
+  })
+  await getMaxServicosGrupoServico(tarifasStore.grupo, servicoCode?.Codigo)
 }
 const tarifasStore = useTarifasStore()
 const { grupos, servicos } = storeToRefs(tarifasStore)
@@ -154,49 +134,58 @@ const handleMaxServicosPorGrupoServico = async (grupo: string = '02', servico: s
   return await tarifasStore.getMaxServicosPorGrupoServico(grupo, servico)
 }
 const selectedServico = ref('')
-const selectedGrupo = ref('')
+
+watch(selectedServico, () => {
+  searchData()
+})
+
 </script>
 
 <template>
-  <div class="st-space-item st-bg-white-primary st-shadow st-rounded">
-    <h4>Tarifas por Serviço</h4>
-    <div class="header-title-actions">
-      <div class="options">
-        <div class="st-select">
-          Grupo Consolidado:
-          <v-select
-            v-if="grupos.length"
-            class="st-select-field"
-            label="Selecionar grupo"
-            v-model="selectedGrupo"
-            :items="grupos.map((e) => e.Nome)"
-            single-line
-            variant="solo"
-            density="compact"
-          ></v-select>
+  <div class="st-space-vertical">
+  <TitleOutsideComponent :title="title">
+    <slot name="icon" />
+    </TitleOutsideComponent>
+    
+    <div class="st-shadow">
+      <DescriptionComponent :description="description">
+        <template #right>
+          <!-- <v-text-field
+          v-model="search"
+          label="Pesquisar"
+          class="st-table-search"
+          variant="solo"
+          density="compact"
+          append-inner-icon="mdi-magnify"
+          outlined
+          single-line
+          hide-details
+        /> -->
+        </template>
+      </DescriptionComponent>
+      <div class="st-space-item st-bg-white-primary  st-rounded">
+        <div class="header-title-actions">
+          <div class="options">
+            <div class="st-select">
+              Tipo do Serviço:
+              <v-select
+                v-if="servicos.length"
+                class="st-select-field"
+                label="Selecionar grupo"
+                v-model="selectedServico"
+                :items="servicos.map((e) => e.Nome)"
+                single-line
+                variant="solo"
+                density="compact"
+              ></v-select>
+            </div>
+          </div>
         </div>
-        <div class="st-select">
-          Tipo do Serviço:
-          <v-select
-            v-if="servicos.length"
-            class="st-select-field"
-            label="Selecionar grupo"
-            v-model="selectedServico"
-            :items="servicos.map((e) => e.Nome)"
-            single-line
-            variant="solo"
-            density="compact"
-          ></v-select>
+        <div class="chartContainer">
+          <div class="chartContainerBody">
+            <Bar :options="chartOptions" :data="chartData" class="chartBar" />
+          </div>
         </div>
-        <v-btn @click="searchData()" class="st-btn st-rounded">
-          Buscar
-          <PhMagnifyingGlass :size="25" />
-        </v-btn>
-      </div>
-    </div>
-    <div class="chartContainer">
-      <div class="chartContainerBody">
-        <Bar :options="chartOptions" :data="chartData" class="chartBar" />
       </div>
     </div>
   </div>
@@ -231,6 +220,7 @@ const selectedGrupo = ref('')
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
+  padding:1rem;
 }
 
 .header-title-actions {
