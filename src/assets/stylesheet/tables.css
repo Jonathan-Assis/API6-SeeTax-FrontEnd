@@ -14,15 +14,22 @@
 }
 
 .st-table-search {
-  max-width: 280px;
-  padding: 0 1rem 1rem 0;
+  width: 100%;
+  max-width: 250px;
+  //padding: 0 1rem 1rem 0;
+}
+.st-table-description {
+  width: inherit;
+  margin: 1rem 2rem;
+  max-width: 80%;
+  //padding: 0 1rem 1rem 0;
 }
 
 tbody {
   background-color: var(--st-bg-card-primary-color) !important;
 }
 
-thead {
+thead > tr > th {
   background-color: var(--st-bg-card-tertiary-color) !important;
 }
 
@@ -31,6 +38,6 @@ td {
   padding: 15px !important;
 }
 
-.v-data-table-footer__items-per-page{
+.v-data-table-footer__items-per-page {
   display: none;
 }

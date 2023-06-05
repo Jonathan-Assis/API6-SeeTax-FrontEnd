@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VDataTable } from 'vuetify/labs/VDataTable';
+import { VDataTable } from 'vuetify/labs/VDataTable'
 
 import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
 import DescriptionComponent from '../description/DescriptionComponent.vue'
@@ -14,7 +14,7 @@ const props = defineProps({
     type: String,
     required: true
   },
-  headerData:{
+  headerData: {
     type: Array,
     required: true
   },
@@ -30,19 +30,18 @@ const props = defineProps({
 const search = ref('')
 const groupBy = ref([])
 
-if (props.groupDataBy?.length){
-  props.groupDataBy!.forEach((column:any, index:number) => {
-      const key = { key: column} 
-      groupBy.value.push(key)
+if (props.groupDataBy?.length) {
+  props.groupDataBy!.forEach((column: any, index: number) => {
+    const key = { key: column }
+    groupBy.value.push(key)
   })
 }
-
 </script>
 
 <template>
   <div class="st-space-vertical">
     <TitleOutsideComponent :title="title">
-        <slot name='icon' />
+      <slot name="icon" />
     </TitleOutsideComponent>
 
     <div class="st-shadow">
@@ -61,15 +60,9 @@ if (props.groupDataBy?.length){
           hide-details
         >
         </v-text-field>
-        <VDataTable
-          :headers="headerData"
-          :items="bodyData"
-          :search="search"
-          :groupBy="groupBy"
-        >
+        <VDataTable :headers="headerData" :items="bodyData" :search="search" :groupBy="groupBy">
         </VDataTable>
       </div>
     </div>
-
   </div>
 </template>

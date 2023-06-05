@@ -9,8 +9,4 @@ const sidebarWidth = computed(
   () => `${collapsed.value ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH}px`
 )
 
-export {
-  collapsed,
-  toggleSidebar,
-  sidebarWidth
-}
+export { collapsed, toggleSidebar, sidebarWidth }
