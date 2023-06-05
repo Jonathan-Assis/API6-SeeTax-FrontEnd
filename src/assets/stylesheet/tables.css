@@ -14,8 +14,8 @@
 }
 
 .st-table-search {
-  max-width: 280px;
-  margin: 1rem 2rem;
+  width: 100%;
+  max-width: 250px;
   //padding: 0 1rem 1rem 0;
 }
 .st-table-description {

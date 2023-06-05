@@ -21,3 +21,11 @@
 .st-icon-yellow {
   color: var(--st-icon-color-yellow);
 }
+
+.st-icon-orange {
+ color: var(--st-color-orange-1);
+}
+
+.st-icon-blue {
+ color: var(--st-bg-color-blue);
+}

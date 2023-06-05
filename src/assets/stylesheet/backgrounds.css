@@ -19,6 +19,18 @@ body {
   background-color: var(--st-bg-color-green);
 }
 
+.st-bg-light-green {
+  background-color: var(--st-color-green-2);
+}
+
+.st-bg-light-orange {
+  background-color: var(--st-color-orange-0);
+}
+
+.st-bg-light-blue {
+  background-color: var(--st-color-blue-1);
+}
+
 .st-bg-gray {
   background-color: var(--st-bg-card-tertiary-color);
 }
