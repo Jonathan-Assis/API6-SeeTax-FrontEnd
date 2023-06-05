@@ -7,7 +7,6 @@ import TarifasComponent from '@/components/tarifas/TarifasComponent.vue'
 import { useTarifasStore } from '@/stores'
 import HeaderNav from '@/components/header/HeaderNav.vue'
 
-const tipoPessoa = ref('F')
 const cnpj = ref('92702067')
 
 const tarifasStore = useTarifasStore()
@@ -25,7 +24,7 @@ onMounted(() => {
     <RankingComponent hideFooter />
     
     <TarifasComponent
-      :tipoPessoa="tipoPessoa"
+      tipoPessoa="F"
       :cnpj="cnpj"
     />
 
