@@ -34,11 +34,11 @@ export default class ServerConnection {
    * Retorna o grupo consolidado
    *
    * código e nome
-   * @example {Codigo: '01', Nome: 'Bancos privados'}
+   * @example {Codigo: '02', Nome: 'Bancos privados'}
    * {Codigo: '02', Nome: 'Bancos públicos + Caixa Econômica Federal'}
    */
   static async getGrupos() {
-    return await method.get('/grupos')
+    return await methodOlinda.get('/Informes_ListaTarifasPorInstituicaoFinanceira/versao/v1/odata/GruposConsolidados?$top=100&$format=json')
   }
 
   /**
@@ -55,7 +55,7 @@ export default class ServerConnection {
      */
 
   static async getServicos() {
-    return await method.get('/servicos')
+    return await methodOlinda.get('/Informes_ListaTarifaPorValores/versao/v1/odata/ServicosBancarios?$top=200&$format=json')
   }
 
   /**
@@ -114,7 +114,7 @@ export default class ServerConnection {
             "Servico": "Confecção de cadastro para início de relacionamento - CADASTRO",
             "Unidade": "Por cliente",
             "DataVigencia": "2022-04-30",
-            "ValorMaximo": 33.01,
+            "ValorMaximo": 33.02,
             "TipoValor": "Real",
             "Periodicidade": "Por evento"
         },
