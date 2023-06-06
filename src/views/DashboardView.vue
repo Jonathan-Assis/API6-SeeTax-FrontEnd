@@ -1,18 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-
 import HeaderComponent from '../components/header/HeaderComponent.vue'
 import RankingComponent from '@/components/ranking/RankingComponent.vue'
 import TarifasComponent from '@/components/tarifas/TarifasComponent.vue'
 import { useTarifasStore } from '@/stores'
 import HeaderNav from '@/components/header/HeaderNav.vue'
-
-const cnpj = ref('92702067')
+import Loading from '@/components/loading/Loading.vue'
 
 const tarifasStore = useTarifasStore()
-onMounted(() => {
-  tarifasStore.getMinMedMaxServicos()
-})
+
 </script>
 
 <template>
@@ -25,8 +20,7 @@ onMounted(() => {
     
     <TarifasComponent
       tipoPessoa="F"
-      :cnpj="cnpj"
+      
     />
-
   </div>
 </template>

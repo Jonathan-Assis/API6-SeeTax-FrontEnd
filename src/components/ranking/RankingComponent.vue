@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { PhTrophy } from '@phosphor-icons/vue';
+import { PhMagnifyingGlass, PhNewspaperClipping, PhTrophy } from '@phosphor-icons/vue';
 import dayjs from 'dayjs';
 
 import TableCommonComponent from '../table/TableCommonComponent.vue';
@@ -11,62 +11,83 @@ import type { IRankingBody } from '@/interfaces/constants';
 import type { IRanking } from '@/interfaces/services';
 
 import { useTarifasStore } from '@/stores'
+
 const tarifasStore = useTarifasStore()
+const { 
+  servicos,
+  servico,
+  ranking
+} = storeToRefs(tarifasStore)
 
 const tableHeader = ref(rankingHeader)
-const tableBody = ref<IRankingBody[]>([])
 
 onMounted(() => {
-    getRankingData()
-    tarifasStore.getGrupoConsolidado()
-    tarifasStore.getServicos()
-    handleCNPJ()
-})
-
-const selectedInstituicao = ref('')
-const selectedGrupo = ref('')
-
-
-const handleCNPJ = async (grupo: string = '01') => {
-  return await tarifasStore.getCNPJ(grupo)
-}
-
-async function getRankingData(){
-    const resp: IRanking[] = (await ServerConnection.getRanking()).data
-
-    resp.forEach((value)=>{
-      value.instituicao.DataVigencia = dayjs(value.instituicao.DataVigencia).format('DD/MM/YYYY HH:mm')
-      let data = {
-        position: value.position,
-        inst_nome: value.instituicao.inst_nome,
-        Unidade: value.instituicao.Unidade,
-        DataVigencia: value.instituicao.DataVigencia,
-        Periodicidade: value.instituicao.Periodicidade,
-        ValorMaximo: value.instituicao.ValorMaximo
-      }
-      tableBody.value?.push(data)
-    })
-}
-
-defineProps({
-    hideFooter: {
-        type: Boolean,
-        default: false
+  if(!ranking.value.length){
+    searchData()
   }
 })
 
+defineProps({
+  hideFooter: {
+      type: Boolean,
+      default: false
+}
+})
+async function searchData() {
+  await tarifasStore.getRanking(servico.value)
+}
+
+const selectedServico = ref('Extrato de Conta')
+
+watch(selectedServico, () => {
+  const servicoCode = tarifasStore.servicos.find((a) => {
+    return a.Nome == selectedServico.value
+  })
+  tarifasStore.setServico(servicoCode?.Codigo)
+})
 </script>
 
 <template>
-<TableCommonComponent
-        title="Ranking"
-        description="Comparativo das menores tarifas"
-        :headerData="tableHeader"
-        :bodyData="tableBody"
-        :hideFooter="hideFooter"
-    >
-        <template v-slot:icon>
-            <PhTrophy :size="34" class="st-icon-yellow" weight="duotone" />
-        </template>
-</TableCommonComponent>
+  <TableCommonComponent
+      title="Ranking"
+      description="Comparativo das menores tarifas"
+      :headerData="tableHeader"
+      :bodyData="ranking"
+      :hideFooter="hideFooter"
+  >
+    <template v-slot:icon>
+        <PhTrophy :size="34" class="st-icon-yellow" weight="duotone" />
+    </template>
+    <template #select>
+      <div class="st-slot-select">
+        <div>
+          <PhNewspaperClipping  :size="32" class="st-icon-gray" weight="duotone" />
+          Tipo do Serviço:
+          <v-select
+            v-if="servicos.length"
+            class="st-select-field"
+            label="Selecionar grupo"
+            v-model="selectedServico"
+            :items="servicos.map((e) => e.Nome)"
+            single-line
+            variant="solo"
+            density="compact"
+          ></v-select>
+        </div>
+        <v-btn @click="searchData()" class="st-btn st-rounded">
+          Buscar
+          <PhMagnifyingGlass :size="25" />
+        </v-btn>
+      </div>
+    </template>
+  </TableCommonComponent>
 </template>
+
+<style>
+.st-slot-select {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+</style>

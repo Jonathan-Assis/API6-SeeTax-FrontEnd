@@ -1,66 +1,91 @@
-import type { ICNPJ, IGruposConsolidado, IServicos, ITarifasServicosGrupoMax, ITarifasServicosInstituicaoMax, ITarifasServicosMinMedMaxValue } from './../interfaces/services/index';
-import type { TPessoa } from '@/interfaces/constants'
+import type { ICNPJ, IGruposConsolidado, IRanking, IServicos, ITarifasServicosGrupoMax, ITarifasServicosInstituicaoMax, ITarifasServicosMinMedMaxValue } from './../interfaces/services/index';
+import type { IRankingBody, TPessoa } from '@/interfaces/constants'
 import ServerConnection from '@/services'
 import { defineStore } from 'pinia'
 import dayjs from 'dayjs'
 
 export const useTarifasStore = defineStore('tarifasStore', {
   state: () => ({
+    isLoading: false as boolean,
     tipoPessoa: 'F' as TPessoa,
     grupo: '02' as string,
+    servico: '1315' as string,
+    cnpj: '00000000',
+    ranking: [] as IRankingBody[],
     grupos: [] as IGruposConsolidado[],
-    servico: '1101' as string,
-    instituicoes: [],
-    instituicao: '92702067',
-    cnpj:[] as ICNPJ[],
     servicos: [] as IServicos[],
+    instituicoes: [],
+    cnpjs:[] as ICNPJ[],
     servicosMinMedMax: [] as ITarifasServicosMinMedMaxValue[],
     servicosMaxInstituicao: [] as ITarifasServicosInstituicaoMax[],
     servicosMaxGrupoServico: [] as ITarifasServicosGrupoMax[],
-    isLoading: false as boolean
   }),
-  getters: {},
   actions: {
+    async getInitialProps() {
+      if(!this.grupos.length) {
+        await this.getGrupoConsolidado()
+      } 
+      if (!this.cnpjs.length) {
+        await this.getCNPJ(this.grupo)
+      }
+      if (!this.servicos.length) {
+        await this.getServicos()
+      }
+    },
     async setTipoPessoa(tipo: TPessoa='F'){
       this.tipoPessoa = tipo
-      
-      await this.getMinMedMaxServicos(tipo, this.grupo)
-      await this.getMaxServicosPorInstituicao(tipo, this.instituicao)
+    },
+    async getRanking(servico:string){
+      try{
+        const { data } = await ServerConnection.getRanking(servico)
+        let rank:IRankingBody[] = []
+
+        data.forEach((value: IRanking)=>{
+          value.instituicao.DataVigencia = dayjs(value.instituicao.DataVigencia).format('DD/MM/YYYY HH:mm')
+          
+          let data = {
+            position: value.position,
+            inst_nome: value.instituicao.inst_nome,
+            Unidade: value.instituicao.Unidade,
+            DataVigencia: value.instituicao.DataVigencia,
+            Periodicidade: value.instituicao.Periodicidade,
+            ValorMaximo: value.instituicao.ValorMaximo
+          }
+          rank.push(data)
+        }) 
+
+        this.ranking = rank
+      } catch (e) {
+        console.log(e)
+      }
     },
     async setGrupo(grupo: string ='02'){
       this.grupo = grupo
-
-      await this.getMinMedMaxServicos(this.tipoPessoa, grupo)
-      await this.getMaxServicosPorGrupoServico(grupo, this.servico)
     },
-    async setServico(servico: string='1101'){
+    async setServico(servico: string='1315'){
       this.servico = servico
-
-      await this.getMaxServicosPorGrupoServico(this.grupo, servico)
     },
-    async setInstituicao(instituicao: string = '92702067'){
-      this.instituicao = instituicao
-
-      await this.getMaxServicosPorInstituicao(this.tipoPessoa, instituicao)
+    async setCNPJ(cnpj: string = '00000000'){
+      this.cnpj = cnpj
     },
     async getGrupoConsolidado() {
       try {
         this.isLoading = true
-        const resp = (await ServerConnection.getGrupos()).data
+        const { data } = await ServerConnection.getGrupos()
 
-        this.grupos = resp
+        this.grupos = data.value
       } catch (error) {
         console.log(error)
       } finally {
         this.isLoading = false
       }
     },
-    async getCNPJ(grupo: string = '02') {
+    async getCNPJ(grupo: string) {
       try {
         this.isLoading = true
         const { data } = await ServerConnection.getCNPJ(grupo)
-
-        this.cnpj = data.value
+        
+        this.cnpjs = data.value
       } catch (error) {
         console.log(error)
       } finally {
@@ -70,19 +95,19 @@ export const useTarifasStore = defineStore('tarifasStore', {
     async getServicos() {
       try {
         this.isLoading = true
-        const resp = await (await ServerConnection.getServicos()).data
+        const { data } = await ServerConnection.getServicos()
 
-        this.servicos = resp
+        this.servicos = data.value 
       } catch (error) {
         console.log(error)
       } finally {
         this.isLoading = false
       }
     },
-    async getMinMedMaxServicos(tipo: TPessoa='F', grupoConsolidado: string='02') {
+    async getMinMedMaxServicos(pessoa: TPessoa, grupo: string) {
       try {
         this.isLoading = true
-        const { data } = await ServerConnection.getMinMedMaxServicos(tipo, grupoConsolidado)
+        const { data } = await ServerConnection.getMinMedMaxServicos(this.tipoPessoa, this.grupo)
        
         this.servicosMinMedMax = data.value
       } catch (error) {
@@ -91,10 +116,10 @@ export const useTarifasStore = defineStore('tarifasStore', {
         this.isLoading = false
       }
     },
-    async getMaxServicosPorInstituicao(tipo: TPessoa = 'F', cnpj: string = '92702067') {
+    async getMaxServicosPorInstituicao(pessoa: TPessoa, cnpj: string) {
       try {
         this.isLoading = true
-        const { data } = await ServerConnection.getMaxServicosPorInstituicao(tipo, cnpj)
+        const { data } = await ServerConnection.getMaxServicosPorInstituicao(pessoa, cnpj)
 
         data.value.map((value: any) => {
           value.DataVigencia = dayjs(value.DataVigencia).format('DD/MM/YYYY')
@@ -107,7 +132,7 @@ export const useTarifasStore = defineStore('tarifasStore', {
         this.isLoading = false
       }
     },
-    async getMaxServicosPorGrupoServico(grupo: string, servico: string) {
+    async getMaxServicosPorGrupoServico(grupo: string, servico:string) {
       try {
         this.isLoading = true
         const { data } = await ServerConnection.getMaxServicosPorGrupoServico(grupo, servico)

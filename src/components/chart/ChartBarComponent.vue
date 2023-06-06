@@ -1,28 +1,24 @@
 <script setup lang="ts">
-/* import Chart, { type ChartConfiguration, type ChartData, type ChartItem } from 'chart.js'; */
-import { onMounted } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { Bar } from 'vue-chartjs'
 import {
   Chart as ChartJS,
   type ChartData,
-  type ChartConfiguration,
+  type ChartOptions,
   Title,
   Tooltip,
   Legend,
   BarElement,
   CategoryScale,
   LinearScale,
-  LogarithmicScale
+  LogarithmicScale,
 } from 'chart.js'
 
-import { tipoPessoa } from '@/constants'
-import { ref } from 'vue'
-import { PhMagnifyingGlass } from '@phosphor-icons/vue'
+import { PhMagnifyingGlass, PhNewspaperClipping } from '@phosphor-icons/vue'
 import { useTarifasStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
 import DescriptionComponent from '../description/DescriptionComponent.vue'
-import { watch } from 'vue'
 
 defineProps({
   title: {
@@ -35,138 +31,121 @@ defineProps({
   },
 })
 
-
-const pessoa = ref([])
-const pessoaNome = ref([])
-const grupo = ref([])
-const grupoNome = ref([])
-
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LogarithmicScale)
-const chartData = ref({
+
+const chartData = ref<ChartData>({
   labels: [],
   datasets: []
 })
-const chartOptions = ref({})
 
-
-async function getMaxServicosGrupoServico(group: string = '02', servico: string = '1101') {
-  handleMaxServicosPorGrupoServico(group, servico).then(() => {
-    let dados = tarifasStore.servicosMaxGrupoServico
-    const labels = dados.map((dado) => {
-      const label = dado.RazaoSocial
-      return label
-    })
-    const valorMaximo = dados.map((dado) => {
-      return dado.ValorMaximo
-    })
-
-    const periodicidadeValorMaximo = dados.map((dado) => {
-      return { label: dado.RazaoSocial, periodicidade: dado.Periodicidade }
-    })
-
-    chartData.value = {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Máximo',
-          indexAxis: 'y',
-          /* indexAxis: 'x', */
-          backgroundColor: '#3A57E8',
-          borderColor: '#3A57E8',
-          data: valorMaximo,
-          borderRadius: 100
-        }
-      ]
-    }
-
-    chartOptions.value = {
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: 'Escala logarítmica',
-            font: {
-              size: 16,
-              weight: 'bold'
-            }
-          },
-          type: 'logarithmic'
+const chartOptions = ref<ChartOptions>({
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: 'Escala logarítmica',
+        font: {
+          size: 16,
+          weight: 'bold'
         }
       },
-      plugins: {
-        legend: {
-          font: {
-            size: 14,
-            weight: 'bold'
-          },
-          labels: {
-            font: {
-              size: 14,
-              weight: 'bold'
-            },
-            boxWidth: 10,
-            usePointStyle: true,
-            pointStyle: 'circle'
-          }
-        }
+      type: 'logarithmic'
+    }
+  },
+  plugins: {
+    legend: {
+      /*  font: {
+        size: 14,
+        weight: 'bold'
+      }, */
+      labels: {
+        font: {
+          size: 14,
+          weight: 'bold'
+        },
+        boxWidth: 10,
+        usePointStyle: true,
+        pointStyle: 'circle'
       }
     }
+  }
+})
+
+async function getDatas() {
+  let dados = servicosMaxGrupoServico.value
+  const labels = dados.map((dado) => {
+    const label = dado.RazaoSocial
+
+    return label
   })
+  
+  const valorMaximo = dados.map((dado) => {
+    return dado.ValorMaximo
+  })
+
+  const periodicidadeValorMaximo = dados.map((dado) => {
+    return { label: dado.RazaoSocial, periodicidade: dado.Periodicidade }
+  })
+
+  chartData.value = {
+    labels: labels,
+    datasets: [
+      {
+        label: 'Máximo',
+        indexAxis: 'y',
+        /* indexAxis: 'x', */
+        backgroundColor: '#3A57E8',
+        borderColor: '#3A57E8',
+        data: valorMaximo,
+        borderRadius: 100
+      }
+    ]
+  }
 }
 
+const tarifasStore = useTarifasStore()
+const { 
+  grupo,
+  servicos,
+  servico,
+  servicosMaxGrupoServico,
+
+} = storeToRefs(tarifasStore)
+
+onMounted(() => {
+  if(!servicosMaxGrupoServico.value.length){
+    searchData()
+  }
+})
+
 async function searchData() {
+  await tarifasStore.getMaxServicosPorGrupoServico(grupo.value, servico.value)
+  .then(() => getDatas())
+}
+
+const selectedServico = ref('Extrato de Conta')
+
+watch(selectedServico, () => {
   const servicoCode = tarifasStore.servicos.find((a) => {
     return a.Nome == selectedServico.value
   })
-  await getMaxServicosGrupoServico(tarifasStore.grupo, servicoCode?.Codigo)
-}
-const tarifasStore = useTarifasStore()
-const { grupos, servicos } = storeToRefs(tarifasStore)
-onMounted(() => {
-  tarifasStore.getGrupoConsolidado()
-  tarifasStore.getServicos()
-  handleMaxServicosPorGrupoServico()
-  //getSelects()
-  getMaxServicosGrupoServico()
-})
-
-const handleMaxServicosPorGrupoServico = async (grupo: string = '02', servico: string = '1101') => {
-  return await tarifasStore.getMaxServicosPorGrupoServico(grupo, servico)
-}
-const selectedServico = ref('')
-
-watch(selectedServico, () => {
-  searchData()
+  tarifasStore.setServico(servicoCode?.Codigo)
 })
 
 </script>
 
 <template>
   <div class="st-space-vertical">
-  <TitleOutsideComponent :title="title">
-    <slot name="icon" />
+    <TitleOutsideComponent :title="title">
+      <PhNewspaperClipping  :size="34" class="st-icon-red" weight="duotone" />
     </TitleOutsideComponent>
     
     <div class="st-shadow">
       <DescriptionComponent :description="description">
-        <template #right>
-          <!-- <v-text-field
-          v-model="search"
-          label="Pesquisar"
-          class="st-table-search"
-          variant="solo"
-          density="compact"
-          append-inner-icon="mdi-magnify"
-          outlined
-          single-line
-          hide-details
-        /> -->
-        </template>
-      </DescriptionComponent>
-      <div class="st-space-item st-bg-white-primary  st-rounded">
-        <div class="header-title-actions">
-          <div class="options">
-            <div class="st-select">
+        <template #select>
+          <div class="st-slot-select">
+            <div>
+              <PhNewspaperClipping  :size="32" class="st-icon-gray" weight="duotone" />
               Tipo do Serviço:
               <v-select
                 v-if="servicos.length"
@@ -179,10 +158,17 @@ watch(selectedServico, () => {
                 density="compact"
               ></v-select>
             </div>
-          </div>
-        </div>
+            <v-btn @click="searchData()" class="st-btn st-rounded">
+              Buscar
+              <PhMagnifyingGlass :size="25" />
+            </v-btn>
+         </div>
+        </template>
+      </DescriptionComponent>
+      <div class="st-hr"></div>
+      <div class="st-space-item st-bg-white-primary st-rounded">
         <div class="chartContainer">
-          <div class="chartContainerBody">
+          <div class="chartContainerBody m-4">
             <Bar :options="chartOptions" :data="chartData" class="chartBar" />
           </div>
         </div>
@@ -198,18 +184,19 @@ watch(selectedServico, () => {
   overflow-x: scroll;
 }
 
-.chartContainerBody {
-  height: 400px;
+.st-slot-select {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
 }
 
-.st-btn {
-  display: flex;
-  background-color: var(--st-color-green-0);
-  padding: 0 1rem;
-  min-width: 5rem;
-  height: 3rem;
-  align-items: center;
-  justify-content: center;
+.st-hr {
+  height: 1px;
+  background-color: #ccc;
+}
+.chartContainerBody {
+  height: 400px;
 }
 
 .st-select-field {

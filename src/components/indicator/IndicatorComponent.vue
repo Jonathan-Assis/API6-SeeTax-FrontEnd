@@ -8,10 +8,12 @@ import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
 import type { ITarifasServicosMinMedMaxValue } from '@/interfaces/services';
 
 const tarifasStore = useTarifasStore()
-const { servicosMinMedMax } = storeToRefs(tarifasStore)
+const { servicosMinMedMax,tipoPessoa, grupo, isLoading } = storeToRefs(tarifasStore)
 
 onMounted(()=>{
-  tarifasStore.getMinMedMaxServicos()
+  if(!servicosMinMedMax.value.length){
+    tarifasStore.getMinMedMaxServicos(tipoPessoa.value, grupo.value)
+  }
 })
 
 const menorValorMinimo = computed<ITarifasServicosMinMedMaxValue>(() => {

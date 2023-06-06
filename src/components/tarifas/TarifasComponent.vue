@@ -5,7 +5,7 @@ import { useTarifasStore } from '@/stores'
 import TableCommonComponent from '../table/TableCommonComponent.vue';
 import { tarifasServicosHeader } from '@/constants';
 import type { TPessoa } from '@/interfaces/constants'
-import { PhBank, PhNewspaperClipping, PhTicket } from '@phosphor-icons/vue';
+import { PhBank, PhMagnifyingGlass, PhNewspaperClipping, PhTicket } from '@phosphor-icons/vue';
 import IndicatorComponent from '../indicator/IndicatorComponent.vue';
 import { watch } from 'vue';
 import ChartBarComponent from '../chart/ChartBarComponent.vue';
@@ -13,48 +13,43 @@ import ChartBarComponent from '../chart/ChartBarComponent.vue';
 const tarifasStore = useTarifasStore()
 const {
   servicosMaxInstituicao,
+  cnpjs,
   cnpj,
+  tipoPessoa
 } = storeToRefs(tarifasStore)
 
 const tarifasInstituicaoHeader = ref(tarifasServicosHeader)
 const props = defineProps({
-    tipoPessoa: {
-        type: String,
-        default: 'F',
-        required: true
-    },
-    cnpj: {
-        type: String,
-        default: '92702067',
-        required: true
-    }
+  tipoPessoa: {
+    type: String,
+    default: 'F',
+    required: false
+  },
+  cnpj: {
+    type: String,
+    default: '00000000',
+    required: false
+  }
 })
 
+const selectedCnpj = ref('Selecionar')
 
-const selectedCnpj = ref('')
 watch(selectedCnpj, () => {
-    const instituicaoCode = tarifasStore.cnpj.find((a) => {
-        return a.Nome == selectedCnpj.value
-    })
-    tarifasStore.setInstituicao(instituicaoCode?.Cnpj)
-    handleMaxServicosPorInstituicao(instituicaoCode?.Cnpj)
+  const instituicaoCode = cnpjs.value.find((a) => {
+    return a.Nome == selectedCnpj.value
+  })
+  tarifasStore.setCNPJ(instituicaoCode?.Cnpj)
 })
-
-const cnpjRef = computed(()=> cnpj)
-/* watch(tarifasStore.cnpj, () => {
-    cnpjRef = tarifasStore.cnpj
-}) */
 
 onMounted(() => {
-    tarifasStore.getGrupoConsolidado()
-    tarifasStore.getCNPJ()
-    tarifasStore.getServicos()
-    tarifasStore.setTipoPessoa(props.tipoPessoa as TPessoa)
-    handleMaxServicosPorInstituicao()
+  tarifasStore.setTipoPessoa(props.tipoPessoa as TPessoa)
+  if(!servicosMaxInstituicao.value.length){
+    searchData()
+  }
 })
 
-const handleMaxServicosPorInstituicao = async (cnpj: string = '92702067') => {
-  return await tarifasStore.getMaxServicosPorInstituicao('F', cnpj)
+async function searchData(){
+  await tarifasStore.getMaxServicosPorInstituicao(tipoPessoa.value, cnpj.value)
 }
 
 </script>
@@ -70,19 +65,25 @@ const handleMaxServicosPorInstituicao = async (cnpj: string = '92702067') => {
         <PhTicket :size="34" class="st-icon-red" weight="duotone" />
       </template>
       <template v-slot:select>
-        <div>
-          <PhBank :size="32" weight="duotone"/>
-          Selecione a Instituição:
-          <v-select
-            class="st-table-search"
-            label="Selecione um grupo"    
-            single-line
-            v-model="selectedCnpj"
-            :items="cnpjRef.value.map(e => e.Nome)"
-            variant="solo"
-            density="compact"
-            hide-details="true"
-          ></v-select>
+        <div class="st-slot-select">
+          <div>
+            <PhBank :size="32" class="st-icon-gray" weight="duotone"/>
+            Selecione a Instituição:
+            <v-select
+              class="st-table-search"
+              label="Selecione um grupo"    
+              single-line
+              v-model="selectedCnpj"
+              :items="cnpjs.map(e => e.Nome)"
+              variant="solo"
+              density="compact"
+              hide-details="true"
+            ></v-select>
+          </div>
+          <v-btn @click="searchData()" class="st-btn st-rounded">
+            Buscar
+            <PhMagnifyingGlass :size="25" />
+          </v-btn>
         </div>
       </template>
     </TableCommonComponent>
@@ -90,11 +91,16 @@ const handleMaxServicosPorInstituicao = async (cnpj: string = '92702067') => {
     <ChartBarComponent
         title="Tarifas por Serviço"
         description="Gráfico de tarifas por serviço"
-        >
-        <template #icon>
-            <PhNewspaperClipping  :size="34" class="st-icon-red" weight="duotone" />
-        </template>
-    </ChartBarComponent>
+    />
 
     <IndicatorComponent />
 </template>
+
+<style scoped>
+.st-slot-select {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+</style>

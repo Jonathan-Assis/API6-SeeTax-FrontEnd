@@ -1,47 +1,55 @@
 <script setup lang="ts">
 import { MDBBreadcrumb } from 'mdb-vue-ui-kit'
 import { ref, computed, onMounted } from 'vue'
-import { PhBank, PhUserSwitch } from '@phosphor-icons/vue';
+import { PhBank, PhMagnifyingGlass, PhUserSwitch } from '@phosphor-icons/vue';
 
 import { sidebarWidth } from '@/components/sidebar/SideBarState'
-import { tipoPessoa } from '@/constants'
+import { tipoPessoa as pessoas } from '@/constants'
 import { useTarifasStore } from '@/stores';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import { watch } from 'vue';
 import type { TPessoa } from '@/interfaces/constants';
-import type { IGruposConsolidado } from '@/interfaces/services';
 
 const tarifasStore = useTarifasStore()
 const {
   grupos,
-  isLoading
+  grupo,
+  tipoPessoa
 } = storeToRefs(tarifasStore)
 
 onMounted(() => {
-  tarifasStore.getGrupoConsolidado()
+  if(!infoRoute.value){
+    tarifasStore.getInitialProps()
+  } 
 })
 
 const route = useRoute()
 const infoRoute = computed<boolean>(() => route.path === '/')
 const dashboard = computed<boolean>(() => route.path === '/dashboard')
 
-const selectedTipoPessoa = ref('')
-const selectedGrupo = ref('')
+const selectedTipoPessoa = ref('Pessoa Física')
+const selectedGrupo = ref('Bancos privados')
 
 watch(selectedTipoPessoa, () => {
-  const tipoPessoaCode = tipoPessoa.find((a) => {
-        return a.type == selectedTipoPessoa.value
+  const tipoPessoaCode = pessoas.find((a) => {
+    return a.type == selectedTipoPessoa.value
   })
   tarifasStore.setTipoPessoa(tipoPessoaCode?.key as TPessoa)
 })
 
 watch(selectedGrupo, () => {
+ 
   const grupoCode = grupos.value.find((a) => {
-    return a.Nome == selectedTipoPessoa.value
+    return a.Nome == selectedGrupo.value
   })
   tarifasStore.setGrupo(grupoCode?.Codigo as string)
 })
+
+async function searchData(){
+  await tarifasStore.getCNPJ(grupo.value)
+  await tarifasStore.getMinMedMaxServicos(tipoPessoa.value,grupo.value)
+}
 
 </script>
 
@@ -58,13 +66,12 @@ watch(selectedGrupo, () => {
       </div>
 
       <div class="header-title-actions" v-if="(grupos.length && !infoRoute)">
-        <div>
-          <PhBank :size="32" weight="duotone"/>
+        <div v-if='grupos.length'>
+          <PhBank :size="32" class="st-icon-gray" weight="duotone"/>
           Selecione o Grupo Consolidado:
           <v-select
             class="st-select-field"
             label="Selecione um grupo"
-            ref="selectedGrupo"
             v-model="selectedGrupo"
             :items="grupos.map((e) => e.Nome)"
             single-line
@@ -75,20 +82,24 @@ watch(selectedGrupo, () => {
         </div>
 
         <div v-if="dashboard">
-          <PhUserSwitch :size="32" weight="duotone"/>
+          <PhUserSwitch :size="32" class="st-icon-gray" weight="duotone"/>
           Selecione o tipo de Pessoa:
           <v-select
             class="st-select-field"
             label="Selecionar grupo"
             ref="selectedPessoa"
             v-model="selectedTipoPessoa"
-            :items="tipoPessoa.map((e) => e.type)"
+            :items="pessoas.map((e) => e.type)"
             single-line
             variant="solo"
             density="compact"
             hide-details="true"
           ></v-select>
         </div>
+        <v-btn @click="searchData()" class="st-btn st-rounded">
+          Buscar
+          <PhMagnifyingGlass :size="25" />
+        </v-btn>
       </div>
      
     </div>
