@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PhArrowDown, PhArrowUp, PhCurrencyCircleDollar } from '@phosphor-icons/vue';
-import { ref, onMounted, computed } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
     service: {

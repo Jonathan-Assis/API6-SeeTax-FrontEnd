@@ -14,7 +14,7 @@ import TarifasComponent from '@/components/tarifas/TarifasComponent.vue'
   
   <div class="st-container-view-center">
     <TarifasComponent
-      tipoPessoa="K"
+      tipoPessoa="J"
     />
   
   </div>

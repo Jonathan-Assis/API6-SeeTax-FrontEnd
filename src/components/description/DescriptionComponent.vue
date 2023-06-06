@@ -9,17 +9,26 @@ defineProps({
 
 <template>
   <div class="description st-bg-white-primary st-space-item">
-    <p class="st-table-description">
-      {{ description }}
-    </p>
-    <div class="description-slot">
-      <slot name="select"></slot>
+    <div class="st-slot-left">
+      <p class="st-table-description">
+        {{ description }}
+      </p>
       <slot name="right"></slot>
+    </div>
+      <div class="description-slot">
+        <slot name="select"></slot>
+      
     </div>
   </div>
 </template>
 
 <style scoped>
+
+.st-slot-left{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
 .description {
   display: flex;
   width: 100%;

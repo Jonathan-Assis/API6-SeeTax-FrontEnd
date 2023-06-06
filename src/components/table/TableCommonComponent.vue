@@ -60,7 +60,7 @@ onMounted(()=> {
           <v-text-field
           v-model="search"
           label="Pesquisar"
-          class="st-table-search"
+          class="st-table-search p-1 ml-5"
           variant="solo"
           density="compact"
           append-inner-icon="mdi-magnify"

@@ -22,7 +22,7 @@
 
 .image {
   width: 200px;
-}
+}/* 
 .image {
   -moz-animation: spinHorizontal 1.5s infinite linear;
   -o-animation: spinHorizontal 1.5s infinite linear;
@@ -37,5 +37,5 @@
   100% {
     transform: rotateY(360deg);
   }
-}
+} */
 </style>
