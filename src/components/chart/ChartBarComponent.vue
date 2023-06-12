@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
-import { Bar } from 'vue-chartjs'
+import { Bar, Line } from 'vue-chartjs'
 import {
   Chart as ChartJS,
   type ChartData,
@@ -12,6 +12,8 @@ import {
   CategoryScale,
   LinearScale,
   LogarithmicScale,
+  PointElement,
+  LineElement,
 } from 'chart.js'
 
 import { PhMagnifyingGlass, PhNewspaperClipping } from '@phosphor-icons/vue'
@@ -31,7 +33,7 @@ defineProps({
   },
 })
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LogarithmicScale)
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LogarithmicScale, PointElement, LineElement)
 
 const chartData = ref<ChartData>({
   labels: [],
@@ -116,6 +118,7 @@ onMounted(() => {
   if(!servicosMaxGrupoServico.value.length){
     searchData()
   }
+  IADataResponse()
 })
 
 async function searchData() {
@@ -130,6 +133,51 @@ watch(selectedServico, () => {
     return a.Nome == selectedServico.value
   })
   tarifasStore.setServico(servicoCode?.Codigo)
+})
+
+const IADataResponse =() => {
+
+  const data = [
+    {
+      "data":"mar/23",
+      "valor_max":"35.0"
+    },
+    {
+      "data":"abr/23",
+      "valor_max":"35.0"
+    },
+    {
+      "data":"mai/23",
+      "valor_max":"36.5"
+    },
+    {
+      "data":"jun/23",
+      "valor_max":"36.88"
+    },
+  ]
+  chartLineData.value = {
+    labels:data.map(label => label.data),
+    datasets: [
+      {
+        label: 'Previsão',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        data: data.map(value => parseFloat(value.valor_max))
+      }
+    ]
+  }
+}
+
+const chartLineData = ref<ChartData>({
+  labels: [],
+  datasets: []
+})
+const chartLineOptions = ref<ChartOptions>({
+  scales: {
+    y: {
+      beginAtZero: true,
+      
+    },
+  },
 })
 
 </script>
@@ -172,6 +220,7 @@ watch(selectedServico, () => {
             <Bar :options="chartOptions" :data="chartData" class="chartBar" />
           </div>
         </div>
+        <Line :options="chartLineOptions" :data="chartLineData" class="chartBar" />
       </div>
     </div>
   </div>
