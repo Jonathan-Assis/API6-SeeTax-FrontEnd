@@ -1,4 +1,4 @@
-import type { ICNPJ, IGruposConsolidado, IRanking, IServicos, ITarifasServicosGrupoMax, ITarifasServicosInstituicaoMax, ITarifasServicosMinMedMaxValue } from './../interfaces/services/index';
+import type { ICNPJ, IGruposConsolidado, IPrevisao, IPrevisaoResp, IRanking, IServicos, ITarifasServicosGrupoMax, ITarifasServicosInstituicaoMax, ITarifasServicosMinMedMaxValue } from './../interfaces/services/index';
 import type { IRankingBody, TPessoa } from '@/interfaces/constants'
 import ServerConnection from '@/services'
 import { defineStore } from 'pinia'
@@ -9,12 +9,14 @@ export const useTarifasStore = defineStore('tarifasStore', {
     isLoading: false as boolean,
     tipoPessoa: 'F' as TPessoa,
     grupo: '02' as string,
-    servico: '1315' as string,
-    cnpj: '00000000',
+    servico: '0101' as string,
+    cnpj: '00360305',
     ranking: [] as IRankingBody[],
     grupos: [] as IGruposConsolidado[],
     servicos: [] as IServicos[],
     instituicoes: [],
+    instituicoesDB: [] as ICNPJ[],
+    previsao:[] as IPrevisaoResp[],
     cnpjs:[] as ICNPJ[],
     servicosMinMedMax: [] as ITarifasServicosMinMedMaxValue[],
     servicosMaxInstituicao: [] as ITarifasServicosInstituicaoMax[],
@@ -30,6 +32,9 @@ export const useTarifasStore = defineStore('tarifasStore', {
       }
       if (!this.servicos.length) {
         await this.getServicos()
+      }
+      if (!this.instituicoesDB.length){
+        await this.getInstituicoesFromDB()
       }
     },
     async setTipoPessoa(tipo: TPessoa='F'){
@@ -67,6 +72,30 @@ export const useTarifasStore = defineStore('tarifasStore', {
     },
     async setCNPJ(cnpj: string = '00000000'){
       this.cnpj = cnpj
+    },
+    async getPrevisao(dados: IPrevisao ){
+      try {
+        this.isLoading = true
+        const { data } = await ServerConnection.getPrevisao(dados)
+
+        this.previsao = data
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.isLoading = false
+      }
+    },
+    async getInstituicoesFromDB(){
+      try {
+        this.isLoading = true
+        const { data } = await ServerConnection.getInstituicoes()
+
+        this.instituicoesDB = data
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.isLoading = false
+      }
     },
     async getGrupoConsolidado() {
       try {
