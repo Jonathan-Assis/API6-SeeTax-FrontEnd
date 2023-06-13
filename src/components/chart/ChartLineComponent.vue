@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
-import { Bar } from 'vue-chartjs'
+import { Line } from 'vue-chartjs'
 import {
   Chart as ChartJS,
   type ChartData,
@@ -22,84 +22,21 @@ import { storeToRefs } from 'pinia'
 import TitleOutsideComponent from '../title/TitleOutsideComponent.vue'
 import DescriptionComponent from '../description/DescriptionComponent.vue'
 
-defineProps({
-  title: {
-    type: String,
-    required: true
-  },
-  description: {
-    type: String,
-    required: true
-  },
-})
-
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LogarithmicScale, PointElement, LineElement)
 
-const chartData = ref<ChartData>({
-  labels: [],
-  datasets: []
-})
-
-const chartOptions = ref<ChartOptions>({
-  scales: {
-    x: {
-      title: {
-        display: true,
-        text: 'Escala logarítmica',
-        font: {
-          size: 16,
-          weight: 'bold'
-        }
-      },
-      type: 'logarithmic'
-    }
-  },
-  plugins: {
-    legend: {
-      /*  font: {
-        size: 14,
-        weight: 'bold'
-      }, */
-      labels: {
-        font: {
-          size: 14,
-          weight: 'bold'
-        },
-        boxWidth: 10,
-        usePointStyle: true,
-        pointStyle: 'circle'
-      }
-    }
-  }
-})
-
 async function getDatas() {
-  let dados = servicosMaxGrupoServico.value
-  const labels = dados.map((dado) => {
-    const label = dado.RazaoSocial
+  let dados = previsao.value
+ 
+  const labels = dados.map(label => label.data)
+  const dataset = dados.map(value => parseFloat(value.valor_max))
 
-    return label
-  })
-  
-  const valorMaximo = dados.map((dado) => {
-    return dado.ValorMaximo
-  })
-
-  const periodicidadeValorMaximo = dados.map((dado) => {
-    return { label: dado.RazaoSocial, periodicidade: dado.Periodicidade }
-  })
-
-  chartData.value = {
+  chartLineData.value = {
     labels: labels,
     datasets: [
       {
-        label: 'Máximo',
-        indexAxis: 'y',
-        /* indexAxis: 'x', */
-        backgroundColor: '#3A57E8',
+        label: 'Previsão de tarifa',
         borderColor: '#3A57E8',
-        data: valorMaximo,
-        borderRadius: 100
+        data: dataset,
       }
     ]
   }
@@ -107,24 +44,27 @@ async function getDatas() {
 
 const tarifasStore = useTarifasStore()
 const { 
-  grupo,
   servicos,
   servico,
-  servicosMaxGrupoServico,
+  cnpj,
+  previsao,
+  instituicoesDB
 } = storeToRefs(tarifasStore)
 
 onMounted(() => {
-  if(!servicosMaxGrupoServico.value.length){
+  if(!previsao.value.length){
     searchData()
   }
+  IADataResponse()
 })
 
 async function searchData() {
-  await tarifasStore.getMaxServicosPorGrupoServico(grupo.value, servico.value)
+  await tarifasStore.getPrevisao({cnpj: cnpj.value, servico: servico.value})
   .then(() => getDatas())
 }
 
 const selectedServico = ref('Extrato de Conta')
+const selectedCnpj = ref('CAIXA ECONOMICA FEDERAL')
 
 watch(selectedServico, () => {
   const servicoCode = tarifasStore.servicos.find((a) => {
@@ -133,16 +73,68 @@ watch(selectedServico, () => {
   tarifasStore.setServico(servicoCode?.Codigo)
 })
 
+
+watch(selectedCnpj, () => {
+  const instituicaoCode = tarifasStore.instituicoesDB.find((a) => {
+    return a.Nome == selectedCnpj.value
+  })
+  tarifasStore.setCNPJ(instituicaoCode?.Cnpj)
+})
+
+const IADataResponse =() => {
+
+  const data = [
+    {
+      "data":"mar/23",
+      "valor_max":"35.0"
+    },
+    {
+      "data":"abr/23",
+      "valor_max":"35.0"
+    },
+    {
+      "data":"mai/23",
+      "valor_max":"36.5"
+    },
+    {
+      "data":"jun/23",
+      "valor_max":"36.88"
+    },
+  ]
+  chartLineData.value = {
+    labels:data.map(label => label.data),
+    datasets: [
+      {
+        label: 'Previsão',
+        borderColor: '#3A57E8',
+        data: data.map(value => parseFloat(value.valor_max))
+      }
+    ]
+  }
+}
+
+const chartLineData = ref<ChartData>({
+  labels: [],
+  datasets: []
+})
+const chartLineOptions = ref<ChartOptions>({
+  scales: {
+    y: {
+      beginAtZero: true,
+    },
+  },
+})
+
 </script>
 
 <template>
   <div class="st-space-vertical">
-    <TitleOutsideComponent :title="title">
-      <PhNewspaperClipping  :size="34" class="st-icon-red" weight="duotone" />
+    <TitleOutsideComponent title="Previsão de tarifas">
+      <PhNewspaperClipping :size="34" class="st-icon-yellow" weight="duotone" />
     </TitleOutsideComponent>
     
     <div class="st-shadow">
-      <DescriptionComponent :description="description">
+      <DescriptionComponent description="Gráfico de previsão de tarifas por serviço">
         <template #select>
           <div class="st-slot-select">
             <div>
@@ -159,6 +151,20 @@ watch(selectedServico, () => {
                 density="compact"
               ></v-select>
             </div>
+            <div>
+              <PhNewspaperClipping  :size="32" class="st-icon-gray" weight="duotone" />
+              Instituição:
+              <v-select
+                v-if="instituicoesDB.length"
+                class="st-select-field"
+                label="Selecionar Instituição"
+                v-model="selectedCnpj"
+                :items="instituicoesDB.map((e) => e.Nome)"
+                single-line
+                variant="solo"
+                density="compact"
+              ></v-select>
+            </div>
             <v-btn @click="searchData()" class="st-btn st-rounded">
               Buscar
               <PhMagnifyingGlass :size="25" />
@@ -170,7 +176,7 @@ watch(selectedServico, () => {
       <div class="st-space-item st-bg-white-primary st-rounded">
         <div class="chartContainer">
           <div class="chartContainerBody m-4">
-            <Bar :options="chartOptions" :data="chartData" class="chartBar" />
+            <Line :options="chartLineOptions" :data="chartLineData" class="chartBar" />
           </div>
         </div>
       </div>
