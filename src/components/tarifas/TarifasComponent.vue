@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useTarifasStore } from '@/stores'
 import TableCommonComponent from '../table/TableCommonComponent.vue';
 import { tarifasServicosHeader } from '@/constants';
 import type { TPessoa } from '@/interfaces/constants'
-import { PhBank, PhMagnifyingGlass, PhNewspaperClipping, PhTicket } from '@phosphor-icons/vue';
+import { PhBank, PhMagnifyingGlass, PhTicket } from '@phosphor-icons/vue';
 import IndicatorComponent from '../indicator/IndicatorComponent.vue';
 import { watch } from 'vue';
 import ChartBarComponent from '../chart/ChartBarComponent.vue';
+import ChartLineComponent from '../chart/ChartLineComponent.vue';
 
 const tarifasStore = useTarifasStore()
 const {
@@ -92,7 +93,7 @@ async function searchData(){
         title="Tarifas por Serviço"
         description="Gráfico de tarifas por serviço"
     />
-
+    <ChartLineComponent />
     <IndicatorComponent />
 </template>
 
