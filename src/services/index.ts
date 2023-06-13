@@ -1,5 +1,5 @@
 import axios, { type AxiosResponse } from 'axios'
-import type { TRankingQuery } from '@/interfaces/services'
+import type { IPrevisao, TRankingQuery } from '@/interfaces/services'
 import type { TPessoa } from '@/interfaces/constants'
 const url = 'https://api6-seetax-backend.onrender.com'
 let method = axios.create({
@@ -10,6 +10,12 @@ let method = axios.create({
 const url_Olinda = 'https://olinda.bcb.gov.br/olinda/servico'
 let methodOlinda = axios.create({
   baseURL: url_Olinda,
+  timeout: 30000
+})
+
+const url_local = 'http://localhost:8080'
+let methodLocal = axios.create({
+  baseURL: url_local,
   timeout: 30000
 })
 
@@ -28,6 +34,10 @@ export default class ServerConnection {
 
   static async getInstituicoes() {
     return await method.get('/instituicoes')
+  }
+
+  static async getPrevisao(data: IPrevisao) {
+    return await methodLocal.post('/tarifas/previsao', data)
   }
 
   /**

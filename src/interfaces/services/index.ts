@@ -146,3 +146,13 @@ export interface ITarifasServicosMinMedMaxValue {
   PeriodicidadeValorMaximo: string
   ValorMedio: number
 }
+
+export interface IPrevisao {
+  cnpj: string
+  servico: string
+}
+
+export interface IPrevisaoResp {
+  valor_max: string
+  data: string | Date
+}
