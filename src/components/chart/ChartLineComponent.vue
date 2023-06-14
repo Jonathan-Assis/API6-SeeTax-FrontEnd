@@ -118,6 +118,7 @@ const chartLineData = ref<ChartData>({
   datasets: []
 })
 const chartLineOptions = ref<ChartOptions>({
+  responsive:true,
   scales: {
     y: {
       beginAtZero: true,
