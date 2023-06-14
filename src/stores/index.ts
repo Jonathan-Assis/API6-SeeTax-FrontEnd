@@ -41,9 +41,9 @@ export const useTarifasStore = defineStore('tarifasStore', {
       this.tipoPessoa = tipo
     },
     async getRanking(servico:string){
+      let rank:IRankingBody[] = []
       try{
         const { data } = await ServerConnection.getRanking(servico)
-        let rank:IRankingBody[] = []
 
         data.forEach((value: IRanking)=>{
           value.instituicao.DataVigencia = dayjs(value.instituicao.DataVigencia).format('DD/MM/YYYY HH:mm')
@@ -58,8 +58,8 @@ export const useTarifasStore = defineStore('tarifasStore', {
           }
           rank.push(data)
         }) 
-
         this.ranking = rank
+
       } catch (e) {
         console.log(e)
       }
